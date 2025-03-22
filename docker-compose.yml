@@ -1,9 +1,11 @@
 services:
-  react-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "2025:80"
-    container_name: my-react-app
+  
+    client:
+    build: ./frontend
     restart: unless-stopped
+    ports:
+      - "2025:80"  # Nginx serves frontend on port 80, mapped to host 2025
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # Avoid overwriting node_modules
