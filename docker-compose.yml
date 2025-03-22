@@ -1,11 +1,7 @@
+version: '3'
 services:
-  
-    client:
-    build: ./frontend
-    restart: unless-stopped
+  frontend:
+    build: .
     ports:
-      - "2025:80"  # Nginx serves frontend on port 80, mapped to host 2025
-
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules  # Avoid overwriting node_modules
+      - "2025:80"
+    restart: always
