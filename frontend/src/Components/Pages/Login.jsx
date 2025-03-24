@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const credentialsMap = {
-  admin: "Clock@2020",
+  Admin: "Clock@2020",
   Lakshman: "Clock@2020",
   Arvind: "Clock@2020",
   Bharat: "Clock@2020",
