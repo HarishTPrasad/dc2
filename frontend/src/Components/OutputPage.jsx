@@ -68,7 +68,7 @@ function OutputPage() {
         </div>
 
         {/* Table 1: Change Description / Change Request */}
-        <div style={styles.content}>
+        <div style={{...styles.content, marginTop:"150PX"}}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -273,7 +273,7 @@ function OutputPage() {
         </div>
 
         {/* Table 4: Change Implementation Details */}
-        <div style={{...styles.content, marginTop:"500PX"}}>
+        <div style={{...styles.content, marginTop:"600PX"}}>
           <table style={styles.table}>
             <thead>
               <tr>
