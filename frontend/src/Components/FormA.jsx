@@ -7,112 +7,120 @@ import ChangeImplementationDetailsTable from "./FormTables/ChangeImplementationD
 import ChangeImplementationTable from "./FormTables/ChangeImplementationTable";
 
 const clientDataMap = {
-
   "Beawar Urban Co-operative Bank Ltd.": {
     requester: "Sourabh Bhardwaj",
     approver: "Anil Devnani",
-    departmentLocation: "BWRUCB",
+    departmentLocation: "IT/BWRUCB",
   },
   "Balotra Urban Co-operative Bank Ltd.": {
     requester: "Nain Puri Ji",
     approver: "Gautam Singh Jain",
-    departmentLocation: "BUCB",
+    departmentLocation: "IT/BUCB",
   },
   "Chittorgarh Urban Co-Operative Bank Ltd": {
     requester: "Rakesh Dashora",
     approver: "Vandana Vazirani",
-    departmentLocation: "CUCB",
+    departmentLocation: "IT/CUCB",
   },
   "Dhanera Mercantile Co-Operative Bank Ltd.": {
     requester: "Mahadev Chaudhari",
     approver: "Ajay Patel",
-    departmentLocation: "DMCB",
+    departmentLocation: "IT/DMCB",
   },
   "The Gozaria Nagarik Sahkari Bank Ltd.": {
     requester: "Chirag Patel",
     approver: "Jitu Patel",
-    departmentLocation: "GNSB",
+    departmentLocation: "IT/GNSB",
   },
   "Himatnagar Nagarik Sahakari Bank Ltd.": {
     requester: "Vipul Joshi",
     approver: "Manubhai M Patel",
-    departmentLocation: "HNSB",
+    departmentLocation: "IT/HNSB",
   },
   "Jalore Nagrik Sahakari Bank Ltd.": {
     requester: "Pramod Dave",
     approver: "Abhishek Das",
-    departmentLocation: "JNSB",
+    departmentLocation: "IT/JNSB",
   },
   "Kota Nagarik Sahakari Bank Ltd.": {
     requester: "Brijesh Gautam",
     approver: "Nand Kishore Ji Chouhan",
-    departmentLocation: "KNSB",
+    departmentLocation: "IT/KNSB",
   },
   "The Kukarwada Nagrik Sahakari Bank Ltd.": {
     requester: "Maulik Patel",
     approver: "Chirag Patel",
-    departmentLocation: "KKNSB",
+    departmentLocation: "IT/KKNSB",
   },
   "People's Co-operative Bank Ltd.": {
     requester: "Dirgh Trivedi",
     approver: "Mahesh Anerao",
-    departmentLocation: "PCBD",
+    departmentLocation: "IT/PCBD",
   },
   "Patan Nagarik Sahakari Bank Ltd.": {
     requester: "Hemal Darji",
     approver: "Mahesh Kumar P. Modi",
-    departmentLocation: "PNSB",
+    departmentLocation: "IT/PNSB",
   },
   "Ranuj Nagrik Sahakari Bank Ltd.": {
     requester: "Jigar Patel",
     approver: "P.G. Suthar",
-    departmentLocation: "RNBX",
+    departmentLocation: "IT/RNBX",
   },
   "Sumerpur Mercantile Urban Co-operative Bank Ltd.": {
     requester: "Kailash Prajapat",
     approver: "Ugam Raj Gaur",
-    departmentLocation: "SMUCB",
+    departmentLocation: "IT/SMUCB",
   },
   "The Vijay Co-Operative Bank Ltd.": {
     requester: "Bhavik Patel",
     approver: "Rajnikant C Gajjar",
-    departmentLocation: "VCOB",
+    departmentLocation: "IT/VCOB",
   },
   "The Sardargunj Mercantile Co-operative Bank Ltd.": {
     requester: "Ketan Patel",
     approver: "Nitin Patel",
-    departmentLocation: "SMCBL",
+    departmentLocation: "IT/SMCBL",
   },
   "The Kalol Nagrik Sahakari Bank Ltd.": {
     requester: "",
     approver: "",
-    departmentLocation: "KNSBL",
+    departmentLocation: "IT/KNSBL",
   },
   "The Idar Nagarik Sahakari Bank Ltd.": {
     requester: "",
     approver: "",
-    departmentLocation: "INSB",
+    departmentLocation: "IT/INSB",
   },
   "Malviya Urban Co-Operative Bank Ltd.": {
     requester: "",
     approver: "",
-    departmentLocation: "MUCB",
+    departmentLocation: "IT/MUCB",
   },
   "The Gandhinagar Nagarik Co-Operative Bank Ltd.": {
     requester: "",
     approver: "",
-    departmentLocation: "GNCB",
+    departmentLocation: "IT/GNCB",
   },
   "V K Engitech Pvt. Ltd.": {
     requester: "",
     approver: "",
-    departmentLocation: "VK-ENG",
+    departmentLocation: "IT/VK-ENG",
   },
   "Century Texofin Private Ltd.": {
     requester: "",
     approver: "",
-    departmentLocation: "CTPL",
+    departmentLocation: "IT/CTPL",
   },
+};
+
+// Function to get today's date in YYYY-MM-DD format
+const getTodayDate = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 };
 
 function FormA() {
@@ -123,11 +131,11 @@ function FormA() {
     changeRequestNo: "",
     project: "",
     requester: "",
-    date: "",
+    date: getTodayDate(), // Set today's date as default
     departmentLocation: "",
     phoneNo: "",
     changeDescription: "",
-    changeNeededBy: "",
+    changeNeededBy: getTodayDate(), // Set today's date as default
     reasonForChange: "",
     approver: "",
     changeType: {
@@ -159,7 +167,7 @@ function FormA() {
       rejected: false,
     },
     comments: "Change request has been approved by ",
-    changeScheduled: "",
+    changeScheduled: getTodayDate(), // Set today's date as default
     implementationAssigned: "",
     technology: "",
     policy: "N/A",
@@ -167,11 +175,12 @@ function FormA() {
     rollBack: "Will remove the newly created policy if required",
     stagingTestResults: "",
     implementationTestResults: "",
-    dateOfImplementation: "",
+    dateOfImplementation: getTodayDate(), // Set today's date as default
     implementationStatus: "",
-    cabSignOffDate: "",
+    cabSignOffDate: getTodayDate(), // Set today's date as default
   });
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -194,7 +203,7 @@ function FormA() {
           requester: clientData.requester || "",
           approver: clientData.approver || "",
           departmentLocation: clientData.departmentLocation || "",
-          comments: `Change request has been approved by ${clientData.approver || ""}`, 
+          comments: `Change request has been approved by ${clientData.approver || ""}`,
         }));
       } else if (name === "approver") {
         setFormData((prevData) => ({
@@ -211,31 +220,12 @@ function FormA() {
     }
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
-
     navigate("/output", { state: { formData } });
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-    
-  //     const response = await api.post("/submit-form", formData);
-
-     
-  //     console.log("Form submitted successfully:", response.data);
-
-    
-  //     navigate("/output", { state: { formData } });
-  //   } catch (err) {
- 
-  //     console.error("Error submitting form:", err);
-  //     alert("Failed to submit form. Please try again.");
-  //   }
-  // };
 
   return (
     <>

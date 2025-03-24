@@ -248,7 +248,7 @@ const ChangeImpactEvaluationTable = ({ formData, handleInputChange }) => {
               </tr>
               <tr>
                 <th>Roll Back</th>
-                <td>
+                <td colSpan="6">
                   <input
                     className="form-control"
                     type="text"
