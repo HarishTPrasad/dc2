@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { useNavigate } from "react-router-dom";
 
 const formatDate = (dateString) => {
   if (!dateString) return ""; 
@@ -55,6 +56,12 @@ function OutputPage() {
         pdf.save("Change_Request_Form.pdf");
       });
     }, 300);
+  };
+
+  const navigate = useNavigate();
+
+  const handleBackToDashboard = () => {
+    navigate("/dashboard");
   };
 
   return (
@@ -339,6 +346,9 @@ function OutputPage() {
       <button onClick={downloadPDF} style={styles.button}>
         Download as PDF
       </button>
+      <button style={styles.button} onClick={handleBackToDashboard}>
+          Back to Dashboard
+        </button>
     </>
   );
 }
@@ -372,17 +382,17 @@ const styles = {
     color: "black", 
   },
   button: {
+    display: "block", // Makes the button a block element so margin auto works
     padding: "10px 20px",
     fontSize: "16px",
-    backgroundColor: "#007bff",
+    backgroundColor: "#28a745",
     color: "white",
     border: "none",
     cursor: "pointer",
     borderRadius: "5px",
-    marginLeft: "46%",
-    marginBottom: "100px",
-    marginTop: "100px",
-    fontFamily: "Verdana", 
+    margin: "10px auto 50px", // Centers the button horizontally
+    fontFamily: "Verdana",
+    fontWeight: "bold",
   },
   font: {
     fontFamily: "Verdana", 

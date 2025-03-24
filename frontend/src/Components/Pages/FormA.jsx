@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ClientAndProjectTable from "./FormTables/ClientAndProjectTable";
-import ChangeImpactEvaluationTable from "./FormTables/ChangeImpactEvaluationTable";
-import ChangeApprovalTable from "./FormTables/ChangeApprovalTable";
-import ChangeImplementationDetailsTable from "./FormTables/ChangeImplementationDetailsTable";
-import ChangeImplementationTable from "./FormTables/ChangeImplementationTable";
+import ClientAndProjectTable from "../FormTables/ClientAndProjectTable";
+import ChangeImpactEvaluationTable from "../FormTables/ChangeImpactEvaluationTable";
+import ChangeApprovalTable from "../FormTables/ChangeApprovalTable";
+import ChangeImplementationDetailsTable from "../FormTables/ChangeImplementationDetailsTable";
+import ChangeImplementationTable from "../FormTables/ChangeImplementationTable";
 
 const clientDataMap = {
   "Beawar Urban Co-operative Bank Ltd.": {
@@ -227,8 +227,18 @@ function FormA() {
     navigate("/output", { state: { formData } });
   };
 
+  const handleBackToDashboard = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <>
+        <div style={styles.navbar}>
+        <img src="logo192.png" alt="Logo" style={styles.logo} />
+        <button style={styles.backButton} onClick={handleBackToDashboard}>
+          Back to Dashboard
+        </button>
+      </div>
       <div style={styles.container}>
         <div style={styles.content}>
           <div className="head">
@@ -297,18 +307,42 @@ function FormA() {
 }
 
 const styles = {
-  container: { textAlign: "center", padding: "100px" },
+  navbar: {
+    backgroundColor: "#d4f4d4",
+    padding: "10px 20px",
+    color: "white",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between", // Changed to space-between to separate logo and button
+  },
+  logo: {
+    width: "40px",
+    height: "40px",
+    marginRight: "10px",
+  },
+  backButton: {
+    padding: "8px 16px",
+    backgroundColor: "#28a745",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+  container: { textAlign: "center", paddingLeft: "100px", paddingRight: "100px", paddingTop: "40px" },
   content: { marginBottom: "60px" },
   button: {
     padding: "10px 20px",
     fontSize: "16px",
-    backgroundColor: "#007bff",
+    backgroundColor: "#28a745",
     color: "white",
     border: "none",
     cursor: "pointer",
     borderRadius: "5px",
     marginLeft: "46%",
     marginBottom: "50px",
+    cursor: "pointer",
+    fontWeight: "bold",
   },
 };
 
