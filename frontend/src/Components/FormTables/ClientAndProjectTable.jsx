@@ -78,11 +78,12 @@ const ClientAndProjectTable = ({ formData, handleInputChange }) => {
                   onChange={handleDropdownChange}
                 >
                   <option>Select</option>
+                  <option>USB Access</option>
+                  <option>Firewall Access</option>
+                  <option>User Creation/Modification/Deletion</option> 
                   <option>Website</option>
                   <option>White list URL/IP/Port</option>
                   <option>Geo-Location</option>
-                  <option>User Creation/Modification/Deletion</option>
-                  <option>Firewall Access</option>
                   <option>Others</option>
                 </select>
                 {showOtherInputs.project && (

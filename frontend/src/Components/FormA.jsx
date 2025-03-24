@@ -240,8 +240,8 @@ function FormA() {
                 onChange={handleInputChange}
               >
                 <option>Select Client</option>
-                <option>Balotra Urban Co-operative Bank Ltd.</option>
                 <option>Jalore Nagrik Sahakari Bank Ltd.</option>
+                <option>Balotra Urban Co-operative Bank Ltd.</option>
                 <option>Century Texofin Private Ltd.</option>
                 <option>Chittorgarh Urban Co-Operative Bank Ltd</option>
                 <option>Ranuj Nagrik Sahakari Bank Ltd.</option>

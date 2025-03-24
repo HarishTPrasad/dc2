@@ -78,7 +78,7 @@ const ChangeImplementationDetailsTable = ({ formData, handleInputChange }) => {
             </td>
           </tr>
           <tr>
-            <th rowSpan="2">IP Address/URL/Port</th>
+            <th rowSpan="2">IP Address/URL/Port/User</th>
             <td>
               <input
                 className="form-control"
