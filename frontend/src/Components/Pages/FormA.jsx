@@ -114,11 +114,11 @@ const clientDataMap = {
   },
 };
 
-// Function to get today's date in YYYY-MM-DD format
+
 const getTodayDate = () => {
   const today = new Date();
   const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const month = String(today.getMonth() + 1).padStart(2, "0"); 
   const day = String(today.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
@@ -131,11 +131,11 @@ function FormA() {
     changeRequestNo: "",
     project: "",
     requester: "",
-    date: getTodayDate(), // Set today's date as default
+    date: getTodayDate(), 
     departmentLocation: "",
     phoneNo: "",
     changeDescription: "",
-    changeNeededBy: getTodayDate(), // Set today's date as default
+    changeNeededBy: getTodayDate(), 
     reasonForChange: "",
     approver: "",
     changeType: {
@@ -167,7 +167,7 @@ function FormA() {
       rejected: false,
     },
     comments: "Change request has been approved by ",
-    changeScheduled: getTodayDate(), // Set today's date as default
+    changeScheduled: getTodayDate(), 
     implementationAssigned: "",
     technology: "",
     policy: "N/A",
@@ -175,12 +175,12 @@ function FormA() {
     rollBack: "Will remove the newly created policy if required",
     stagingTestResults: "",
     implementationTestResults: "",
-    dateOfImplementation: getTodayDate(), // Set today's date as default
+    dateOfImplementation: getTodayDate(), 
     implementationStatus: "",
-    cabSignOffDate: getTodayDate(), // Set today's date as default
+    cabSignOffDate: getTodayDate(),
   });
 
-  // Handle input changes
+ 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -220,7 +220,7 @@ function FormA() {
     }
   };
 
-  // Handle form submission
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
@@ -278,7 +278,7 @@ function FormA() {
         </div>
 
         <div style={styles.content}>
-          {/* Table 1 */}
+      
           <ClientAndProjectTable formData={formData} handleInputChange={handleInputChange} />
         </div>
 
@@ -313,7 +313,7 @@ const styles = {
     color: "white",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between", // Changed to space-between to separate logo and button
+    justifyContent: "space-between", 
   },
   logo: {
     width: "40px",

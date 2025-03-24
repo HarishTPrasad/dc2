@@ -25,13 +25,13 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (credentialsMap[username] && credentialsMap[username] === password) {
-      // Use sessionStorage instead of localStorage
+    
       sessionStorage.setItem("authToken", "true");
       sessionStorage.setItem("username", username);
       navigate("/dashboard");
     } else {
       setError("Invalid username or password");
-      // Clear any existing session data
+  
       sessionStorage.removeItem("authToken");
       sessionStorage.removeItem("username");
     }
@@ -39,14 +39,14 @@ function Login() {
 
   return (
     <div style={styles.container}>
-      {/* Navbar */}
+     
       <div style={styles.navbar}>
         <img src="logo192.png" alt="Logo" style={styles.logo} />
       </div>
 
-      {/* Main Content */}
+     
       <div style={styles.mainContent}>
-        {/* Center Space with Logo and Welcome Message */}
+       
         <div style={styles.centerSpace}>
           <div style={styles.logoContainer}>
             <img src="logo192.png" alt="Logo" style={styles.centerLogo} />
@@ -55,7 +55,7 @@ function Login() {
           <p style={styles.welcomeSubtitle}>Please login to continue...</p>
         </div>
 
-        {/* Login Form Sidebar */}
+ 
         <div style={styles.sidebar}>
           <div style={styles.sidebarContent}>
             <h3 style={styles.loginTitle}>Login</h3>
@@ -98,7 +98,7 @@ function Login() {
             </form>
           </div>
           
-          {/* About Section */}
+        
           <div style={styles.aboutSection}>
             <p>DC Networks - Secure Access Portal</p>
             <p style={styles.aboutText}>Version 1.0.0</p>
@@ -112,7 +112,7 @@ function Login() {
   );
 }
 
-// Styles
+
 const styles = {
   container: {
     display: "flex",

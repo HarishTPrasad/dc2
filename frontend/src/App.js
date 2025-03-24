@@ -5,7 +5,7 @@ import FormA from './Components/Pages/FormA';
 import Login from './Components/Pages/Login';
 import Dashboard from './Components/Pages/Dashboard';
 
-// Protected Route Component
+
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = sessionStorage.getItem('authToken');
   return isAuthenticated ? children : <Navigate to="/" replace />;
@@ -15,10 +15,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Route */}
+    
         <Route path="/" element={<Login />} />
         
-        {/* Protected Routes */}
+  
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <Dashboard />
@@ -37,7 +37,7 @@ function App() {
           </ProtectedRoute>
         } />
 
-        {/* Catch-all route for invalid paths */}
+   
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

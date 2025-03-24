@@ -382,7 +382,7 @@ const styles = {
     color: "black", 
   },
   button: {
-    display: "block", // Makes the button a block element so margin auto works
+    display: "block", 
     padding: "10px 20px",
     fontSize: "16px",
     backgroundColor: "#28a745",
@@ -390,7 +390,7 @@ const styles = {
     border: "none",
     cursor: "pointer",
     borderRadius: "5px",
-    margin: "10px auto 50px", // Centers the button horizontally
+    margin: "10px auto 50px", 
     fontFamily: "Verdana",
     fontWeight: "bold",
   },

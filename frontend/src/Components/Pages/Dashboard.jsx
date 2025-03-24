@@ -2,46 +2,47 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  // Get username from sessionStorage instead of localStorage
+
   const username = sessionStorage.getItem("username") || "User";
   const navigate = useNavigate();
 
-  // Proper logout function that clears session
+
   const handleLogout = () => {
-    sessionStorage.clear(); // Clear all session data
-    navigate("/"); // Navigate to login page
+    sessionStorage.clear(); 
+    navigate("/"); 
   };
 
   return (
     <div style={styles.container}>
-      {/* Navbar */}
+   
       <div style={styles.navbar}>
         <img src="logo192.png" alt="Logo" style={styles.logo} />
         <div style={styles.userInfo}>
-          <span>Welcome, {username}</span>
+          <span>Welcome Back, Mr. {username}</span>
         </div>
       </div>
 
-      {/* Sidebar + Content Container */}
+   
       <div style={styles.mainContent}>
-        {/* Sidebar */}
+   
         <div style={styles.sidebar}>
           <h2 style={styles.sidebarTitle}>Dashboard</h2>
           
-          {/* Empty space that pushes content down */}
+       
+      
           <div style={styles.sidebarContent}>
-            {/* You can add other menu items here if needed */}
+        
           </div>
 
-          {/* Bottom Section with Logout */}
+  
           <div style={styles.bottomSection}>
             <button 
               style={styles.menuButton} 
-              onClick={handleLogout} // Updated to use proper logout function
+              onClick={handleLogout} 
             >
               Logout
             </button>
-            {/* About Section */}
+          
             <div style={styles.aboutSection}>
               <p style={styles.copyright}>
                 © {new Date().getFullYear()} DC Networks. All rights reserved.
@@ -50,9 +51,8 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Main Content */}
         <div style={styles.contentArea}>
-          {/* Change Request Form Button */}
+        
           <button 
             style={styles.centerBox} 
             onClick={() => navigate("/form-a")}
@@ -65,7 +65,6 @@ function Dashboard() {
   );
 }
 
-// Updated Styles
 const styles = {
   container: {
     display: "flex",
@@ -117,11 +116,13 @@ const styles = {
     flex: 1,
   },
   sidebarTitle: {
-    fontSize: "24px",
+    fontSize: "30px",
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: "20px",
     color: "#333",
+    borderBottom: "3px solid  rgba(96, 238, 101, 0.5)",  
+    paddingBottom: "10px",  
   },
   bottomSection: {
     marginTop: "auto",
@@ -162,9 +163,9 @@ const styles = {
   contentArea: {
     flex: 1,
     display: "flex",
-    justifyContent: "center", // Center horizontally
-    alignItems: "flex-start", // Align items at the top
-    marginTop: "40px", // Space from the top
+    justifyContent: "center", 
+    alignItems: "flex-start", 
+    marginTop: "40px", 
     padding: "20px",
     backgroundColor: "#fff",
 },
