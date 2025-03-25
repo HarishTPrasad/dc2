@@ -132,7 +132,7 @@ const styles = {
   },
   logo: {
     paddingLeft:"10px",
-    width: "180px",
+    width: "200px",
     height: "40px",
   },
   mainContent: {
@@ -152,7 +152,7 @@ const styles = {
     marginBottom: "30px",
   },
   centerLogo: {
-    width: "450px",
+    width: "530px",
     height: "120px",
     
   },

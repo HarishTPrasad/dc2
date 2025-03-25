@@ -88,7 +88,7 @@ const styles = {
   },
   logo: {
     paddingLeft: "10px",
-    width: "180px",
+    width: "200px",
     height: "40px",
   },
   userInfo: {
