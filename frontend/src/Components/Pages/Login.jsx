@@ -147,6 +147,7 @@ const styles = {
     justifyContent: "center",
     padding: "40px",
     textAlign: "center",
+    backgroundColor: "#FBFFF9",
   },
   logoContainer: {
     marginBottom: "30px",

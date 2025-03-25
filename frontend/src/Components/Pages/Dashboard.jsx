@@ -107,13 +107,13 @@ const styles = {
   },
   sidebar: {
     width: "250px",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#FBFFF9",
     color: "#333",
     display: "flex",
     flexDirection: "column",
     padding: "20px",
     height: "calc(100vh - 60px)",
-    boxShadow: "2px 0 5px rgba(0, 0, 0, 0.1)",
+    boxShadow: "2px 0 5px rgba(81, 255, 0, 0.1)",
     justifyContent: "space-between",
   },
   sidebarContent: {
@@ -125,7 +125,7 @@ const styles = {
     textAlign: "center",
     marginBottom: "20px",
     color: "#333",
-    borderBottom: "3px solid #C5FF95",
+    borderBottom: "3px solid #074173",
     paddingBottom: "10px",
   },
   bottomSection: {
