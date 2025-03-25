@@ -132,7 +132,7 @@ const styles = {
   },
   logo: {
     paddingLeft:"10px",
-    width: "150px",
+    width: "180px",
     height: "40px",
   },
   mainContent: {

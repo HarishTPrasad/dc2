@@ -31,6 +31,12 @@ function Dashboard() {
             >
               <p>Change Request Form</p>
             </button>
+            <button 
+              style={styles.centerBox} 
+              onClick={() => navigate("/dashboard/ticket")}
+            >   Ticket Tool
+              <p></p>
+            </button>
           </div>
 
           <div style={styles.bottomSection}>
@@ -82,7 +88,7 @@ const styles = {
   },
   logo: {
     paddingLeft: "10px",
-    width: "150px",
+    width: "180px",
     height: "40px",
   },
   userInfo: {

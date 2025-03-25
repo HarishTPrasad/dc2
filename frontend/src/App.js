@@ -4,6 +4,7 @@ import OutputPage from './Components/Pages/OutputPage';
 import FormA from './Components/Pages/FormA';
 import Login from './Components/Pages/Login';
 import Dashboard from './Components/Pages/Dashboard';
+import Ticket from './Components/Pages/Ticket';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = sessionStorage.getItem('authToken');
@@ -16,7 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         
-        {/* Parent route for Dashboard */}
+       
         <Route 
           path="/dashboard" 
           element={
@@ -25,12 +26,13 @@ function App() {
             </ProtectedRoute>
           }
         >
-          {/* Nested child routes */}
+     
           <Route path="form-a" element={<FormA />} />
           <Route path="output" element={<OutputPage />} />
+          <Route path="ticket" element={<Ticket />} />
         </Route>
 
-        {/* Fallback for unmatched routes */}
+     
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
