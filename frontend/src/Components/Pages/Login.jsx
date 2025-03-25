@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from '../Images/dclogo.png';
+
 
 const credentialsMap = {
   Admin: "Clock@2020",
@@ -41,7 +43,7 @@ function Login() {
     <div style={styles.container}>
      
       <div style={styles.navbar}>
-        <img src="logo192.png" alt="Logo" style={styles.logo} />
+        <img src={logo} alt="Logo" style={styles.logo} />
       </div>
 
      
@@ -49,10 +51,10 @@ function Login() {
        
         <div style={styles.centerSpace}>
           <div style={styles.logoContainer}>
-            <img src="logo192.png" alt="Logo" style={styles.centerLogo} />
+            <img src={logo} alt="Logo" style={styles.centerLogo} />
           </div>
           <h1 style={styles.welcomeTitle}>Welcome to DC Networks</h1>
-          <p style={styles.welcomeSubtitle}>Please login to continue...</p>
+          
         </div>
 
  
@@ -121,7 +123,7 @@ const styles = {
     backgroundColor: "#f9f9f9",
   },
   navbar: {
-    backgroundColor: "#d4f4d4",
+    backgroundColor: "#074173",
     padding: "10px 20px",
     display: "flex",
     alignItems: "center",
@@ -129,7 +131,8 @@ const styles = {
     boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
   },
   logo: {
-    width: "40px",
+    paddingLeft:"10px",
+    width: "150px",
     height: "40px",
   },
   mainContent: {
@@ -149,9 +152,9 @@ const styles = {
     marginBottom: "30px",
   },
   centerLogo: {
-    width: "120px",
+    width: "400px",
     height: "120px",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+    
   },
   welcomeTitle: {
     fontSize: "2.5rem",
@@ -217,7 +220,7 @@ const styles = {
   button: {
     marginTop: "20px",
     padding: "12px",
-    backgroundColor: "#28a745",
+    backgroundColor: "#1679AB",
     color: "white",
     border: "none",
     borderRadius: "6px",

@@ -7,6 +7,11 @@ import ChangeImplementationDetailsTable from "../FormTables/ChangeImplementation
 import ChangeImplementationTable from "../FormTables/ChangeImplementationTable";
 
 const clientDataMap = {
+  "Jalore Nagrik Sahakari Bank Ltd.": {
+    requester: "Pramod Dave",
+    approver: "Abhishek Das",
+    departmentLocation: "IT/JNSB",
+  },
   "Beawar Urban Co-operative Bank Ltd.": {
     requester: "Sourabh Bhardwaj",
     approver: "Anil Devnani",
@@ -37,11 +42,7 @@ const clientDataMap = {
     approver: "Manubhai M Patel",
     departmentLocation: "IT/HNSB",
   },
-  "Jalore Nagrik Sahakari Bank Ltd.": {
-    requester: "Pramod Dave",
-    approver: "Abhishek Das",
-    departmentLocation: "IT/JNSB",
-  },
+  
   "Kota Nagarik Sahakari Bank Ltd.": {
     requester: "Brijesh Gautam",
     approver: "Nand Kishore Ji Chouhan",
@@ -114,7 +115,6 @@ const clientDataMap = {
   },
 };
 
-
 const getTodayDate = () => {
   const today = new Date();
   const year = today.getFullYear();
@@ -180,7 +180,6 @@ function FormA() {
     cabSignOffDate: getTodayDate(),
   });
 
- 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -220,129 +219,137 @@ function FormA() {
     }
   };
 
- 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
-    navigate("/output", { state: { formData } });
-  };
-
-  const handleBackToDashboard = () => {
-    navigate("/dashboard");
+    navigate("/dashboard/output", { state: { formData } });
   };
 
   return (
-    <>
-        <div style={styles.navbar}>
-        <img src="logo192.png" alt="Logo" style={styles.logo} />
-        <button style={styles.backButton} onClick={handleBackToDashboard}>
-          Back to Dashboard
-        </button>
-      </div>
-      <div style={styles.container}>
-        <div style={styles.content}>
-          <div className="head">
-            <h1 style={{ marginLeft: "20%", marginRight: "20%" }}>
-              <select
-                className="form-control form-control-lg"
-                name="client"
-                value={formData.client}
-                onChange={handleInputChange}
-              >
-                <option>Select Client</option>
-                <option>Jalore Nagrik Sahakari Bank Ltd.</option>
-                <option>Balotra Urban Co-operative Bank Ltd.</option>
-                <option>Century Texofin Private Ltd.</option>
-                <option>Chittorgarh Urban Co-Operative Bank Ltd</option>
-                <option>Ranuj Nagrik Sahakari Bank Ltd.</option>
-                <option>V K Engitech Pvt. Ltd.</option>
-                <option>Beawar Urban Co-operative Bank Ltd.</option>
-                <option>Dhanera Mercantile Co-Operative Bank Ltd.</option>
-                <option>The Kukarwada Nagrik Sahakari Bank Ltd.</option>
-                <option>The Gozaria Nagarik Sahkari Bank Ltd.</option>
-                <option>Himatnagar Nagarik Sahakari Bank Ltd.</option>
-                <option>Patan Nagarik Sahakari Bank Ltd.</option>
-                <option>People's Co-operative Bank Ltd.</option>
-                <option>Sardargunj Mercantile Co-Operative Bank</option>
-                <option>Kota Nagarik Sahakari Bank Ltd.</option>
-                <option>Vijay Co-Operative Bank</option>
-                <option>Century Texofin Private Ltd.</option>
-                <option>Beawar Urban Co-operative Bank Ltd.</option>
-                <option>Malviya Urban Co-Operative Bank Ltd.</option>
-                <option>The Idar Nagarik Sahakari Bank Ltd.</option>
-                <option>The Kalol Nagrik Sahakari Bank Ltd.</option>
-              </select>
-            </h1>
-            <h4>Change Request Form</h4>
-          </div>
+    <div style={styles.formWrapper}>
+      <div style={styles.formContainer}>
+        <div style={styles.formHeader}>
+          <h1 style={styles.clientSelectContainer}>
+            <select
+              name="client"
+              value={formData.client}
+              onChange={handleInputChange}
+              style={styles.clientSelect}
+            >
+              <option>Select Client</option>
+              {Object.keys(clientDataMap).map(client => (
+                <option key={client} value={client}>{client}</option>
+              ))}
+            </select>
+          </h1>
+          <h4 style={styles.formTitle}>Change Request Form</h4>
         </div>
 
-        <div style={styles.content}>
-      
+        <div style={styles.formSections}>
           <ClientAndProjectTable formData={formData} handleInputChange={handleInputChange} />
-        </div>
-
-        <div style={styles.content}>
           <ChangeImpactEvaluationTable formData={formData} handleInputChange={handleInputChange} />
-        </div>
-
-        <div style={styles.content}>
           <ChangeApprovalTable formData={formData} handleInputChange={handleInputChange} />
-        </div>
-
-        <div style={styles.content}>
           <ChangeImplementationDetailsTable formData={formData} handleInputChange={handleInputChange} />
-        </div>
-
-        <div style={styles.content}>
           <ChangeImplementationTable formData={formData} handleInputChange={handleInputChange} />
         </div>
-      </div>
 
-      <button style={styles.button} onClick={handleSubmit}>
-        Submit
-      </button>
-    </>
+        <div style={styles.buttonContainer}>
+          <button style={styles.submitButton} onClick={handleSubmit}>
+            Submit
+          </button>
+          <button 
+            style={styles.backButton} 
+            onClick={() => navigate("/dashboard")}
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
 const styles = {
-  navbar: {
-    backgroundColor: "#d4f4d4",
-    padding: "10px 20px",
-    color: "white",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between", 
+  formWrapper: {
+    width: "100%",
+    height: "calc(100vh - 60px)", // Account for navbar height
+    overflowY: "auto",
+    padding: "20px",
+    backgroundColor: "#f5f5f5",
   },
-  logo: {
-    width: "40px",
-    height: "40px",
-    marginRight: "10px",
+  formContainer: {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    backgroundColor: "#fff",
+    borderRadius: "8px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+    padding: "30px",
+  },
+  formHeader: {
+    textAlign: "center",
+    marginBottom: "30px",
+    paddingBottom: "20px",
+    borderBottom: "1px solid #eee",
+  },
+  clientSelectContainer: {
+    margin: "0 auto",
+    maxWidth: "800px",
+  },
+  clientSelect: {
+    width: "100%",
+    padding: "12px",
+    fontSize: "16px",
+    borderRadius: "4px",
+    border: "1px solid #ddd",
+    marginBottom: "10px",
+  },
+  formTitle: {
+    color: "#074173",
+    marginTop: "10px",
+    fontSize: "24px",
+  },
+  formSections: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "30px",
+  },
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "20px",
+    marginTop: "40px",
+    paddingTop: "20px",
+    borderTop: "1px solid #eee",
+  },
+  submitButton: {
+    padding: "12px 24px",
+    fontSize: "16px",
+    backgroundColor: "#1679AB",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    minWidth: "120px",
+    transition: "background-color 0.2s",
+    ":hover": {
+      backgroundColor: "#12648a",
+    },
   },
   backButton: {
-    padding: "8px 16px",
-    backgroundColor: "#28a745",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    fontWeight: "bold",
-  },
-  container: { textAlign: "center", paddingLeft: "100px", paddingRight: "100px", paddingTop: "40px" },
-  content: { marginBottom: "60px" },
-  button: {
-    padding: "10px 20px",
+    padding: "12px 24px",
     fontSize: "16px",
-    backgroundColor: "#28a745",
+    backgroundColor: "#6c757d",
     color: "white",
     border: "none",
-    cursor: "pointer",
-    borderRadius: "5px",
-    marginLeft: "46%",
-    marginBottom: "50px",
+    borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "bold",
+    minWidth: "120px",
+    transition: "background-color 0.2s",
+    ":hover": {
+      backgroundColor: "#5a6268",
+    },
   },
 };
 

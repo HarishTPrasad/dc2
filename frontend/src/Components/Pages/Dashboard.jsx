@@ -1,11 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
+import logo from '../Images/dclogo.png';
 
 function Dashboard() {
-
   const username = sessionStorage.getItem("username") || "User";
   const navigate = useNavigate();
-
 
   const handleLogout = () => {
     sessionStorage.clear(); 
@@ -14,27 +13,26 @@ function Dashboard() {
 
   return (
     <div style={styles.container}>
-   
       <div style={styles.navbar}>
-        <img src="logo192.png" alt="Logo" style={styles.logo} />
+        <img src={logo} alt="Logo" style={styles.logo} />
         <div style={styles.userInfo}>
-          <span>Welcome Back, Mr. {username}</span>
+          <span>Welcome Back, {username}</span>
         </div>
       </div>
 
-   
       <div style={styles.mainContent}>
-   
         <div style={styles.sidebar}>
           <h2 style={styles.sidebarTitle}>Dashboard</h2>
           
-       
-      
           <div style={styles.sidebarContent}>
-        
+            <button 
+              style={styles.centerBox} 
+              onClick={() => navigate("/dashboard/form-a")}
+            >
+              <p>Change Request Form</p>
+            </button>
           </div>
 
-  
           <div style={styles.bottomSection}>
             <button 
               style={styles.menuButton} 
@@ -52,13 +50,9 @@ function Dashboard() {
         </div>
 
         <div style={styles.contentArea}>
-        
-          <button 
-            style={styles.centerBox} 
-            onClick={() => navigate("/form-a")}
-          >
-            <h3>Change Request Form</h3>
-          </button>
+        <div style={styles.scrollContainer}>
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>
@@ -70,9 +64,10 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     height: "100vh",
+    overflow: "hidden", // Prevent double scrollbars
   },
   navbar: {
-    backgroundColor: "#d4f4d4",
+    backgroundColor: "#074173",
     padding: "10px 20px",
     display: "flex",
     alignItems: "center",
@@ -86,12 +81,14 @@ const styles = {
     zIndex: 1000,
   },
   logo: {
-    width: "40px",
+    paddingLeft: "10px",
+    width: "150px",
     height: "40px",
   },
   userInfo: {
     fontSize: "16px",
     fontWeight: "bold",
+    color: "white",
     display: "flex",
     alignItems: "center",
     gap: "15px",
@@ -100,6 +97,7 @@ const styles = {
     display: "flex",
     flex: 1,
     marginTop: "60px",
+    overflow: "hidden", // Hide overflow from parent
   },
   sidebar: {
     width: "250px",
@@ -121,8 +119,8 @@ const styles = {
     textAlign: "center",
     marginBottom: "20px",
     color: "#333",
-    borderBottom: "3px solid  rgba(96, 238, 101, 0.5)",  
-    paddingBottom: "10px",  
+    borderBottom: "3px solid #C5FF95",
+    paddingBottom: "10px",
   },
   bottomSection: {
     marginTop: "auto",
@@ -139,9 +137,6 @@ const styles = {
     fontWeight: "bold",
     transition: "background-color 0.2s",
     marginBottom: "20px",
-    "&:hover": {
-      backgroundColor: "#e60000",
-    }
   },
   aboutSection: {
     fontSize: "14px",
@@ -149,11 +144,6 @@ const styles = {
     paddingTop: "20px",
     borderTop: "1px solid #ddd",
     color: "#666",
-  },
-  aboutText: {
-    marginTop: "5px",
-    fontSize: "12px",
-    color: "#999",
   },
   copyright: {
     marginTop: "10px",
@@ -163,28 +153,26 @@ const styles = {
   contentArea: {
     flex: 1,
     display: "flex",
-    justifyContent: "center", 
-    alignItems: "flex-start", 
-    marginTop: "40px", 
-    padding: "20px",
     backgroundColor: "#fff",
-},
+    overflow: "auto", // Enable scrolling for content area
+  },
+  scrollContainer: {
+    width: "100%",
+    padding: "20px",
+    minHeight: "min-content", // Ensure container fits content
+  },
   centerBox: {
-    padding: "25px",
-    borderRadius: "12px",
-    border: "none",
-    boxShadow: "0 0 20px rgba(96, 238, 101, 0.5)",
-    textAlign: "center",
-    width: "320px",
-    backgroundColor: "#32d337",
+    width: "100%",
+    padding: "12px",
+    fontSize: "16px",
+    backgroundColor: "#1679AB",
     color: "white",
-    fontSize: "18px",
+    border: "none",
     cursor: "pointer",
-    transition: "transform 0.2s, box-shadow 0.2s",
-    "&:hover": {
-      transform: "scale(1.03)",
-      boxShadow: "0 0 30px rgba(96, 238, 101, 0.7)",
-    }
+    borderRadius: "6px",
+    fontWeight: "bold",
+    transition: "background-color 0.2s",
+    marginBottom: "20px",
   },
 };
 

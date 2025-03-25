@@ -75,7 +75,7 @@ function OutputPage() {
         </div>
 
         {/* Table 1: Change Description / Change Request */}
-        <div style={{...styles.content, marginTop:"150PX"}}>
+        <div style={{...styles.content, marginTop:"60PX"}}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -280,7 +280,7 @@ function OutputPage() {
         </div>
 
         {/* Table 4: Change Implementation Details */}
-        <div style={{...styles.content, marginTop:"600PX"}}>
+        <div style={{...styles.content, marginTop:"100PX"}}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -362,7 +362,7 @@ const styles = {
     fontFamily: "Verdana", 
     color: "black", 
   },
-  content: { marginBottom: "100px" },
+  content: { marginBottom: "50px" },
   table: {
     width: "100%",
     borderCollapse: "collapse",
@@ -385,7 +385,7 @@ const styles = {
     display: "block", 
     padding: "10px 20px",
     fontSize: "16px",
-    backgroundColor: "#28a745",
+    backgroundColor: "#1679AB",
     color: "white",
     border: "none",
     cursor: "pointer",
