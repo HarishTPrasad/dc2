@@ -53,7 +53,7 @@ function Login() {
           <div style={styles.logoContainer}>
             <img src={logo} alt="Logo" style={styles.centerLogo} />
           </div>
-          <h1 style={styles.welcomeTitle}>Welcome to DC Networks</h1>
+          <h1 style={styles.welcomeTitle}>Support Center</h1>
           
         </div>
 
@@ -152,13 +152,13 @@ const styles = {
     marginBottom: "30px",
   },
   centerLogo: {
-    width: "400px",
+    width: "450px",
     height: "120px",
     
   },
   welcomeTitle: {
     fontSize: "2.5rem",
-    color: "#333",
+    color: "#1679AB",
     marginBottom: "10px",
   },
   welcomeSubtitle: {

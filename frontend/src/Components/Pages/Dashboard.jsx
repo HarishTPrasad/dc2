@@ -34,7 +34,7 @@ function Dashboard() {
             <button 
               style={styles.centerBox} 
               onClick={() => navigate("/dashboard/ticket")}
-            >   Ticket Tool
+            >   Ticket Dashboard
               <p></p>
             </button>
           </div>
@@ -169,16 +169,16 @@ const styles = {
   },
   centerBox: {
     width: "100%",
-    padding: "12px",
+    padding: "7px",
     fontSize: "16px",
     backgroundColor: "#1679AB",
     color: "white",
     border: "none",
     cursor: "pointer",
-    borderRadius: "6px",
+    borderRadius: "10px",
     fontWeight: "bold",
     transition: "background-color 0.2s",
-    marginBottom: "20px",
+    marginBottom: "10px",
   },
 };
 
