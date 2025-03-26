@@ -4,36 +4,36 @@ function Ticket() {
   const [tickets, setTickets] = useState([
     {
       ticketNo: 'TCK-1001',
-      department: 'IT Support',
+      department: 'IT/JNSB',
       lastUpdated: '2025-03-25',
       subject: 'Server Issue',
-      from: 'John Doe',
+      from: 'Arvind Suthar',
       priority: 'High',
-      assigned: 'Jane Smith',
+      assigned: 'Harish Prasad',
       status: 'Open',
       fromDate: '2025-03-20',
       toDate: '2025-03-30',
     },
     {
       ticketNo: 'TCK-1002',
-      department: 'HR',
+      department: 'IT/JNSB',
       lastUpdated: '2025-03-24',
-      subject: 'Payroll Query',
-      from: 'Emily Johnson',
+      subject: 'Monthly Report',
+      from: 'Lakshman Suthar',
       priority: 'Medium',
-      assigned: 'Michael Brown',
+      assigned: 'Bharat Suthar',
       status: 'In Progress',
       fromDate: '2025-03-18',
       toDate: '2025-03-25',
     },
     {
       ticketNo: 'TCK-1003',
-      department: 'Finance',
+      department: 'IT/JNSB',
       lastUpdated: '2025-03-23',
-      subject: 'Budget Review',
-      from: 'Robert Lee',
+      subject: 'Weekly Report',
+      from: 'Harish Prasad',
       priority: 'Low',
-      assigned: 'Sarah Adams',
+      assigned: 'Laxman Suthar',
       status: 'Closed',
       fromDate: '2025-03-10',
       toDate: '2025-03-20',
@@ -227,14 +227,3 @@ function Ticket() {
 }
 
 export default Ticket;
-
-
-// import React from 'react'
-
-// function Ticket() {
-//   return (
-//     <div>Ticket</div>
-//   )
-// }
-
-// export default Ticket
