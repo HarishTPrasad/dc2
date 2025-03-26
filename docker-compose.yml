@@ -1,9 +1,9 @@
 services:
   client:
-    build: ./frontend  # Indentation fixed
+    build: ./frontend  
     restart: unless-stopped
     ports:
-      - "2025:80"  # Nginx serves frontend on port 80, mapped to host 2025
+      - "2025:80" 
     volumes:
       - ./frontend:/app
-      - /app/node_modules  # Avoid overwriting node_modules
+      - /app/node_modules  
