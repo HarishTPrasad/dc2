@@ -3,6 +3,18 @@ import React, { useState } from 'react';
 function Ticket() {
   const [tickets, setTickets] = useState([
     {
+      ticketNo: 'TCK-1000',
+      department: 'Development',
+      lastUpdated: '2025-03-25',
+      subject: 'Ticking Tool',
+      from: 'Kailash Suthar',
+      priority: 'High',
+      assigned: 'Harish Prasad',
+      status: 'Open',
+      fromDate: '2025-03-20',
+      toDate: '2025-03-30',
+    },
+    {
       ticketNo: 'TCK-1001',
       department: 'IT/JNSB',
       lastUpdated: '2025-03-25',
