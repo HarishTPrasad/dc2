@@ -92,10 +92,11 @@ function Ticket() {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="mb-0">Ticket Dashboard</h1>
         <div>
-          <button className="btn btn-primary mr-2">
+ 
+          <button className="btn btn-primary mr-2" style={{ backgroundColor: "#1679AB"}}>
             <i className="fas fa-plus mr-2"></i>Create New Ticket
           </button>
-          <button className="btn btn-secondary mr-2">
+          <button className="btn btn-secondary mr-2" style={{ backgroundColor:"#A0C878"}}>
             <i className="fas fa-file-export mr-2"></i>Export Tickets
           </button>
           <button className="btn btn-light">
@@ -105,25 +106,25 @@ function Ticket() {
       </div>
 
       <div className="btn-group mb-4" role="group">
-        <button 
+        <button style={{ backgroundColor: "#1679AB"}}
           className={`btn ${filter === 'all' ? 'btn-primary' : 'btn-outline-primary'}`}
           onClick={() => handleFilter('all')}
         >
           All Tickets
         </button>
-        <button 
+        <button style={{ backgroundColor: "#1679AB", color: "white"}}
           className={`btn ${filter === 'Open' ? 'btn-primary' : 'btn-outline-primary'}`}
           onClick={() => handleFilter('Open')}
         >
           Open
         </button>
-        <button 
+        <button style={{ backgroundColor: "#1679AB", color: "white"}}
           className={`btn ${filter === 'In Progress' ? 'btn-primary' : 'btn-outline-primary'}`}
           onClick={() => handleFilter('In Progress')}
         >
           In Progress
         </button>
-        <button 
+        <button style={{ backgroundColor: "#1679AB", color: "white"}}
           className={`btn ${filter === 'Completed' ? 'btn-primary' : 'btn-outline-primary'}`}
           onClick={() => handleFilter('Completed')}
         >
