@@ -168,11 +168,7 @@ function Ticket() {
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('client')}>
-              From {sortConfig.key === 'client' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
+            
               <th scope="col" onClick={() => requestSort('type')}>
               Priority {sortConfig.key === 'type' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
@@ -203,7 +199,7 @@ function Ticket() {
                 <td>{ticket.department}</td>
                 <td>{ticket.lastUpdated}</td>
                 <td>{ticket.subject}</td>
-                <td>{ticket.from}</td>
+               
                 <td>
                   <span className={`badge badge-${getPriorityClass(ticket.priority)}`}>
                   {ticket.priority}

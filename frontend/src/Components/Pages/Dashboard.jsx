@@ -175,7 +175,7 @@ const styles = {
     color: "white",
     border: "none",
     cursor: "pointer",
-    borderRadius: "10px",
+    borderRadius: "5px",
     fontWeight: "bold",
     transition: "background-color 0.2s",
     marginBottom: "10px",

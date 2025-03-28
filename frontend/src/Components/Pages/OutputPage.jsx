@@ -280,7 +280,7 @@ function OutputPage() {
         </div>
 
         {/* Table 4: Change Implementation Details */}
-        <div style={{...styles.content, marginTop:"100PX"}}>
+        <div style={{...styles.content, marginTop:"300PX"}}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -356,7 +356,7 @@ function OutputPage() {
 const styles = {
   container: {
     paddingLeft: "100px",
-    fontSize: "30px",
+    fontSize: "28px",
     paddingRight: "100px",
     paddingTop: "10px",
     fontFamily: "Verdana", 
