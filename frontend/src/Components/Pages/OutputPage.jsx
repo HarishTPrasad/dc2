@@ -362,7 +362,7 @@ const styles = {
     fontFamily: "Verdana", 
     color: "black", 
   },
-  content: { marginBottom: "50px" },
+  content: { marginBottom: "40px" },
   table: {
     width: "100%",
     borderCollapse: "collapse",
