@@ -103,7 +103,7 @@ const styles = {
     display: "flex",
     flex: 1,
     marginTop: "60px",
-    overflow: "hidden", // Hide overflow from parent
+    overflow: "hidden", 
   },
   sidebar: {
     width: "250px",
@@ -167,6 +167,8 @@ const styles = {
     padding: "20px",
     minHeight: "min-content", // Ensure container fits content
   },
+
+
   centerBox: {
     width: "100%",
     padding: "7px",
