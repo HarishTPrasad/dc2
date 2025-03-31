@@ -1,17 +1,21 @@
-const express = require("express");
-const router = express.Router();
-const FormDataModel = require("../models/FormDataModel");
+const express = require('express');
+const app = express();
 
-// POST route to handle form submission
-router.post("/submit", async (req, res) => {
-    try {
-        const formData = new FormDataModel(req.body);
-        await formData.save();
-        res.status(201).json({ message: "Form data saved successfully!" });
-    } catch (error) {
-        console.error("Error saving form data:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
+// Add these middlewares FIRST
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Test route (add this before your form routes)
+app.get('/api/test-route', (req, res) => {
+  res.json({ status: 'Backend is working!' });
 });
 
-module.exports = router;
+// Your existing form submission route
+app.post('/api/submit', (req, res) => {
+  res.json({ received: true, data: req.body });
+});
+
+const PORT = 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://10.0.1.221:${PORT}`);
+});
