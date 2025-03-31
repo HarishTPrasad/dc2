@@ -242,7 +242,7 @@ function FormA() {
   // };
   const handleSubmit = async (e, formData) => {
     e.preventDefault();
-    const navigate = useNavigate(); // Ensure this is used inside a React component
+   // Ensure this is used inside a React component
   
     try {
       const response = await api.post("/submit", formData);
