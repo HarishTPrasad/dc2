@@ -3,7 +3,7 @@ const router = express.Router();
 const FormDataModel = require("../models/FormDataModel");
 
 // POST route to handle form submission
-router.post("/submit", async (req, res) => {
+router.post("/api/submit", async (req, res) => {
     try {
         const formData = new FormDataModel(req.body);
         await formData.save();
