@@ -70,7 +70,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     height: "100vh",
-    overflow: "hidden", // Prevent double scrollbars
+    overflow: "hidden",
   },
   navbar: {
     backgroundColor: "#074173",
@@ -160,12 +160,12 @@ const styles = {
     flex: 1,
     display: "flex",
     backgroundColor: "#fff",
-    overflow: "auto", // Enable scrolling for content area
+    overflow: "auto", 
   },
   scrollContainer: {
     width: "100%",
     padding: "20px",
-    minHeight: "min-content", // Ensure container fits content
+    minHeight: "min-content", 
   },
 
 

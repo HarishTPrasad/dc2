@@ -5,6 +5,7 @@ import ChangeImpactEvaluationTable from "../FormTables/ChangeImpactEvaluationTab
 import ChangeApprovalTable from "../FormTables/ChangeApprovalTable";
 import ChangeImplementationDetailsTable from "../FormTables/ChangeImplementationDetailsTable";
 import ChangeImplementationTable from "../FormTables/ChangeImplementationTable";
+import { submitForm } from "../API/api";
 
 const clientDataMap = {
   "Jalore Nagrik Sahakari Bank Ltd.": {
@@ -219,10 +220,35 @@ function FormA() {
     }
   };
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("Form Data Submitted:", formData);
+  //   navigate("/dashboard/output", { state: { formData } });
+  // };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  
+  //   try {
+  //     const data = await submitForm(formData);
+  //     console.log("Form submitted successfully:", data);
+      
+  //     // Redirect user to output page with submitted data
+  //     navigate("/dashboard/output", { state: { formData } });
+  
+  //   } catch (error) {
+  //     alert("Failed to submit the form. Please try again.");
+  //   }
+  // };
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    navigate("/dashboard/output", { state: { formData } });
+    try {
+      const { data } = await submitForm(formData);
+      navigate("/dashboard/output", { state: { formData: data } });
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert(`Submission failed: ${error.response?.data?.message || error.message}`);
+    }
   };
 
   return (
@@ -272,7 +298,7 @@ function FormA() {
 const styles = {
   formWrapper: {
     width: "100%",
-    height: "calc(100vh - 60px)", // Account for navbar height
+    height: "calc(100vh - 60px)", 
     overflowY: "auto",
     padding: "20px",
     backgroundColor: "#f5f5f5",
@@ -342,7 +368,7 @@ const styles = {
     backgroundColor: "#6c757d",
     color: "white",
     border: "none",
-    borderRadius: "6px",
+    borderRadius: "6px", 
     cursor: "pointer",
     fontWeight: "bold",
     minWidth: "120px",
