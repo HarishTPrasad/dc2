@@ -5,7 +5,7 @@ import ChangeImpactEvaluationTable from "../FormTables/ChangeImpactEvaluationTab
 import ChangeApprovalTable from "../FormTables/ChangeApprovalTable";
 import ChangeImplementationDetailsTable from "../FormTables/ChangeImplementationDetailsTable";
 import ChangeImplementationTable from "../FormTables/ChangeImplementationTable";
-import { submitForm } from "../API/api";
+import api from "../API/api";
 
 const clientDataMap = {
   "Jalore Nagrik Sahakari Bank Ltd.": {
@@ -240,14 +240,22 @@ function FormA() {
   //     alert("Failed to submit the form. Please try again.");
   //   }
   // };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, formData) => {
     e.preventDefault();
+    const navigate = useNavigate(); // Ensure this is used inside a React component
+  
     try {
-      const { data } = await submitForm(formData);
-      navigate("/dashboard/output", { state: { formData: data } });
+      const response = await api.post("/submit", formData);
+      
+      // ✅ Navigate to the dashboard with the response data
+      navigate("/dashboard/output", { state: { formData: response.data } });
+      
     } catch (error) {
-      console.error("Submission error:", error);
-      alert(`Submission failed: ${error.response?.data?.message || error.message}`);
+      console.error("❌ Submission error:", error);
+  
+      // ✅ Handle API errors more gracefully
+      const errorMessage = error.response?.data?.message || "Submission failed!";
+      alert(errorMessage);
     }
   };
 
