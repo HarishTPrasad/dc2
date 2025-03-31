@@ -22,7 +22,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: process.env.NODE_ENV === "production"
     ? "/api" // ✅ Uses Nginx proxy in Docker
-    : "http://10.0.1.221/api", // ✅ Direct connection for local dev
+    : "http://10.0.1.221:5000/api", // ✅ Direct connection for local dev
   headers: {
     "Content-Type": "application/json",
   },
