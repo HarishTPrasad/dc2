@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 
 // API Routes
 const formRoutes = require("./routes/formRoutes");
-app.use("/api/form", formRoutes);
+app.use("/api", formRoutes);
 
 // Default route
 app.get("/", (req, res) => {
