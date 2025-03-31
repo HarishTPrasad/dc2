@@ -5,7 +5,7 @@ import axios from "axios";
 //   baseURL: "http://localhost:5000/api", // Update this if needed
 // });
 const api = axios.create({
-    baseURL: "http://10.0.1.221/api", 
+    baseURL: "http://10.0.1.221:5000/api", 
   });
   
 
