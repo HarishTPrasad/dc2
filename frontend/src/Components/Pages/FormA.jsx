@@ -226,31 +226,24 @@ function FormA() {
   //   navigate("/dashboard/output", { state: { formData } });
   // };
 
-  // 
-  
   const handleSubmit = async (e, formData) => {
     e.preventDefault();
+   // Ensure this is used inside a React component
   
     try {
-      // Send POST request to backend to save form data
-      const response = await api.post("/api/submit", formData);
-  
-      // ✅ Handle the response and navigate to the dashboard
-      if (response.data.received) {
-        navigate("/dashboard/output", { state: { formData: response.data.data } });
-      } else {
-        throw new Error("Failed to submit form data");
-      }
+      const response = await api.post("/submit", formData);
+      
+      // ✅ Navigate to the dashboard with the response data
+      navigate("/dashboard/output", { state: { formData: response.data } });
       
     } catch (error) {
       console.error("❌ Submission error:", error);
   
-      // ✅ Gracefully handle error messages
-      const errorMessage = error.response?.data?.error || error.message || "Submission failed!";
+      // ✅ Handle API errors more gracefully
+      const errorMessage = error.response?.data?.message || "Submission failed!";
       alert(errorMessage);
     }
   };
-  
 
   return (
     <div style={styles.formWrapper}>
