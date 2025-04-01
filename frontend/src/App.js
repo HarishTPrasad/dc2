@@ -18,19 +18,19 @@ function App() {
         <Route path="/" element={<Login />} />
         
        
-        <Route 
-          path="/dashboard" 
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        >
-     
-          <Route path="form-a" element={<FormA />} />
-          <Route path="output" element={<OutputPage />} />
-          <Route path="ticket" element={<Ticket />} />
-        </Route>
+              <Route 
+                path="/dashboard"                                                             
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              >
+          
+                    <Route path="form-a" element={<FormA />} />
+                    <Route path="output" element={<OutputPage />} />
+                    <Route path="ticket" element={<Ticket />} />
+              </Route>
 
      
         <Route path="*" element={<Navigate to="/" replace />} />
