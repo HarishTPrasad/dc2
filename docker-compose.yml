@@ -5,7 +5,7 @@ services:
       - "5000:5000"
     environment:
       - NODE_ENV=production
-      - MONGO_URI=mongodb://mongo:27017/formDB  # Connect backend to MongoDB
+      - MONGO_URI=mongodb://mongo:27017/formDB  
     restart: always
     depends_on:
       - mongo
@@ -27,7 +27,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db  # Persistent storage for MongoDB
+      - mongo-data:/data/db  
     networks:
       - mern-network
 
@@ -48,4 +48,4 @@ networks:
     driver: bridge
 
 volumes:
-  mongo-data:  # Persistent volume for MongoDB
+  mongo-data:  
