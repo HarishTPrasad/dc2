@@ -7,4 +7,12 @@ const api = axios.create({
   }
 });
 
+// Utility function to check and adjust headers for FormData
+api.interceptors.request.use(config => {
+  if (config.data instanceof FormData) {
+    config.headers['Content-Type'] = 'multipart/form-data';
+  }
+  return config;
+});
+
 export default api;

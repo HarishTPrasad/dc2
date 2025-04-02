@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
+
 router.post("/api/submit", (req, res) => {
   res.json({ received: true, data: req.body });
 });
