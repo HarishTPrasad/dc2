@@ -1,64 +1,153 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Ticket() {
+function Ticket({ username = "Harish Prasad" }) {
   const navigate = useNavigate();
   const [tickets, setTickets] = useState([
     {
       ticketNo: 'TCK-1000',
-      department: 'Development',
-      lastUpdated: '2025-03-25',
-      subject: 'Ticking Tool',
-      from: 'Kailash Suthar',
+      client: 'JNSB',
+      technology: 'React/Node.js',
+      subject: 'Dashboard Redesign',
       priority: 'High',
       assigned: 'Harish Prasad',
       status: 'Open',
-      fromDate: '2025-03-20',
-      toDate: '2025-03-30',
+      createdDate: '2025-03-20',
+      lastUpdated: '2025-03-25'
     },
     {
       ticketNo: 'TCK-1001',
-      department: 'JNSB',
-      lastUpdated: '2025-03-25',
-      subject: 'Server Issue',
-      from: 'Arvind Suthar',
+      client: 'BWRUCB',
+      technology: 'USB Access',
+      subject: 'Need USB Access',
       priority: 'High',
-      assigned: 'Harish Prasad',
-      status: 'Open',
-      fromDate: '2025-03-20',
-      toDate: '2025-03-30',
+      assigned: 'Bharat Suthar',
+      status: 'In Progress',
+      createdDate: '2025-03-18',
+      lastUpdated: '2025-03-24'
     },
     {
       ticketNo: 'TCK-1002',
-      department: 'JNSB',
-      lastUpdated: '2025-03-24',
-      subject: 'Monthly Report',
-      from: 'Lakshman Suthar',
+      client: 'PNSB',
+      technology: 'Firewall Access',
+      subject: 'Need Firewall Access',
       priority: 'Medium',
-      assigned: 'Bharat Suthar',
-      status: 'In Progress',
-      fromDate: '2025-03-18',
-      toDate: '2025-03-25',
+      assigned: 'Laxman Suthar',
+      status: 'Completed',
+      createdDate: '2025-03-10',
+      lastUpdated: '2025-03-23'
     },
     {
       ticketNo: 'TCK-1003',
-      department: 'JNSB',
-      lastUpdated: '2025-03-23',
-      subject: 'Weekly Report',
-      from: 'Harish Prasad',
+      client: 'VCOB',
+      technology: 'White list URL/IP/Port',
+      subject: 'Need to White List URL',
+      priority: 'Low',
+      assigned: 'Kailash Suthar',
+      status: 'Closed',
+      createdDate: '2025-03-05',
+      lastUpdated: '2025-03-22'
+    },
+    {
+      ticketNo: 'TCK-1004',
+      client: 'KNSB',
+      technology: 'Database Migration',
+      subject: 'MySQL to PostgreSQL Migration',
+      priority: 'High',
+      assigned: 'Harish Prasad',
+      status: 'Open',
+      createdDate: '2025-03-15',
+      lastUpdated: '2025-03-25'
+    },
+    {
+      ticketNo: 'TCK-1005',
+      client: 'RNBX',
+      technology: 'API Development',
+      subject: 'New Payment Gateway Integration',
+      priority: 'High',
+      assigned: 'Bharat Suthar',
+      status: 'In Progress',
+      createdDate: '2025-03-12',
+      lastUpdated: '2025-03-24'
+    },
+    {
+      ticketNo: 'TCK-1006',
+      client: 'SMCBL',
+      technology: 'Security',
+      subject: 'Implement Two-Factor Authentication',
+      priority: 'Medium',
+      assigned: 'Laxman Suthar',
+      status: 'In Progress',
+      createdDate: '2025-03-08',
+      lastUpdated: '2025-03-22'
+    },
+    {
+      ticketNo: 'TCK-1007',
+      client: 'INSB',
+      technology: 'Mobile App',
+      subject: 'iOS App Bug Fixes',
+      priority: 'Medium',
+      assigned: 'Kailash Suthar',
+      status: 'Open',
+      createdDate: '2025-03-22',
+      lastUpdated: '2025-03-25'
+    },
+    {
+      ticketNo: 'TCK-1008',
+      client: 'MUCB',
+      technology: 'Cloud Services',
+      subject: 'AWS Infrastructure Setup',
+      priority: 'High',
+      assigned: 'Harish Prasad',
+      status: 'In Progress',
+      createdDate: '2025-03-17',
+      lastUpdated: '2025-03-24'
+    },
+    {
+      ticketNo: 'TCK-1009',
+      client: 'GNCB',
+      technology: 'Data Analytics',
+      subject: 'Reporting Dashboard Implementation',
+      priority: 'Medium',
+      assigned: 'Bharat Suthar',
+      status: 'Completed',
+      createdDate: '2025-03-05',
+      lastUpdated: '2025-03-20'
+    },
+    {
+      ticketNo: 'TCK-1010',
+      client: 'VK-ENG',
+      technology: 'IoT',
+      subject: 'Device Firmware Update',
       priority: 'Low',
       assigned: 'Laxman Suthar',
       status: 'Closed',
-      fromDate: '2025-03-10',
-      toDate: '2025-03-20',
+      createdDate: '2025-02-28',
+      lastUpdated: '2025-03-15'
     },
   ]);
 
   const [filter, setFilter] = useState('all');
-  const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'ascending' });
+  const [sortConfig, setSortConfig] = useState({ key: 'ticketNo', direction: 'ascending' });
+  const [assignedFilter, setAssignedFilter] = useState(null);
+  const [showAssignedDropdown, setShowAssignedDropdown] = useState(false);
+
+  // Get unique assignees from tickets
+  const assignees = [...new Set(tickets.map(ticket => ticket.assigned))];
 
   const handleFilter = (status) => {
     setFilter(status);
+    setAssignedFilter(null); // Reset assigned filter when changing status
+  };
+
+  const handleAssignedFilter = (assignee) => {
+    if (assignee === 'Assigned to Me') {
+      setAssignedFilter(username);
+    } else {
+      setAssignedFilter(assignee);
+    }
+    setFilter('all'); // Reset status filter when changing assignee
+    setShowAssignedDropdown(false);
   };
 
   const handleCreateNew = () => {
@@ -87,6 +176,11 @@ function Ticket() {
     ? sortedTickets 
     : sortedTickets.filter(ticket => ticket.status === filter);
 
+  // Apply assigned filter if set
+  const finalTickets = assignedFilter 
+    ? filteredTickets.filter(ticket => ticket.assigned === assignedFilter)
+    : filteredTickets;
+
   const getPriorityClass = (priority) => {
     switch(priority.toLowerCase()) {
       case 'high': return 'danger';
@@ -106,7 +200,7 @@ function Ticket() {
     }
   };
 
-  // Custom button style
+  // Button styles
   const buttonStyle = {
     borderRadius: '8px',
     border: '2px solid #1679AB',
@@ -150,10 +244,9 @@ function Ticket() {
         </div>
       </div>
 
-      {/* Updated filter buttons with new styling */}
-      <div className="d-flex flex-wrap mb-4">
+      <div className="d-flex flex-wrap mb-4 align-items-center">
         <button
-          style={filter === 'all' ? activeButtonStyle : buttonStyle}
+          style={filter === 'all' && !assignedFilter ? activeButtonStyle : buttonStyle}
           onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
           onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
           onClick={() => handleFilter('all')}
@@ -192,14 +285,44 @@ function Ticket() {
         >
           Closed
         </button>
-        <button
-          style={filter === 'Assigned to Me' ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
-          onClick={() => handleFilter('Assigned to Me')}
-        >
-          Assigned to Me
-        </button>
+
+        {/* Assigned Dropdown */}
+        <div className="position-relative">
+          <button
+            style={assignedFilter ? activeButtonStyle : buttonStyle}
+            onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
+            onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
+            onClick={() => setShowAssignedDropdown(!showAssignedDropdown)}
+          >
+            {assignedFilter ? `Assigned: ${assignedFilter}` : 'Filter by Assignee'}
+            <i className={`fas fa-chevron-${showAssignedDropdown ? 'up' : 'down'} ml-2`}></i>
+          </button>
+          
+          {showAssignedDropdown && (
+            <div 
+              className="position-absolute bg-white shadow rounded mt-1"
+              style={{ zIndex: 1000, minWidth: '200px' }}
+              onMouseLeave={() => setShowAssignedDropdown(false)}
+            >
+              <button
+                className="dropdown-item"
+                onClick={() => handleAssignedFilter('Assigned to Me')}
+              >
+                Assigned to Me ({username})
+              </button>
+              <div className="dropdown-divider"></div>
+              {assignees.map((assignee, index) => (
+                <button
+                  key={index}
+                  className="dropdown-item"
+                  onClick={() => handleAssignedFilter(assignee)}
+                >
+                  {assignee}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="table-responsive">
@@ -211,13 +334,13 @@ function Ticket() {
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('department')}>
-                Department {sortConfig.key === 'department' && (
+              <th scope="col" onClick={() => requestSort('client')}>
+                Client {sortConfig.key === 'client' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('lastUpdated')}>
-                Last Updated {sortConfig.key === 'lastUpdated' && (
+              <th scope="col" onClick={() => requestSort('technology')}>
+                Technology {sortConfig.key === 'technology' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
@@ -241,8 +364,13 @@ function Ticket() {
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('fromDate')}>
-                From Date {sortConfig.key === 'fromDate' && (
+              <th scope="col" onClick={() => requestSort('createdDate')}>
+                Created {sortConfig.key === 'createdDate' && (
+                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
+                )}
+              </th>
+              <th scope="col" onClick={() => requestSort('lastUpdated')}>
+                Last Updated {sortConfig.key === 'lastUpdated' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
@@ -250,11 +378,11 @@ function Ticket() {
             </tr>
           </thead>
           <tbody>
-            {filteredTickets.map((ticket, index) => (
+            {finalTickets.map((ticket, index) => (
               <tr key={index}>
                 <th scope="row">{ticket.ticketNo}</th>
-                <td>{ticket.department}</td>
-                <td>{ticket.lastUpdated}</td>
+                <td>{ticket.client}</td>
+                <td>{ticket.technology}</td>
                 <td>{ticket.subject}</td>
                 <td>
                   <span className={`badge badge-${getPriorityClass(ticket.priority)}`}>
@@ -267,7 +395,8 @@ function Ticket() {
                     {ticket.status}
                   </span>
                 </td>
-                <td>{ticket.fromDate}</td>
+                <td>{ticket.createdDate}</td>
+                <td>{ticket.lastUpdated}</td>
                 <td>
                   <button className="btn btn-sm btn-info mr-2">
                     <i className="fas fa-eye"></i>
