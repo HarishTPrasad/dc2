@@ -221,7 +221,7 @@ function FormA() {
   };
 
   // const handleSubmit = (e) => {
-  //   e.preventDefault();
+  //   e.preventDefault();          
   //   console.log("Form Data Submitted:", formData);
   //   navigate("/dashboard/output", { state: { formData } });
   // };
@@ -279,7 +279,7 @@ function FormA() {
           </button>
           <button 
             style={styles.backButton} 
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/dashboard/changem")}
           >
             Back to Dashboard
           </button>

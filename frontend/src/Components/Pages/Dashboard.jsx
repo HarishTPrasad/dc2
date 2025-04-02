@@ -27,15 +27,15 @@ function Dashboard() {
           <div style={styles.sidebarContent}>
             <button 
               style={styles.centerBox} 
-              onClick={() => navigate("/dashboard/form-a")}
+              onClick={() => navigate("/dashboard/changem")}
             >
-              <p>Change Request Form</p>
+              <p>Change Management</p>
             </button>
             <button 
               style={styles.centerBox} 
               onClick={() => navigate("/dashboard/ticket")}
-            >   Ticket Dashboard
-              <p></p>
+            >   
+              <p>Ticket Management</p>
             </button>
           </div>
 

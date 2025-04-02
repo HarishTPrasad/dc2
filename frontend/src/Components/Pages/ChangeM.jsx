@@ -1,61 +1,49 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Ticket() {
+function ChangeM() {
   const navigate = useNavigate();
   const [tickets, setTickets] = useState([
     {
-      ticketNo: 'TCK-1000',
-      department: 'Development',
-      lastUpdated: '2025-03-25',
-      subject: 'Ticking Tool',
-      from: 'Kailash Suthar',
-      priority: 'High',
-      assigned: 'Harish Prasad',
-      status: 'Open',
-      fromDate: '2025-03-20',
-      toDate: '2025-03-30',
+      crfNo: 'CRF-1000',
+      client: 'JNSB',
+      technology: 'USB Access',
+      subject: 'Need USB Access',
+      date: '2025-03-25',
+      assignedTo: 'Harish Prasad',
+      status: 'Pending Approval',
     },
     {
-      ticketNo: 'TCK-1001',
-      department: 'JNSB',
-      lastUpdated: '2025-03-25',
-      subject: 'Server Issue',
-      from: 'Arvind Suthar',
-      priority: 'High',
-      assigned: 'Harish Prasad',
-      status: 'Open',
-      fromDate: '2025-03-20',
-      toDate: '2025-03-30',
-    },
-    {
-      ticketNo: 'TCK-1002',
-      department: 'JNSB',
-      lastUpdated: '2025-03-24',
-      subject: 'Monthly Report',
-      from: 'Lakshman Suthar',
-      priority: 'Medium',
-      assigned: 'Bharat Suthar',
+      crfNo: 'CRF-1001',
+      client: 'JNSB',
+      technology: 'Firewall Access',
+      subject: 'Need Firewall Access',
+      date: '2025-03-24',
+      assignedTo: 'Bharat Suthar',
       status: 'In Progress',
-      fromDate: '2025-03-18',
-      toDate: '2025-03-25',
     },
     {
-      ticketNo: 'TCK-1003',
-      department: 'JNSB',
-      lastUpdated: '2025-03-23',
-      subject: 'Weekly Report',
-      from: 'Harish Prasad',
-      priority: 'Low',
-      assigned: 'Laxman Suthar',
-      status: 'Closed',
-      fromDate: '2025-03-10',
-      toDate: '2025-03-20',
+      crfNo: 'CRF-1002',
+      client: 'JNSB',
+      technology: 'White list URL/IP/Port',
+      subject: 'Need to White List URL',
+      date: '2025-03-23',
+      assignedTo: 'Laxman Suthar',
+      status: 'Completed',
+    },
+    {
+      crfNo: 'CRF-1003',
+      client: 'JNSB',
+      technology: 'Geo-Location',
+      subject: 'Need Changes In Geo-Location',
+      date: '2025-03-22',
+      assignedTo: 'Kailash Suthar',
+      status: 'Rejected',
     },
   ]);
 
   const [filter, setFilter] = useState('all');
-  const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'ascending' });
+  const [sortConfig, setSortConfig] = useState({ key: 'crfNo', direction: 'ascending' });
 
   const handleFilter = (status) => {
     setFilter(status);
@@ -87,21 +75,12 @@ function Ticket() {
     ? sortedTickets 
     : sortedTickets.filter(ticket => ticket.status === filter);
 
-  const getPriorityClass = (priority) => {
-    switch(priority.toLowerCase()) {
-      case 'high': return 'danger';
-      case 'medium': return 'warning';
-      case 'low': return 'success';
-      default: return 'secondary';
-    }
-  };
-
   const getStatusClass = (status) => {
     switch(status.toLowerCase()) {
-      case 'open': return 'primary';
+      case 'pending approval': return 'warning';
       case 'in progress': return 'info';
       case 'completed': return 'success';
-      case 'closed': return 'secondary';
+      case 'rejected': return 'danger';
       default: return 'secondary';
     }
   };
@@ -132,17 +111,17 @@ function Ticket() {
   return (
     <div className="container-fluid mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="mb-0">Ticket Dashboard</h1>
+        <h1 className="mb-0">Change Management</h1>
         <div>
           <button 
             className="btn btn-primary mr-2" 
             style={{ backgroundColor: "#1679AB"}}
             onClick={handleCreateNew}
           >
-            <i className="fas fa-plus mr-2"></i>Create New Ticket
+            <i className="fas fa-plus mr-2"></i>Create New CRF
           </button>
           <button className="btn btn-secondary mr-2" style={{ backgroundColor:"#A0C878"}}>
-            <i className="fas fa-file-export mr-2"></i>Export Tickets
+            <i className="fas fa-file-export mr-2"></i>Export
           </button>
           <button className="btn btn-light">
             <i className="fas fa-sync-alt mr-2"></i>Refresh
@@ -158,15 +137,15 @@ function Ticket() {
           onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
           onClick={() => handleFilter('all')}
         >
-          All Tickets
+          All CRFs
         </button>
         <button
-          style={filter === 'Open' ? activeButtonStyle : buttonStyle}
+          style={filter === 'Pending Approval' ? activeButtonStyle : buttonStyle}
           onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
           onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
-          onClick={() => handleFilter('Open')}
+          onClick={() => handleFilter('Pending Approval')}
         >
-          Open
+          Pending Approval
         </button>
         <button
           style={filter === 'In Progress' ? activeButtonStyle : buttonStyle}
@@ -185,12 +164,12 @@ function Ticket() {
           Completed
         </button>
         <button
-          style={filter === 'Closed' ? activeButtonStyle : buttonStyle}
+          style={filter === 'Rejected' ? activeButtonStyle : buttonStyle}
           onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
           onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
-          onClick={() => handleFilter('Closed')}
+          onClick={() => handleFilter('Rejected')}
         >
-          Closed
+          Rejected
         </button>
         <button
           style={filter === 'Assigned to Me' ? activeButtonStyle : buttonStyle}
@@ -206,18 +185,18 @@ function Ticket() {
         <table className="table table-striped table-hover table-bordered">
           <thead className="thead-dark">
             <tr>
-              <th scope="col" onClick={() => requestSort('ticketNo')}>
-                Ticket No {sortConfig.key === 'ticketNo' && (
+              <th scope="col" onClick={() => requestSort('crfNo')}>
+                CRF No {sortConfig.key === 'crfNo' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('department')}>
-                Department {sortConfig.key === 'department' && (
+              <th scope="col" onClick={() => requestSort('client')}>
+                Client {sortConfig.key === 'client' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('lastUpdated')}>
-                Last Updated {sortConfig.key === 'lastUpdated' && (
+              <th scope="col" onClick={() => requestSort('technology')}>
+                Technology {sortConfig.key === 'technology' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
@@ -226,23 +205,18 @@ function Ticket() {
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('priority')}>
-                Priority {sortConfig.key === 'priority' && (
+              <th scope="col" onClick={() => requestSort('date')}>
+                Date {sortConfig.key === 'date' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('assigned')}>
-                Assigned {sortConfig.key === 'assigned' && (
+              <th scope="col" onClick={() => requestSort('assignedTo')}>
+                Assigned To {sortConfig.key === 'assignedTo' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
               <th scope="col" onClick={() => requestSort('status')}>
                 Status {sortConfig.key === 'status' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
-              <th scope="col" onClick={() => requestSort('fromDate')}>
-                From Date {sortConfig.key === 'fromDate' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
@@ -252,22 +226,17 @@ function Ticket() {
           <tbody>
             {filteredTickets.map((ticket, index) => (
               <tr key={index}>
-                <th scope="row">{ticket.ticketNo}</th>
-                <td>{ticket.department}</td>
-                <td>{ticket.lastUpdated}</td>
+                <th scope="row">{ticket.crfNo}</th>
+                <td>{ticket.client}</td>
+                <td>{ticket.technology}</td>
                 <td>{ticket.subject}</td>
-                <td>
-                  <span className={`badge badge-${getPriorityClass(ticket.priority)}`}>
-                    {ticket.priority}
-                  </span>
-                </td>
-                <td>{ticket.assigned}</td>
+                <td>{ticket.date}</td>
+                <td>{ticket.assignedTo}</td>
                 <td>
                   <span className={`badge badge-${getStatusClass(ticket.status)}`}>
                     {ticket.status}
                   </span>
                 </td>
-                <td>{ticket.fromDate}</td>
                 <td>
                   <button className="btn btn-sm btn-info mr-2">
                     <i className="fas fa-eye"></i>
@@ -285,4 +254,4 @@ function Ticket() {
   );
 }
 
-export default Ticket;
+export default ChangeM;

@@ -103,7 +103,7 @@ function Login() {
         
           <div style={styles.aboutSection}>
             <p>DC Networks - Secure Access Portal</p>
-            <p style={styles.aboutText}>Version 1.0.0</p>
+            <p style={styles.aboutText}>Version 2.0.0</p>
             <p style={styles.copyright}>
               © {new Date().getFullYear()} DC Networks. All rights reserved.
             </p>
