@@ -226,24 +226,56 @@ function FormA() {
   //   navigate("/dashboard/output", { state: { formData } });
   // };
 
-  const handleSubmit = async (e, formData) => {
-    e.preventDefault();
-   // Ensure this is used inside a React component
+  // const handleSubmit = async (e, formData) => {
+  //   e.preventDefault();
+  //  // Ensure this is used inside a React component
   
+  //   try {
+  //     const response = await api.post("/submit", formData);
+      
+  //     // ✅ Navigate to the dashboard with the response data
+  //     navigate("/dashboard/output", { state: { formData: response.data } });
+      
+  //   } catch (error) {
+  //     console.error("❌ Submission error:", error);
+  
+  //     // ✅ Handle API errors more gracefully
+  //     const errorMessage = error.response?.data?.message || "Submission failed!";
+  //     alert(errorMessage);
+  //   }
+  // };
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
     try {
+      // Validate required fields
+      if (!formData.client || !formData.changeRequestNo) {
+        throw new Error("Client and Change Request Number are required");
+      }
+
       const response = await api.post("/submit", formData);
       
-      // ✅ Navigate to the dashboard with the response data
-      navigate("/dashboard/output", { state: { formData: response.data } });
-      
-    } catch (error) {
-      console.error("❌ Submission error:", error);
-  
-      // ✅ Handle API errors more gracefully
-      const errorMessage = error.response?.data?.message || "Submission failed!";
-      alert(errorMessage);
+      if (!response.data) {
+        throw new Error("No data returned from server");
+      }
+
+      navigate("/dashboard/output", { 
+        state: { formData } 
+      });
+    } catch (err) {
+      console.error("Submission error:", err);
+      setError(err.message || "Submission failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
 
   return (
     <div style={styles.formWrapper}>
