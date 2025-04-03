@@ -1,41 +1,73 @@
 const express = require('express');
 const router = express.Router();
 const Form = require('../models/FormDataModel');
-const { generateToken, verifyToken } = require('../config/jwt');
-const auth = require('../middlewares/auth');
+const { generateToken } = require('../config/jwt');
 
-// Test route (public)
+// Middleware to conditionally disable auth
+const optionalAuth = (req, res, next) => {
+  if (process.env.DISABLE_AUTH === 'true') {
+    return next(); // Skip authentication
+  }
+  require('../middlewares/auth')(req, res, next); // Use normal auth
+};
+
+// Test route (always public)
 router.get('/api/test-route', (req, res) => {
-  res.json({ status: "Backend is working!" });
+  res.json({ 
+    status: "Backend is working!",
+    authDisabled: process.env.DISABLE_AUTH === 'true'
+  });
 });
 
-// Form submission (protected)
-router.post('/api/submit', auth, async (req, res) => {
+// Form submission (conditionally protected)
+router.post('/api/submit', optionalAuth, async (req, res) => {
   try {
+    // Input validation
+    if (!req.body.name || !req.body.email) {
+      return res.status(400).json({ error: "Name and email are required" });
+    }
+
     const formData = new Form({
-      name: req.body.name,
-      email: req.body.email,
-      data: req.body.data
+      ...req.body,
+      ipAddress: req.ip // Track submission source
     });
 
     const savedForm = await formData.save();
+    
     res.json({ 
       success: true,
       data: savedForm,
-      token: generateToken(savedForm._id) 
+      // Only generate token if auth is enabled
+      token: process.env.DISABLE_AUTH ? null : generateToken(savedForm._id) 
     });
+
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    // Handle duplicate emails or DB errors
+    if (err.code === 11000) {
+      return res.status(400).json({ error: "Email already exists" });
+    }
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-// Get all submissions (protected)
-router.get('/api/submissions', auth, async (req, res) => {
+// Get all submissions (conditionally protected)
+router.get('/api/submissions', optionalAuth, async (req, res) => {
   try {
-    const forms = await Form.find();
-    res.json(forms);
+    const { page = 1, limit = 10 } = req.query;
+    const forms = await Form.find()
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+
+    const count = await Form.countDocuments();
+
+    res.json({
+      total: count,
+      pages: Math.ceil(count / limit),
+      currentPage: page,
+      data: forms
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
