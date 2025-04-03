@@ -226,86 +226,25 @@ function FormA() {
   //   navigate("/dashboard/output", { state: { formData } });
   // };
 
-  // const handleSubmit = async (e, formData) => {
-  //   e.preventDefault();
-  //  // Ensure this is used inside a React component
-  
-  //   try {
-  //     const response = await api.post("/submit", formData);
-      
-  //     // ✅ Navigate to the dashboard with the response data
-  //     navigate("/dashboard/output", { state: { formData: response.data } });
-      
-  //   } catch (error) {
-  //     console.error("❌ Submission error:", error);
-  
-  //     // ✅ Handle API errors more gracefully
-  //     const errorMessage = error.response?.data?.message || "Submission failed!";
-  //     alert(errorMessage);
-  //   }
-  // };
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(null);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, formData) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setError(null);
+   // Ensure this is used inside a React component
   
     try {
-      // Validate required fields
-      if (!formData.client?.trim()) {
-        throw new Error("Client name is required");
-      }
-      if (!formData.changeRequestNo?.trim()) {
-        throw new Error("Change request number is required");
-      }
-  
-      // Add timestamp before submission
-      const submissionData = {
-        ...formData,
-        submissionDate: new Date().toISOString(),
-        status: 'pending'
-      };
-  
-      // API call with timeout
-      const response = await Promise.race([
-        api.post("/submit", submissionData),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error("Request timeout")), 10000)
-       ) ]);
-  
-      if (!response.data) {
-        throw new Error("Server returned empty response");
-      }
-  
-      // Success handling
-      navigate("/dashboard/output", { 
-        state: { 
-          formData: response.data,
-          success: true,
-          timestamp: new Date().toLocaleString()
-        } 
-      });
-  
-    } catch (err) {
-      console.error("Submission error:", err);
-      setError(
-        err.response?.data?.message || 
-        err.message || 
-        "Network error. Please check your connection."
-      );
+      const response = await api.post("/submit", formData);
       
-      // Log detailed error for debugging
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Failed payload:', formData);
-        console.log('Error details:', err.response);
-      }
-    } finally {
-      setIsSubmitting(false);
+      // ✅ Navigate to the dashboard with the response data
+      navigate("/dashboard/output", { state: { formData: response.data } });
+      
+    } catch (error) {
+      console.error("❌ Submission error:", error);
+  
+      // ✅ Handle API errors more gracefully
+      const errorMessage = error.response?.data?.message || "Submission failed!";
+      alert(errorMessage);
     }
   };
+
 
 
   return (
@@ -337,8 +276,8 @@ function FormA() {
         </div>
 
         <div style={styles.buttonContainer}>
-          <button style={styles.submitButton} onClick={handleSubmit} disabled={isSubmitting}>
-          {isSubmitting ? "Submitting..." : "Submit"}
+          <button style={styles.submitButton} onClick={handleSubmit} >
+         submit
           </button>
           <button 
             style={styles.backButton} 
