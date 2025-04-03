@@ -231,7 +231,7 @@ function Ticket({ username = "Harish Prasad" }) {
           <button 
             className="btn btn-primary mr-2" 
             style={{ backgroundColor: "#1679AB"}}
-            onClick={handleCreateNew}
+           
           >
             <i className="fas fa-plus mr-2"></i>Create New Ticket
           </button>
