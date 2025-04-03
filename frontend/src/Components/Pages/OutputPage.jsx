@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -18,8 +18,20 @@ const formatDate = (dateString) => {
 function OutputPage() {
   const [renderKey, setRenderKey] = useState(0);
   const location = useLocation();
-  const formData = location.state?.formData || {};
+ 
   const contentRef = useRef();
+
+
+  const [formData, setFormData] = useState(location.state?.formData || {});
+
+  useEffect(() => {
+    if (!location.state?.formData) {
+      const storedData = localStorage.getItem("formData");
+      if (storedData) {
+        setFormData(JSON.parse(storedData));
+      }
+    }
+  }, [location.state]);
 
   const downloadPDF = () => {
     setRenderKey((prevKey) => prevKey + 1);
