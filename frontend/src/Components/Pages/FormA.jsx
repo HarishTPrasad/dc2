@@ -226,24 +226,79 @@ function FormA() {
   //   navigate("/dashboard/output", { state: { formData } });
   // };
 
-  const handleSubmit = async (e, formData) => {
-    e.preventDefault();
-   // Ensure this is used inside a React component
+  // const handleSubmit = async (e, formData) => {
+  //   e.preventDefault();
+  //  // Ensure this is used inside a React component
+
+  //  console.log({formData});
   
+  //   try {
+  //     const response = await api.post("/submit", formData);
+      
+  //     // ✅ Navigate to the dashboard with the response data
+  //     navigate("/dashboard/output", { state: { formData} });
+      
+  //   } catch (error) {
+  //     console.error("❌ Submission error:", error);
+  
+  //     // ✅ Handle API errors more gracefully
+  //     const errorMessage = error.response?.data?.message || "Submission failed!";
+  //     alert(errorMessage);
+  //   }
+  // };
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault(); // Prevent form reload
+
+  //   console.log({formData});
+  
+  //   try {
+  //     const { data } = await api.post("/submit", formData, {
+  //       headers: { "Content-Type": "application/json" }
+  //     });
+  
+  //     if (!data) {
+  //       throw new Error("Server returned an empty response");
+  //     }
+  
+  //     // ✅ Navigate only if submission is successful
+  //     navigate("/dashboard/output", { state: { formData: data } });
+  
+  //   } catch (error) {
+  //     console.error("❌ Submission error:", error);
+  
+  //     // ✅ Handle errors more gracefully
+  //     alert(error.response?.data?.message || "Submission failed!");
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent form reload
+
+    console.log("🔹 Frontend Form Data (Before Submission):", formData); // Log data before sending
+
     try {
-      const response = await api.post("/submit", formData);
-      
-      // ✅ Navigate to the dashboard with the response data
-      navigate("/dashboard/output", { state: { formData} });
-      
+        const { data } = await api.post("/submit", formData, {
+            headers: { "Content-Type": "application/json" }
+        });
+
+        console.log("✅ API Response Data (After Submission):", data); // Log API response
+
+        if (!data) {
+            throw new Error("Server returned an empty response");
+        }
+
+        // ✅ Navigate only if submission is successful
+        navigate("/dashboard/output", { state: { formData: data } });
+
     } catch (error) {
-      console.error("❌ Submission error:", error);
-  
-      // ✅ Handle API errors more gracefully
-      const errorMessage = error.response?.data?.message || "Submission failed!";
-      alert(errorMessage);
+        console.error("❌ Submission error:", error);
+
+        // ✅ Handle errors more gracefully
+        alert(error.response?.data?.message || "Submission failed!");
     }
-  };
+};
 
 
 

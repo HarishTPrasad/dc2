@@ -5,22 +5,49 @@ const formSchema = new mongoose.Schema({
     changeRequestNo: String,
     project: String,
     requester: String,
-    date: String,
+    date: Date, 
     departmentLocation: String,
     phoneNo: String,
     changeDescription: String,
-    changeNeededBy: String,
-    reasonForChange: String,    
+    changeNeededBy: Date, 
+    reasonForChange: String,
     approver: String,
-    changeType: Object,
-    changePriority: Object,
-    changeImpact: Object,
+
+    changeType: {
+      application: Boolean,
+      database: Boolean,
+      hardware: Boolean,
+      procedures: Boolean,
+      network: Boolean,
+      security: Boolean,
+      operatingSystem: Boolean,
+      schedule: Boolean,
+    },
+
+    changePriority: {
+      urgent: Boolean,
+      high: Boolean,
+      medium: Boolean,
+      low: Boolean,
+    },
+
+    changeImpact: {
+      minor: Boolean,
+      medium: Boolean,
+      major: Boolean,
+    },
+
     environmentsImpacted: String,
     resourceRequirements: String,
     testPlanDescription: String,
-    changeRequestStatus: Object,
+
+    changeRequestStatus: {
+      accepted: Boolean,
+      rejected: Boolean,
+    },
+
     comments: String,
-    changeScheduled: String,
+    changeScheduled: Date,
     implementationAssigned: String,
     technology: String,
     policy: String,
@@ -28,10 +55,9 @@ const formSchema = new mongoose.Schema({
     rollBack: String,
     stagingTestResults: String,
     implementationTestResults: String,
-    dateOfImplementation: String,
+    dateOfImplementation: Date,
     implementationStatus: String,
-    cabSignOffDate: String
+    cabSignOffDate: Date
 });
 
 module.exports = mongoose.model("FormData", formSchema);
-
