@@ -12,4 +12,4 @@ router.get("/api/test-route", (req, res) => {
   res.json({ status: "Backend is working!" });
 });
 
-module.exports = router; // ✅ Make sure to export the router!
+module.exports = router; 
