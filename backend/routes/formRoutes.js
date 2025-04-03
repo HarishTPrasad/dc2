@@ -5,16 +5,21 @@ const formSchema = require("../models/FormDataModel"); // Import the model
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-// Modified POST endpoint to actually save data
+// ✅ Corrected POST endpoint
 router.post("/api/submit", async (req, res) => {
   try {
-    const newDoc = await formSchema.create({ data: req.body });
+    console.log("Received Data:", req.body); // Log received data for debugging
+    
+    const newDoc = await formSchema.create(req.body); // ✅ Corrected
+
     res.json({ 
       received: true, 
-      savedData: newDoc,
+      savedData: newDoc, // ✅ Full saved document
       message: "Document saved successfully" 
     });
+
   } catch (error) {
+    console.error("❌ Error saving document:", error);
     res.status(500).json({ 
       error: "Failed to save document",
       details: error.message 
@@ -22,7 +27,7 @@ router.post("/api/submit", async (req, res) => {
   }
 });
 
-// New GET endpoint to fetch all documents
+// ✅ Fetch all documents
 router.get("/api/documents", async (req, res) => {
   try {
     const docs = await formSchema.find().sort({ createdAt: -1 });
@@ -35,7 +40,7 @@ router.get("/api/documents", async (req, res) => {
   }
 });
 
-// Your existing test route
+// ✅ Test route
 router.get("/api/test-route", (req, res) => {
   res.json({ status: "Backend is working!" });
 });
