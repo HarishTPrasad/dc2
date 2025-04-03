@@ -234,7 +234,7 @@ function FormA() {
       const response = await api.post("/submit", formData);
       
       // ✅ Navigate to the dashboard with the response data
-      navigate("/dashboard/output", { state: { formData: response.data } });
+      navigate("/dashboard/output", { state: { formData} });
       
     } catch (error) {
       console.error("❌ Submission error:", error);
