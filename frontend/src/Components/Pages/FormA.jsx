@@ -252,25 +252,56 @@ function FormA() {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
-
+  
     try {
       // Validate required fields
-      if (!formData.client || !formData.changeRequestNo) {
-        throw new Error("Client and Change Request Number are required");
+      if (!formData.client?.trim()) {
+        throw new Error("Client name is required");
       }
-
-      const response = await api.post("/submit", formData);
-      
+      if (!formData.changeRequestNo?.trim()) {
+        throw new Error("Change request number is required");
+      }
+  
+      // Add timestamp before submission
+      const submissionData = {
+        ...formData,
+        submissionDate: new Date().toISOString(),
+        status: 'pending'
+      };
+  
+      // API call with timeout
+      const response = await Promise.race([
+        api.post("/submit", submissionData),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error("Request timeout")), 10000)
+       ) ]);
+  
       if (!response.data) {
-        throw new Error("No data returned from server");
+        throw new Error("Server returned empty response");
       }
-
+  
+      // Success handling
       navigate("/dashboard/output", { 
-        state: { formData } 
+        state: { 
+          formData: response.data,
+          success: true,
+          timestamp: new Date().toLocaleString()
+        } 
       });
+  
     } catch (err) {
       console.error("Submission error:", err);
-      setError(err.message || "Submission failed. Please try again.");
+      setError(
+        err.response?.data?.message || 
+        err.message || 
+        "Network error. Please check your connection."
+      );
+      
+      // Log detailed error for debugging
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Failed payload:', formData);
+        console.log('Error details:', err.response);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -306,8 +337,8 @@ function FormA() {
         </div>
 
         <div style={styles.buttonContainer}>
-          <button style={styles.submitButton} onClick={handleSubmit}>
-            Submit
+          <button style={styles.submitButton} onClick={handleSubmit} disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Submit"}
           </button>
           <button 
             style={styles.backButton} 
