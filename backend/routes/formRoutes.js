@@ -1,20 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const formSchema = require("../models/FormDataModel"); // Import the model
+const formSchema = require("../models/FormDataModel"); 
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-// ✅ Corrected POST endpoint
+
 router.post("/api/submit", async (req, res) => {
   try {
-    console.log("Received Data:", req.body); // Log received data for debugging
+    console.log("Received Data:", req.body); 
     
-    const newDoc = await formSchema.create(req.body); // ✅ Corrected
+    const newDoc = await formSchema.create(req.body); 
 
     res.json({ 
       received: true, 
-      savedData: newDoc, // ✅ Full saved document
+      savedData: newDoc, 
       message: "Document saved successfully" 
     });
 
@@ -27,7 +27,7 @@ router.post("/api/submit", async (req, res) => {
   }
 });
 
-// ✅ Fetch all documents
+
 router.get("/api/documents", async (req, res) => {
   try {
     const docs = await formSchema.find().sort({ createdAt: -1 });
@@ -40,7 +40,7 @@ router.get("/api/documents", async (req, res) => {
   }
 });
 
-// ✅ Test route
+
 router.get("/api/test-route", (req, res) => {
   res.json({ status: "Backend is working!" });
 });

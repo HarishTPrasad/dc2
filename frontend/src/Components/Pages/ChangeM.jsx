@@ -1,42 +1,42 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ChangeM() {
+function ChangeM({ username = "Harish Prasad" }) {
   const navigate = useNavigate();
   const [tickets, setTickets] = useState([
     {
-      crfNo: 'CRF-1000',
+      crfNo: '4042025-01',
       client: 'JNSB',
       technology: 'USB Access',
       subject: 'Need USB Access',
-      date: '2025-03-25',
+      date: '04-04-2025',
       assignedTo: 'Harish Prasad',
       status: 'Pending Approval',
     },
     {
-      crfNo: 'CRF-1001',
+      crfNo: '4042025-02',
       client: 'JNSB',
       technology: 'Firewall Access',
       subject: 'Need Firewall Access',
-      date: '2025-03-24',
+      date: '04-04-2025',
       assignedTo: 'Bharat Suthar',
       status: 'In Progress',
     },
     {
-      crfNo: 'CRF-1002',
+      crfNo: '4042025-03',
       client: 'JNSB',
       technology: 'White list URL/IP/Port',
       subject: 'Need to White List URL',
-      date: '2025-03-23',
+      date: '04-04-2025',
       assignedTo: 'Laxman Suthar',
       status: 'Completed',
     },
     {
-      crfNo: 'CRF-1003',
+      crfNo: '4042025-04',
       client: 'JNSB',
       technology: 'Geo-Location',
       subject: 'Need Changes In Geo-Location',
-      date: '2025-03-22',
+      date: '04-04-2025',
       assignedTo: 'Kailash Suthar',
       status: 'Rejected',
     },
@@ -44,9 +44,25 @@ function ChangeM() {
 
   const [filter, setFilter] = useState('all');
   const [sortConfig, setSortConfig] = useState({ key: 'crfNo', direction: 'ascending' });
+  const [assignedFilter, setAssignedFilter] = useState(null);
+  const [showAssignedDropdown, setShowAssignedDropdown] = useState(false);
+
+  // Get unique assignees from tickets
+  const assignees = [...new Set(tickets.map(ticket => ticket.assignedTo))];
 
   const handleFilter = (status) => {
     setFilter(status);
+    setAssignedFilter(null); // Reset assigned filter when changing status
+  };
+
+  const handleAssignedFilter = (assignee) => {
+    if (assignee === 'Assigned to Me') {
+      setAssignedFilter(username);
+    } else {
+      setAssignedFilter(assignee);
+    }
+    setFilter('all'); // Reset status filter when changing assignee
+    setShowAssignedDropdown(false);
   };
 
   const handleCreateNew = () => {
@@ -75,6 +91,11 @@ function ChangeM() {
     ? sortedTickets 
     : sortedTickets.filter(ticket => ticket.status === filter);
 
+  // Apply assigned filter if set
+  const finalTickets = assignedFilter 
+    ? filteredTickets.filter(ticket => ticket.assignedTo === assignedFilter)
+    : filteredTickets;
+
   const getStatusClass = (status) => {
     switch(status.toLowerCase()) {
       case 'pending approval': return 'warning';
@@ -85,7 +106,7 @@ function ChangeM() {
     }
   };
 
-  // Custom button style
+  // Button styles
   const buttonStyle = {
     borderRadius: '8px',
     border: '2px solid #1679AB',
@@ -118,7 +139,7 @@ function ChangeM() {
             style={{ backgroundColor: "#1679AB"}}
             onClick={handleCreateNew}
           >
-            <i className="fas fa-plus mr-2"></i>Create New CRF
+            <i className="fas fa-plus mr-2"></i>Create New CMR
           </button>
           <button className="btn btn-secondary mr-2" style={{ backgroundColor:"#A0C878"}}>
             <i className="fas fa-file-export mr-2"></i>Export
@@ -129,15 +150,14 @@ function ChangeM() {
         </div>
       </div>
 
-      {/* Updated filter buttons with new styling */}
-      <div className="d-flex flex-wrap mb-4">
+      <div className="d-flex flex-wrap mb-4 align-items-center">
         <button
-          style={filter === 'all' ? activeButtonStyle : buttonStyle}
+          style={filter === 'all' && !assignedFilter ? activeButtonStyle : buttonStyle}
           onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
           onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
           onClick={() => handleFilter('all')}
         >
-          All CRFs
+          All CMRs
         </button>
         <button
           style={filter === 'Pending Approval' ? activeButtonStyle : buttonStyle}
@@ -171,14 +191,44 @@ function ChangeM() {
         >
           Rejected
         </button>
-        <button
-          style={filter === 'Assigned to Me' ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
-          onClick={() => handleFilter('Assigned to Me')}
-        >
-          Assigned to Me
-        </button>
+
+        {/* Assigned Dropdown */}
+        <div className="position-relative">
+          <button
+            style={assignedFilter ? activeButtonStyle : buttonStyle}
+            onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
+            onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
+            onClick={() => setShowAssignedDropdown(!showAssignedDropdown)}
+          >
+            {assignedFilter ? `Assigned: ${assignedFilter}` : 'Filter by Assignee'}
+            <i className={`fas fa-chevron-${showAssignedDropdown ? 'up' : 'down'} ml-2`}></i>
+          </button>
+          
+          {showAssignedDropdown && (
+            <div 
+              className="position-absolute bg-white shadow rounded mt-1"
+              style={{ zIndex: 1000, minWidth: '200px' }}
+              onMouseLeave={() => setShowAssignedDropdown(false)}
+            >
+              <button
+                className="dropdown-item"
+                onClick={() => handleAssignedFilter('Assigned to Me')}
+              >
+                Assigned to Me ({username})
+              </button>
+              <div className="dropdown-divider"></div>
+              {assignees.map((assignee, index) => (
+                <button
+                  key={index}
+                  className="dropdown-item"
+                  onClick={() => handleAssignedFilter(assignee)}
+                >
+                  {assignee}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="table-responsive">
@@ -186,7 +236,7 @@ function ChangeM() {
           <thead className="thead-dark">
             <tr>
               <th scope="col" onClick={() => requestSort('crfNo')}>
-                CRF No {sortConfig.key === 'crfNo' && (
+                CMR No {sortConfig.key === 'crfNo' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
@@ -224,7 +274,7 @@ function ChangeM() {
             </tr>
           </thead>
           <tbody>
-            {filteredTickets.map((ticket, index) => (
+            {finalTickets.map((ticket, index) => (
               <tr key={index}>
                 <th scope="row">{ticket.crfNo}</th>
                 <td>{ticket.client}</td>

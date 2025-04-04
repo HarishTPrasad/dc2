@@ -14,7 +14,6 @@ const credentialsMap = {
   Harish: "Clock@2020",
   Rahul: "Clock@2020",
   Chirag: "Clock@2020",
-
 };
 
 function Login() {
@@ -206,7 +205,7 @@ const styles = {
     transition: "border 0.3s",
   },
   passwordContainer: {
-    display: "flex",
+    display: "flex", 
     alignItems: "center",
     position: "relative",
   },
