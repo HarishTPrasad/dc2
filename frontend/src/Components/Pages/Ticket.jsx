@@ -132,12 +132,12 @@ function Ticket({ username = "Harish Prasad" }) {
   const [assignedFilter, setAssignedFilter] = useState(null);
   const [showAssignedDropdown, setShowAssignedDropdown] = useState(false);
 
-  // Get unique assignees from tickets
+
   const assignees = [...new Set(tickets.map(ticket => ticket.assigned))];
 
   const handleFilter = (status) => {
     setFilter(status);
-    setAssignedFilter(null); // Reset assigned filter when changing status
+    setAssignedFilter(null); 
   };
 
   const handleAssignedFilter = (assignee) => {
@@ -146,7 +146,7 @@ function Ticket({ username = "Harish Prasad" }) {
     } else {
       setAssignedFilter(assignee);
     }
-    setFilter('all'); // Reset status filter when changing assignee
+    setFilter('all'); 
     setShowAssignedDropdown(false);
   };
 
@@ -176,7 +176,7 @@ function Ticket({ username = "Harish Prasad" }) {
     ? sortedTickets 
     : sortedTickets.filter(ticket => ticket.status === filter);
 
-  // Apply assigned filter if set
+  
   const finalTickets = assignedFilter 
     ? filteredTickets.filter(ticket => ticket.assigned === assignedFilter)
     : filteredTickets;
@@ -200,7 +200,7 @@ function Ticket({ username = "Harish Prasad" }) {
     }
   };
 
-  // Button styles
+  
   const buttonStyle = {
     borderRadius: '8px',
     border: '2px solid #1679AB',

@@ -46,14 +46,11 @@ npm or yarn package manager
 
 🚀 Backend Setup
 
-Clone the repository
-git clone https://github.com/your-repo/mern-report-generator.git cd mern-report-generator/backend
 
 Install dependencies
 npm install
 
-Create an .env file in the backend folder and add the following:
-MONGO_URI=mongodb://localhost:27017/reportsDB PORT=5000
+
 
 Start the backend server
 npm run dev

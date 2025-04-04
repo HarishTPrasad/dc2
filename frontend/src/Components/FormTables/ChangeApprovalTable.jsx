@@ -4,14 +4,14 @@ const ChangeApprovalTable = ({ formData, handleInputChange }) => {
   const [assignedTo, setAssignedTo] = useState("");
 
   useEffect(() => {
-    // Fetch the username from sessionStorage and set it as the default value
+   
     const storedUsername = sessionStorage.getItem("username") || "";
     setAssignedTo(storedUsername);
   }, []);
 
   const handleAssignedChange = (e) => {
     setAssignedTo(e.target.value);
-    handleInputChange(e); // Ensure the change is reflected in the parent component's state
+    handleInputChange(e); 
   };
 
   return (
@@ -84,7 +84,7 @@ const ChangeApprovalTable = ({ formData, handleInputChange }) => {
                 placeholder="Name"
                 name="implementationAssigned"
                 value={assignedTo}
-                onChange={handleAssignedChange} // Update state and propagate change
+                onChange={handleAssignedChange} 
               />
             </td>
           </tr>
