@@ -6,6 +6,7 @@ import Login from './Components/Pages/Login';
 import Dashboard from './Components/Pages/Dashboard';
 import Ticket from './Components/Pages/Ticket';
 import ChangeM from './Components/Pages/ChangeM';
+import TicketForm from './Components/Pages/TicketForm';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = sessionStorage.getItem('authToken');
@@ -32,6 +33,7 @@ function App() {
                     <Route path="changem" element={<ChangeM />} />
                     <Route path="output" element={<OutputPage />} />
                     <Route path="ticket" element={<Ticket />} />
+                    <Route path="ticketform" element={<TicketForm />} />
               </Route>
 
      
