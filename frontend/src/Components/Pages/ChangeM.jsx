@@ -332,7 +332,7 @@ function ChangeM({ username = "Harish Prasad" }){
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await api.get('/api/documents');
+        const response = await api.get('/documents');
         setTickets(response.data.data || response.data);
         setLoading(false);
       } catch (err) {
