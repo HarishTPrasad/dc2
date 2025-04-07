@@ -369,7 +369,6 @@ const styles = {
   container: {
     paddingLeft: "100px",
     fontSize: "28px",
-    maxWidth: "1000px",
     paddingRight: "100px",
     paddingTop: "10px",
     fontFamily: "Verdana", 
