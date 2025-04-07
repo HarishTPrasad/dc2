@@ -321,7 +321,13 @@ const handleSubmit = async (e) => {
 
      
       // navigate("/dashboard/output", { state: { submittedData: data.savedData } });
-      navigate("/dashboard/output", { state: { formData } });
+      // navigate("/dashboard/output", { state: { formData } });
+      console.log("✅ API Response Data (After Submission):", data);
+
+      // If backend returns the saved data, use it; else fallback to formData
+      const submittedData = data?.savedData || formData;
+  
+      navigate("/dashboard/output", { state: { submittedData } });
 
   } catch (error) {
       console.error("❌ Submission error:", error);
