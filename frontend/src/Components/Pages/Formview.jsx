@@ -29,14 +29,16 @@ function Formview() {
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="text-primary">Change Request Details</h2>
+        {/* <h2 className="text-primary">Change Request Details</h2> */}
+        <h2 style={{ color: "#074173" }}>Change Request Details</h2>
         <button className="btn btn-outline-secondary" onClick={() => navigate(-1)}>
           <i className="fas fa-arrow-left mr-2"></i> Back
         </button>
       </div>
 
       <div className="card shadow-lg border-0 mb-5">
-        <div className="card-header bg-primary text-white py-3 px-4">
+        {/* <div className="card-header bg-primary text-white py-3 px-4"> */}
+        <div className="card-header py-3 px-4" style={{ backgroundColor: "#074173", color: "#ffffff" }}>
           <h4 className="mb-0 d-flex justify-content-between align-items-center">
             <span>{ticket.changeRequestNo} - {ticket.changeDescription}</span>
             <span className={`badge bg-${ticket.implementationStatus ? 'success' : 'secondary'}`}>{ticket.implementationStatus || 'Pending'}</span>

@@ -22,13 +22,13 @@ function OutputPage() {
   const contentRef = useRef();
 
 
-  const [ticket, setticket] = useState(location.state?.ticket || {});
+  const [formData, setFormData] = useState(location.state?.formData || {});
 
   useEffect(() => {
-    if (!location.state?.ticket) {
-      const storedData = localStorage.getItem("ticket");
+    if (!location.state?.formData) {
+      const storedData = localStorage.getItem("formData");
       if (storedData) {
-        setticket(JSON.parse(storedData));
+        setFormData(JSON.parse(storedData));
       }
     }
   }, [location.state]);
@@ -73,7 +73,7 @@ function OutputPage() {
   const navigate = useNavigate();
 
   const handleBackToDashboard = () => {
-    navigate("/dashboard/changem");
+    navigate("/dashboard");
   };
 
   return (
@@ -81,7 +81,7 @@ function OutputPage() {
       <div style={styles.container} ref={contentRef} key={renderKey}>
         <div style={styles.content}>
           <div className="head" >
-            <h1 style={{ textAlign: "center", ...styles.font, fontSize: "60px" }}>{ticket.client}</h1>
+            <h1 style={{ textAlign: "center", ...styles.font, fontSize: "60px" }}>{formData.client}</h1>
             <h2 style={{ textAlign: "center", ...styles.font, fontSize: "40px" }}>Change Request Form</h2>
           </div>
         </div>
@@ -92,44 +92,44 @@ function OutputPage() {
             <thead>
               <tr>
                 <th colSpan="4" style={{ ...styles.th, textAlign: "center",backgroundColor: "#d3d3d3" }}>
-                  Change Description / Change Request : {ticket.project}
+                  Change Description / Change Request : {formData.project}
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th style={{ ...styles.th, width: "30%" }}>Change Request No</th>
-                <td style={styles.td}>{ticket.changeRequestNo}</td>
+                <td style={styles.td}>{formData.changeRequestNo}</td>
                 <th style={{ ...styles.th, width: "20%" }}>Project</th>
-                <td style={styles.td}>{ticket.project}</td>
+                <td style={styles.td}>{formData.project}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Requester</th>
-                <td style={styles.td}>{ticket.requester}</td>
+                <td style={styles.td}>{formData.requester}</td>
                 <th style={{ ...styles.th, width: "20%" }}>Date</th>
-                <td style={styles.td}>{formatDate(ticket.date)}</td>
+                <td style={styles.td}>{formatDate(formData.date)}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Department/Location</th>
-                <td style={styles.td}>{ticket.departmentLocation}</td>
+                <td style={styles.td}>{formData.departmentLocation}</td>
                 <th style={{ ...styles.th, width: "20%" }}>Phone no.</th>
-                <td style={styles.td}>{ticket.phoneNo}</td>
+                <td style={styles.td}>{formData.phoneNo}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Description of the change</th>
-                <td colSpan="3" style={styles.td}>{ticket.changeDescription}</td>
+                <td colSpan="3" style={styles.td}>{formData.changeDescription}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Change needed by</th>
-                <td colSpan="3" style={styles.td}>{formatDate(ticket.changeNeededBy)}</td>
+                <td colSpan="3" style={styles.td}>{formatDate(formData.changeNeededBy)}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Reason for the change</th>
-                <td colSpan="3" style={styles.td}>{ticket.reasonForChange}</td>
+                <td colSpan="3" style={styles.td}>{formData.reasonForChange}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Approver</th>
-                <td colSpan="3" style={styles.td}>{ticket.approver}</td>
+                <td colSpan="3" style={styles.td}>{formData.approver}</td>
               </tr>
             </tbody>
           </table>
@@ -151,41 +151,41 @@ function OutputPage() {
                   Change Type
                 </th>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeType?.application ? "✓" : ""}
+                  {formData.changeType?.application ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Application</td>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeType?.database ? "✓" : ""}
+                  {formData.changeType?.database ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Database</td>
               </tr>
               <tr>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeType?.hardware ? "✓" : ""}
+                  {formData.changeType?.hardware ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Hardware</td>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeType?.procedures ? "✓" : ""}
+                  {formData.changeType?.procedures ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Procedures</td>
               </tr>
               <tr>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeType?.network ? "✓" : ""}
+                  {formData.changeType?.network ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Network</td>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeType?.security ? "✓" : ""}
+                  {formData.changeType?.security ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Security</td>
               </tr>
               <tr>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeType?.operatingSystem ? "✓" : ""}
+                  {formData.changeType?.operatingSystem ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Operating System/Utilities</td>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeType?.schedule ? "✓" : ""}
+                  {formData.changeType?.schedule ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Schedule</td>
               </tr>
@@ -194,40 +194,40 @@ function OutputPage() {
                   Change Priority
                 </th>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changePriority?.urgent ? "✓" : ""}
+                  {formData.changePriority?.urgent ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Urgent</td>
                 <th rowSpan="4" style={{ ...styles.th, textAlign: "center", verticalAlign: "middle" }}>
                   Change Impact
                 </th>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeImpact?.minor ? "✓" : ""}
+                  {formData.changeImpact?.minor ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Minor</td>
               </tr>
               <tr>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changePriority?.high ? "✓" : ""}
+                  {formData.changePriority?.high ? "✓" : ""}
                 </td>
                 <td style={styles.td}>High</td>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeImpact?.medium ? "✓" : ""}
+                  {formData.changeImpact?.medium ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Medium</td>
               </tr>
               <tr>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changePriority?.medium ? "✓" : ""}
+                  {formData.changePriority?.medium ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Medium</td>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeImpact?.major ? "✓" : ""}
+                  {formData.changeImpact?.major ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Major</td>
               </tr>
               <tr>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changePriority?.low ? "✓" : ""}
+                  {formData.changePriority?.low ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Low</td>
                 <td style={styles.td}></td>
@@ -235,19 +235,19 @@ function OutputPage() {
               </tr>
               <tr>
                 <th style={styles.th}>Environment(s) Impacted</th>
-                <td colSpan="5" style={styles.td}>{ticket.environmentsImpacted}</td>
+                <td colSpan="5" style={styles.td}>{formData.environmentsImpacted}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Resource requirements (Personnel, H/W, S/W, etc)</th>
-                <td colSpan="5" style={styles.td}>{ticket.resourceRequirements}</td>
+                <td colSpan="5" style={styles.td}>{formData.resourceRequirements}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Test Plan Description</th>
-                <td colSpan="5" style={styles.td}>{ticket.testPlanDescription}</td>
+                <td colSpan="5" style={styles.td}>{formData.testPlanDescription}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Roll Back</th>
-                <td colSpan="5"style={styles.td}>{ticket.rollBack}</td>
+                <td colSpan="5"style={styles.td}>{formData.rollBack}</td>
               </tr>
             </tbody>
           </table>
@@ -267,25 +267,25 @@ function OutputPage() {
               <tr>
                 <th style={{ ...styles.th, width: "30%" }}>Change Request Status</th>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeRequestStatus?.accepted ? "✓" : ""}
+                  {formData.changeRequestStatus?.accepted ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Accepted</td>
                 <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
-                  {ticket.changeRequestStatus?.rejected ? "✓" : ""}
+                  {formData.changeRequestStatus?.rejected ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Rejected</td>
               </tr>
               <tr>
                 <th style={styles.th}>Comments</th>
-                <td colSpan="4" style={styles.td}>{ticket.comments}</td>
+                <td colSpan="4" style={styles.td}>{formData.comments}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Change Scheduled</th>
-                <td colSpan="4" style={styles.td}>{formatDate(ticket.changeScheduled)}</td>
+                <td colSpan="4" style={styles.td}>{formatDate(formData.changeScheduled)}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Implementation assigned</th>
-                <td colSpan="4" style={styles.td}>{ticket.implementationAssigned}</td>
+                <td colSpan="4" style={styles.td}>{formData.implementationAssigned}</td>
               </tr>
             </tbody>
           </table>
@@ -304,15 +304,15 @@ function OutputPage() {
             <tbody>
               <tr>
                 <th style={{ ...styles.th, width: "30%" }}>Technology</th>
-                <td style={styles.td}>{ticket.technology}</td>
+                <td style={styles.td}>{formData.technology}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Policy</th>
-                <td style={styles.td}>{ticket.policy}</td>
+                <td style={styles.td}>{formData.policy}</td>
               </tr>
               <tr>
                 <th style={styles.th}>IP Address/URL/Port</th>
-                <td style={styles.td}>{ticket.ipAddressUrlPort}</td>
+                <td style={styles.td}>{formData.ipAddressUrlPort}</td>
               </tr>
             
             </tbody>
@@ -332,23 +332,23 @@ function OutputPage() {
             <tbody>
               <tr>
                 <th style={{ ...styles.th, width: "30%" }}>Staging test results:</th>
-                <td colSpan="3" style={styles.td}>{ticket.stagingTestResults}</td>
+                <td colSpan="3" style={styles.td}>{formData.stagingTestResults}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Implementation test results</th>
-                <td colSpan="3" style={styles.td}>{ticket.implementationTestResults}</td>
+                <td colSpan="3" style={styles.td}>{formData.implementationTestResults}</td>
               </tr>
               <tr>
                 <th style={styles.th}>Date of Implementation</th>
-                <td style={styles.td}>{formatDate(ticket.dateOfImplementation)}</td>
+                <td style={styles.td}>{formatDate(formData.dateOfImplementation)}</td>
                 <th style={{ ...styles.th, width: "20%" }}>Status</th>
-                <td style={styles.td}>{ticket.implementationStatus}</td>
+                <td style={styles.td}>{formData.implementationStatus}</td>
               </tr>
               <tr>
                 <th style={{ ...styles.th, height: "200px" }}>CAB Sign off</th>
                 <td style={styles.td}></td>
                 <th style={styles.th}>Date</th>
-                <td style={styles.td}>{formatDate(ticket.cabSignOffDate)}</td>
+                <td style={styles.td}>{formatDate(formData.cabSignOffDate)}</td>
               </tr>
             </tbody>
           </table>
@@ -369,6 +369,7 @@ const styles = {
   container: {
     paddingLeft: "100px",
     fontSize: "28px",
+    maxWidth: "1000px",
     paddingRight: "100px",
     paddingTop: "10px",
     fontFamily: "Verdana", 
