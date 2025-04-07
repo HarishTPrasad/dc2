@@ -393,7 +393,7 @@ function ChangeM({ username = "Harish Prasad" }){
           label: 'Yes',
           onClick: async () => {
             try {
-              await api.delete(`/api/documents/${id}`);
+              await api.delete(`/documents/${id}`);
               setTickets(tickets.filter(ticket => ticket._id !== id));
             } catch (err) {
               console.error('Error deleting document:', err);
