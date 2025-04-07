@@ -320,7 +320,8 @@ const handleSubmit = async (e) => {
       }
 
      
-      navigate("/dashboard/output", { state: { submittedData: data.savedData } });
+      // navigate("/dashboard/output", { state: { submittedData: data.savedData } });
+      navigate("/dashboard/output", { state: { formData } });
 
   } catch (error) {
       console.error("❌ Submission error:", error);
