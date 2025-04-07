@@ -15,7 +15,7 @@ const formatDate = (dateString) => {
   return `${day}-${month}-${year}`;
 };
 
-function OutputPage() {
+function Oldview() {
   const [renderKey, setRenderKey] = useState(0);
   const location = useLocation();
  
@@ -412,4 +412,4 @@ const styles = {
   },
 };
 
-export default OutputPage;
+export default Oldview;

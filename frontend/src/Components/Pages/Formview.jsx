@@ -148,6 +148,10 @@ function Formview() {
           )}
 
           <div className="d-flex justify-content-end border-top pt-3">
+
+          <button className="btn btn-outline-info me-2" onClick={() => navigate('/dashboard/oldview', { state: { ticket } })}>
+             <i className="fas fa-file-alt me-1"></i> Doc View
+          </button>
            
             {!ticket.changeRequestStatus?.accepted && !ticket.changeRequestStatus?.rejected && (
               <>
