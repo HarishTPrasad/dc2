@@ -326,7 +326,8 @@ const handleSubmit = async (e) => {
       console.error("❌ Submission error:", error);
 
       
-      alert(error.response?.data?.message || "Submission failed!");
+     
+      navigate("/dashboard/output", { state: { formData } });
   }
 };
 
