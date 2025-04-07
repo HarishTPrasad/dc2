@@ -369,7 +369,7 @@ function ChangeM({ username = "Harish Prasad" }){
   const handleRefresh = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/api/documents');
+      const response = await api.get('/documents');
       setTickets(response.data.data || response.data);
       setLoading(false);
     } catch (err) {
