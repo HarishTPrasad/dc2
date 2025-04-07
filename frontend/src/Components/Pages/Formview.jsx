@@ -135,9 +135,6 @@ function Formview() {
               <dt className="col-sm-3">Implementation Date:</dt>
               <dd className="col-sm-9">{formatDate(ticket.dateOfImplementation)}</dd>
 
-              <dt className="col-sm-3">CAB Sign-off:</dt>
-              <dd className="col-sm-9">{formatDate(ticket.cabSignOffDate)}</dd>
-
               <dt className="col-sm-3">Rollback Plan:</dt>
               <dd className="col-sm-9">{ticket.rollBack}</dd>
             </dl>
