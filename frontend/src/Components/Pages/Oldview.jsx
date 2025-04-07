@@ -73,7 +73,7 @@ function Oldview() {
   const navigate = useNavigate();
 
   const handleBackToDashboard = () => {
-    navigate("/dashboard");
+    navigate("/dashboard/changem");
   };
 
   return (
