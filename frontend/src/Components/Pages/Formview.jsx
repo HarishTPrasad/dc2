@@ -148,9 +148,7 @@ function Formview() {
           )}
 
           <div className="d-flex justify-content-end border-top pt-3">
-            <button className="btn btn-outline-primary me-2">
-              <i className="fas fa-edit"></i> Edit
-            </button>
+           
             {!ticket.changeRequestStatus?.accepted && !ticket.changeRequestStatus?.rejected && (
               <>
                 <button className="btn btn-success me-2">
