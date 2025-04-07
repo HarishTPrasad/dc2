@@ -17,46 +17,21 @@ const formatDate = (dateString) => {
 
 function OutputPage() {
   const [renderKey, setRenderKey] = useState(0);
-  // const location = useLocation();
- 
-  // const contentRef = useRef();
-
-
-  // const [formData, setFormData] = useState(location.state?.formData || {});
-
-  // useEffect(() => {
-  //   if (!location.state?.formData) {
-  //     const storedData = localStorage.getItem("formData");
-  //     if (storedData) {
-  //       setFormData(JSON.parse(storedData));
-  //     }
-  //   }
-  // }, [location.state]);
-
   const location = useLocation();
+ 
   const contentRef = useRef();
 
-  const [formData, setFormData] = useState({});
+
+  const [formData, setFormData] = useState(location.state?.formData || {});
 
   useEffect(() => {
-    // 1. Prioritize location.state data (e.g., fresh form submission)
-    if (location.state?.formData) {
-      setFormData(location.state.formData);
-      localStorage.setItem("formData", JSON.stringify(location.state.formData));
-    } 
-    // 2. Otherwise, try loading from localStorage
-    else {
+    if (!location.state?.formData) {
       const storedData = localStorage.getItem("formData");
       if (storedData) {
         setFormData(JSON.parse(storedData));
-      } else {
-        // Optional: handle cases where no form data is found
-        console.warn("No form data found. Redirecting or showing message...");
-        // Example: you could redirect or show a message here if needed
       }
     }
   }, [location.state]);
-
 
   const downloadPDF = () => {
     setRenderKey((prevKey) => prevKey + 1);
