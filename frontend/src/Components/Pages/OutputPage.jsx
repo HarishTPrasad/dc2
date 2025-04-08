@@ -150,41 +150,41 @@ function OutputPage() {
                 <th rowSpan="4" style={{ ...styles.th, width: "30%", textAlign: "center", verticalAlign: "middle" }}>
                   Change Type
                 </th>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%"  }}>
                   {formData.changeType?.application ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Application</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeType?.database ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Database</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeType?.hardware ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Hardware</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeType?.procedures ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Procedures</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeType?.network ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Network</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeType?.security ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Security</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeType?.operatingSystem ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Operating System/Utilities</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeType?.schedule ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Schedule</td>
@@ -193,40 +193,40 @@ function OutputPage() {
                 <th rowSpan="4" style={{ ...styles.th, textAlign: "center", verticalAlign: "middle" }}>
                   Change Priority
                 </th>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changePriority?.urgent ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Urgent</td>
                 <th rowSpan="4" style={{ ...styles.th, textAlign: "center", verticalAlign: "middle" }}>
                   Change Impact
                 </th>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeImpact?.minor ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Minor</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changePriority?.high ? "✓" : ""}
                 </td>
                 <td style={styles.td}>High</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeImpact?.medium ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Medium</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changePriority?.medium ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Medium</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeImpact?.major ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Major</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changePriority?.low ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Low</td>
