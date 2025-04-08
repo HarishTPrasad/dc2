@@ -87,7 +87,7 @@ function Oldview() {
         </div>
 
         {/* Table 1: Change Description / Change Request */}
-        <div style={{...styles.content, marginTop:"60PX"}}>
+        <div style={{...styles.content, marginTop:"100px"}}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -421,7 +421,7 @@ const styles = {
     fontFamily: "Verdana",
     color: "black",
   },
-  content: { marginBottom: "4%" }, // 40px from 1000px
+  content: { marginBottom: "6%" }, // 40px from 1000px
   table: {
     width: "100%",
     borderCollapse: "collapse",
