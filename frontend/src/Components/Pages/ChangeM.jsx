@@ -74,7 +74,7 @@ function ChangeM({ username = "Harish Prasad" }) {
   };
 
   const handleRowClick = (ticket) => {
-    navigate('/dashboard/formview', { state: { ticket } });
+    navigate('/dashboard/oldview', { state: { ticket } });
   };
 
   const handleDelete = (id, e) => {
