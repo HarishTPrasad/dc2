@@ -266,11 +266,11 @@ function OutputPage() {
             <tbody>
               <tr>
                 <th style={{ ...styles.th, width: "30%" }}>Change Request Status</th>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeRequestStatus?.accepted ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Accepted</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {formData.changeRequestStatus?.rejected ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Rejected</td>

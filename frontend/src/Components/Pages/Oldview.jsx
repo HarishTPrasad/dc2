@@ -150,41 +150,41 @@ function Oldview() {
                 <th rowSpan="4" style={{ ...styles.th, width: "30%", textAlign: "center", verticalAlign: "middle" }}>
                   Change Type
                 </th>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeType?.application ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Application</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeType?.database ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Database</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeType?.hardware ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Hardware</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeType?.procedures ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Procedures</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeType?.network ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Network</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeType?.security ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Security</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeType?.operatingSystem ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Operating System/Utilities</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeType?.schedule ? "✓" : ""}
                 </td>
                 <td colSpan="2" style={styles.td}>Schedule</td>
@@ -193,40 +193,40 @@ function Oldview() {
                 <th rowSpan="4" style={{ ...styles.th, textAlign: "center", verticalAlign: "middle" }}>
                   Change Priority
                 </th>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changePriority?.urgent ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Urgent</td>
                 <th rowSpan="4" style={{ ...styles.th, textAlign: "center", verticalAlign: "middle" }}>
                   Change Impact
                 </th>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeImpact?.minor ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Minor</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changePriority?.high ? "✓" : ""}
                 </td>
                 <td style={styles.td}>High</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeImpact?.medium ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Medium</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changePriority?.medium ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Medium</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeImpact?.major ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Major</td>
               </tr>
               <tr>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changePriority?.low ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Low</td>
@@ -266,11 +266,11 @@ function Oldview() {
             <tbody>
               <tr>
                 <th style={{ ...styles.th, width: "30%" }}>Change Request Status</th>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeRequestStatus?.accepted ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Accepted</td>
-                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle" }}>
+                <td style={{ ...styles.td, textAlign: "center", verticalAlign: "middle", width: "10%" }}>
                   {ticket.changeRequestStatus?.rejected ? "✓" : ""}
                 </td>
                 <td style={styles.td}>Rejected</td>
