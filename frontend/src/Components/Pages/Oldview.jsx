@@ -320,7 +320,7 @@ function Oldview() {
         </div>
 
         {/* Table 5: Change Implementation */}
-        <div style={{...styles.content, marginTop:"30%"}}>
+        <div style={{...styles.content, marginTop:"20%"}}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -414,14 +414,14 @@ function Oldview() {
 
 const styles = {
   container: {
-    paddingLeft: "8%",     // 100px from 1000px
-    paddingRight: "8%",
+    paddingLeft: "7%",     // 100px from 1000px
+    paddingRight: "7%",
     paddingTop: "1%",       // 10px from 1000px height estimate
     fontSize: "1.6rem",     // 28px is approx 1.6rem
     fontFamily: "Verdana",
     color: "black",
   },
-  content: { marginBottom: "6%" }, // 40px from 1000px
+  content: { marginBottom: "5%" }, // 40px from 1000px
   table: {
     width: "100%",
     borderCollapse: "collapse",
@@ -429,14 +429,14 @@ const styles = {
   },
   th: {
     border: "1px solid black",
-    padding: "0.5%",          // 10px from 1000px
+    padding: "0.7%",          // 10px from 1000px
     textAlign: "left",
     fontFamily: "Verdana",
     color: "black",
   },
   td: { 
     border: "1px solid black",
-    padding: "0.5%",          // 10px from 1000px
+    padding: "0.7%",          // 10px from 1000px
     fontFamily: "Verdana",
     color: "black",
   },
