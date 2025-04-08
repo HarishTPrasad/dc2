@@ -87,7 +87,7 @@ function OutputPage() {
         </div>
 
         {/* Table 1: Change Description / Change Request */}
-        <div style={{...styles.content, marginTop:"60PX"}}>
+        <div style={{...styles.content, marginTop:"100PX"}}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -292,7 +292,7 @@ function OutputPage() {
         </div>
 
         {/* Table 4: Change Implementation Details */}
-        <div style={{...styles.content, marginTop:"300PX"}}>
+        <div style={styles.content} >
           <table style={styles.table}>
             <thead>
               <tr>
@@ -320,7 +320,7 @@ function OutputPage() {
         </div>
 
         {/* Table 5: Change Implementation */}
-        <div style={styles.content}>
+        <div style={{...styles.content, marginTop:"30%"}}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -365,63 +365,16 @@ function OutputPage() {
   );
 }
 
-// const styles = {
-//   container: {
-//     paddingLeft: "100px",
-//     fontSize: "28px",
-//     paddingRight: "100px",
-//     paddingTop: "10px",
-//     fontFamily: "Verdana", 
-//     color: "black", 
-//   },
-//   content: { marginBottom: "40px" },
-//   table: {
-//     width: "100%",
-//     borderCollapse: "collapse",
-//     border: "1px solid black", 
-//   },
-//   th: {
-//     border: "1px solid black", 
-//     padding: "10px",
-//     textAlign: "left",
-//     fontFamily: "Verdana", 
-//     color: "black", 
-//   },
-//   td: {
-//     border: "1px solid black", 
-//     padding: "10px",
-//     fontFamily: "Verdana",
-//     color: "black", 
-//   },
-//   button: {
-//     display: "block", 
-//     padding: "10px 20px",
-//     fontSize: "16px",
-//     backgroundColor: "#1679AB",
-//     color: "white",
-//     border: "none",
-//     cursor: "pointer",
-//     borderRadius: "5px",
-//     margin: "10px auto 50px", 
-//     fontFamily: "Verdana",
-//     fontWeight: "bold",
-//   },
-//   font: {
-//     fontFamily: "Verdana", 
-//     color: "black", 
-//   },
-// };
-
 const styles = {
   container: {
-    paddingLeft: "8%",     // 100px from 1000px
-    paddingRight: "8%",
+    paddingLeft: "7%",     // 100px from 1000px
+    paddingRight: "7%",
     paddingTop: "1%",       // 10px from 1000px height estimate
     fontSize: "1.6rem",     // 28px is approx 1.6rem
     fontFamily: "Verdana",
     color: "black",
   },
-  content: { marginBottom: "4%" }, // 40px from 1000px
+  content: { marginBottom: "5%" }, // 40px from 1000px
   table: {
     width: "100%",
     borderCollapse: "collapse",
@@ -429,14 +382,14 @@ const styles = {
   },
   th: {
     border: "1px solid black",
-    padding: "0.5%",          // 10px from 1000px
+    padding: "0.7%",          // 10px from 1000px
     textAlign: "left",
     fontFamily: "Verdana",
     color: "black",
   },
   td: { 
     border: "1px solid black",
-    padding: "0.5%",          // 10px from 1000px
+    padding: "0.7%",          // 10px from 1000px
     fontFamily: "Verdana",
     color: "black",
   },

@@ -365,52 +365,7 @@ function Oldview() {
   );
 }
 
-// const styles = {
-//   container: {
-//     paddingLeft: "100px",
-//     fontSize: "28px",
-//     paddingRight: "100px",
-//     paddingTop: "10px",
-//     fontFamily: "Verdana", 
-//     color: "black", 
-//   },
-//   content: { marginBottom: "40px" },
-//   table: {
-//     width: "100%",
-//     borderCollapse: "collapse",
-//     border: "1px solid black", 
-//   },
-//   th: {
-//     border: "1px solid black", 
-//     padding: "10px",
-//     textAlign: "left",
-//     fontFamily: "Verdana", 
-//     color: "black", 
-//   },
-//   td: {
-//     border: "1px solid black", 
-//     padding: "10px",
-//     fontFamily: "Verdana",
-//     color: "black", 
-//   },
-//   button: {
-//     display: "block", 
-//     padding: "10px 20px",
-//     fontSize: "16px",
-//     backgroundColor: "#1679AB",
-//     color: "white",
-//     border: "none",
-//     cursor: "pointer",
-//     borderRadius: "5px",
-//     margin: "10px auto 50px", 
-//     fontFamily: "Verdana",
-//     fontWeight: "bold",
-//   },
-//   font: {
-//     fontFamily: "Verdana", 
-//     color: "black", 
-//   },
-// };
+
 
 const styles = {
   container: {
