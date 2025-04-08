@@ -292,7 +292,7 @@ function Oldview() {
         </div>
 
         {/* Table 4: Change Implementation Details */}
-        <div style={styles.content} >
+        <div style={{...styles.content, marginTop:"30%"}}>
           <table style={styles.table}>
             <thead>
               <tr>
@@ -320,7 +320,7 @@ function Oldview() {
         </div>
 
         {/* Table 5: Change Implementation */}
-        <div style={{...styles.content, marginTop:"20%"}}>
+        <div  style={styles.content}  >
           <table style={styles.table}>
             <thead>
               <tr>
