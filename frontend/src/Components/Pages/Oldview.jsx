@@ -365,50 +365,97 @@ function Oldview() {
   );
 }
 
+// const styles = {
+//   container: {
+//     paddingLeft: "100px",
+//     fontSize: "28px",
+//     paddingRight: "100px",
+//     paddingTop: "10px",
+//     fontFamily: "Verdana", 
+//     color: "black", 
+//   },
+//   content: { marginBottom: "40px" },
+//   table: {
+//     width: "100%",
+//     borderCollapse: "collapse",
+//     border: "1px solid black", 
+//   },
+//   th: {
+//     border: "1px solid black", 
+//     padding: "10px",
+//     textAlign: "left",
+//     fontFamily: "Verdana", 
+//     color: "black", 
+//   },
+//   td: {
+//     border: "1px solid black", 
+//     padding: "10px",
+//     fontFamily: "Verdana",
+//     color: "black", 
+//   },
+//   button: {
+//     display: "block", 
+//     padding: "10px 20px",
+//     fontSize: "16px",
+//     backgroundColor: "#1679AB",
+//     color: "white",
+//     border: "none",
+//     cursor: "pointer",
+//     borderRadius: "5px",
+//     margin: "10px auto 50px", 
+//     fontFamily: "Verdana",
+//     fontWeight: "bold",
+//   },
+//   font: {
+//     fontFamily: "Verdana", 
+//     color: "black", 
+//   },
+// };
+
 const styles = {
   container: {
-    paddingLeft: "100px",
-    fontSize: "28px",
-    paddingRight: "100px",
-    paddingTop: "10px",
-    fontFamily: "Verdana", 
-    color: "black", 
+    paddingLeft: "8%",     // 100px from 1000px
+    paddingRight: "8%",
+    paddingTop: "1%",       // 10px from 1000px height estimate
+    fontSize: "1.6rem",     // 28px is approx 1.6rem
+    fontFamily: "Verdana",
+    color: "black",
   },
-  content: { marginBottom: "40px" },
+  content: { marginBottom: "4%" }, // 40px from 1000px
   table: {
     width: "100%",
     borderCollapse: "collapse",
-    border: "1px solid black", 
+    border: "1px solid black",
   },
   th: {
-    border: "1px solid black", 
-    padding: "10px",
+    border: "1px solid black",
+    padding: "0.5%",          // 10px from 1000px
     textAlign: "left",
-    fontFamily: "Verdana", 
-    color: "black", 
-  },
-  td: {
-    border: "1px solid black", 
-    padding: "10px",
     fontFamily: "Verdana",
-    color: "black", 
+    color: "black",
+  },
+  td: { 
+    border: "1px solid black",
+    padding: "0.5%",          // 10px from 1000px
+    fontFamily: "Verdana",
+    color: "black",
   },
   button: {
-    display: "block", 
-    padding: "10px 20px",
-    fontSize: "16px",
+    display: "block",
+    padding: "1% 2%",       // 10px vertical, 20px horizontal
+    fontSize: "1rem",       // 16px is approx 1rem
     backgroundColor: "#1679AB",
     color: "white",
     border: "none",
     cursor: "pointer",
-    borderRadius: "5px",
-    margin: "10px auto 50px", 
+    borderRadius: "0.5rem",
+    margin: "1% auto 5%",   // top: 10px, bottom: 50px
     fontFamily: "Verdana",
     fontWeight: "bold",
   },
   font: {
-    fontFamily: "Verdana", 
-    color: "black", 
+    fontFamily: "Verdana",
+    color: "black",
   },
 };
 
