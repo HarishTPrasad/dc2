@@ -37,7 +37,6 @@ function App() {
                     <Route path="output" element={<OutputPage />} />
                     <Route path="ticket" element={<Ticket />} />
                     <Route path="ticketform" element={<TicketForm />} />
-                   
                     <Route path="oldview" element={<Oldview />} />
 
 
