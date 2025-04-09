@@ -4,7 +4,8 @@ import api from '../../API/api';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-function ChangeM({ username }) {
+function ChangeM() {
+  const username = sessionStorage.getItem("username") || "User";
   const navigate = useNavigate();
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);

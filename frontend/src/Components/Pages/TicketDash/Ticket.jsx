@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Ticket({ username}) {
+function Ticket() {
+  const username = sessionStorage.getItem("username") || "User";
   const navigate = useNavigate();
   const [tickets, setTickets] = useState([
     {
