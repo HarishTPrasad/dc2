@@ -69,7 +69,7 @@ function Oldview() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Call your API to update the data
+     
       const response = await api.put(`/documents/${ticket._id}`, formData);
       setticket(response.data);
       setIsEditing(false);
@@ -755,14 +755,14 @@ function Oldview() {
 
 const styles = {
   container: {
-    paddingLeft: "7%",     // 100px from 1000px
+    paddingLeft: "7%",     
     paddingRight: "7%",
-    paddingTop: "1%",       // 10px from 1000px height estimate
-    fontSize: "1.6rem",     // 28px is approx 1.6rem
+    paddingTop: "1%",       
+    fontSize: "1.6rem",     
     fontFamily: "Verdana",
     color: "black",
   },
-  content: { marginBottom: "5%" }, // 40px from 1000px
+  content: { marginBottom: "5%" }, 
   table: {
     width: "100%",
     borderCollapse: "collapse",
@@ -770,27 +770,27 @@ const styles = {
   },
   th: {
     border: "1px solid black",
-    padding: "0.7%",          // 10px from 1000px
+    padding: "0.7%",        
     textAlign: "left",
     fontFamily: "Verdana",
     color: "black",
   },
   td: { 
     border: "1px solid black",
-    padding: "0.7%",          // 10px from 1000px
+    padding: "0.7%",          
     fontFamily: "Verdana",
     color: "black",
   },
   button: {
     display: "block",
-    padding: "1% 2%",       // 10px vertical, 20px horizontal
-    fontSize: "1rem",       // 16px is approx 1rem
+    padding: "1% 2%",     
+    fontSize: "1rem",   
     backgroundColor: "#1679AB",
     color: "white",
     border: "none",
     cursor: "pointer",
     borderRadius: "0.5rem",
-    margin: "1% auto 5%",   // top: 10px, bottom: 50px
+    margin: "1% auto 5%",   
     fontFamily: "Verdana",
     fontWeight: "bold",
   },

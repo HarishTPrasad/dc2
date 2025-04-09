@@ -5,7 +5,7 @@ const formSchema = require("../models/FormDataModel");
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-// Create a new document
+
 router.post("/api/submit", async (req, res) => {
   try {
     console.log("Received Data:", req.body); 
@@ -28,10 +28,10 @@ router.post("/api/submit", async (req, res) => {
   }
 });
 
-// Get all documents with filtering and sorting options
+
 router.get("/api/documents", async (req, res) => {
   try {
-    // Extract query parameters
+
     const { 
       status, 
       assignedTo, 
@@ -41,21 +41,21 @@ router.get("/api/documents", async (req, res) => {
       limit = 10
     } = req.query;
 
-    // Build filter object
+
     const filter = {};
     if (status) filter.implementationStatus = status;
     if (assignedTo) filter.implementationAssigned = assignedTo;
 
-    // Calculate pagination
+
     const skip = (page - 1) * limit;
 
-    // Get documents with filtering, sorting and pagination
+
     const docs = await formSchema.find(filter)
       .sort({ [sortBy]: sortOrder === 'desc' ? -1 : 1 })
       .skip(skip)
       .limit(parseInt(limit));
 
-    // Get total count for pagination info
+
     const total = await formSchema.countDocuments(filter);
 
     res.json({
@@ -78,7 +78,7 @@ router.get("/api/documents", async (req, res) => {
   }
 });
 
-// Get a single document by ID
+
 router.get("/api/documents/:id", async (req, res) => {
   try {
     const doc = await formSchema.findById(req.params.id);
@@ -101,7 +101,7 @@ router.get("/api/documents/:id", async (req, res) => {
   }
 });
 
-// Update a document
+
 router.put("/api/documents/:id", async (req, res) => {
   try {
     const updatedDoc = await formSchema.findByIdAndUpdate(
@@ -132,7 +132,7 @@ router.put("/api/documents/:id", async (req, res) => {
   }
 });
 
-// Delete a document
+
 router.delete("/api/documents/:id", async (req, res) => {
   try {
     const deletedDoc = await formSchema.findByIdAndDelete(req.params.id);
@@ -158,7 +158,7 @@ router.delete("/api/documents/:id", async (req, res) => {
   }
 });
 
-// Test route
+
 router.get("/api/test-route", (req, res) => {
   res.json({ 
     success: true,
