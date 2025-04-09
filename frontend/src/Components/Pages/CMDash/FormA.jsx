@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ClientAndProjectTable from "../FormTables/ClientAndProjectTable";
-import ChangeImpactEvaluationTable from "../FormTables/ChangeImpactEvaluationTable";
-import ChangeApprovalTable from "../FormTables/ChangeApprovalTable";
-import ChangeImplementationDetailsTable from "../FormTables/ChangeImplementationDetailsTable";
-import ChangeImplementationTable from "../FormTables/ChangeImplementationTable";
-import api from "../API/api";
+import ClientAndProjectTable from "../../FormTables/ClientAndProjectTable";
+import ChangeImpactEvaluationTable from "../../FormTables/ChangeImpactEvaluationTable";
+import ChangeApprovalTable from "../../FormTables/ChangeApprovalTable";
+import ChangeImplementationDetailsTable from "../../FormTables/ChangeImplementationDetailsTable";
+import ChangeImplementationTable from "../../FormTables/ChangeImplementationTable";
+import api from "../../API/api";
 
 const clientDataMap = {
   "Jalore Nagrik Sahakari Bank Ltd.": {

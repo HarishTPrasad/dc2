@@ -8,7 +8,7 @@ import Ticket from './Components/Pages/TicketDash/Ticket';
 import ChangeM from './Components/Pages/CMDash/ChangeM';
 import TicketForm from './Components/Pages/TicketDash/TicketForm';
 
-import Oldview from './Components/Pages/Oldview';
+import Oldview from './Components/Pages/CMDash/Oldview';
 
 
 const ProtectedRoute = ({ children }) => {
