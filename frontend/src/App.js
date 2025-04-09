@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import OutputPage from './Components/Pages/OutputPage';
-import FormA from './Components/Pages/FormA';
+import OutputPage from './Components/Pages/CMDash/OutputPage';
+import FormA from './Components/Pages/CMDash/FormA';
 import Login from './Components/Pages/Login';
 import Dashboard from './Components/Pages/Dashboard';
-import Ticket from './Components/Pages/Ticket';
-import ChangeM from './Components/Pages/ChangeM';
-import TicketForm from './Components/Pages/TicketForm';
+import Ticket from './Components/Pages/TicketDash/Ticket';
+import ChangeM from './Components/Pages/CMDash/ChangeM';
+import TicketForm from './Components/Pages/TicketDash/TicketForm';
 
 import Oldview from './Components/Pages/Oldview';
 
