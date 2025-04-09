@@ -73,7 +73,7 @@ function Oldview() {
       const response = await api.put(`/documents/${ticket._id}`, formData);
       setticket(response.data);
       setIsEditing(false);
-      alert("Ticket updated successfully!");
+      alert("CMR Decument updated successfully!");
     } catch (error) {
       console.error("Error updating ticket:", error);
       alert("Failed to update ticket");
