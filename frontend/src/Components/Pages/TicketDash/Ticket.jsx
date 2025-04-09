@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Ticket({ username = "Harish Prasad" }) {
+function Ticket({ username}) {
   const navigate = useNavigate();
   const [tickets, setTickets] = useState([
     {
