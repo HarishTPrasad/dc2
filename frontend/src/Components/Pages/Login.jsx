@@ -18,6 +18,7 @@ function Login() {
         const response = await api.get("/users");
         if (Array.isArray(response.data)) {
           setUserList(response.data);
+          console.log(response.data);
         } else {
           console.error("Invalid response format: expected array");
         }
