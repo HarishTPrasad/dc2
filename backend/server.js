@@ -26,7 +26,8 @@ app.use((req, res, next) => {
 
 const formRoutes = require("./routes/formRoutes");
 app.use("/", formRoutes);
-
+const userRoutes = require("../routes/userRoutes");
+app.use("/", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("✅ Server is running...");
