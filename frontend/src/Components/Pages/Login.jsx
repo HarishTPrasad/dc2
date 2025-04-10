@@ -9,7 +9,7 @@ function Login() {
   const [userList, setUserList] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [newUser, setNewUser] = useState({ username: "", password: "" });
+  // const [newUser, setNewUser] = useState({ username: "", password: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,21 +43,21 @@ function Login() {
     }
   };
 
-  const handleCreateUser = async () => {
-    if (!newUser.username || !newUser.password) return;
+  // const handleCreateUser = async () => {
+  //   if (!newUser.username || !newUser.password) return;
 
-    try {
-      await api.post("/users", newUser);
-      alert("User created successfully");
-      setNewUser({ username: "", password: "" });
+  //   try {
+  //     await api.post("/users", newUser);
+  //     alert("User created successfully");
+  //     setNewUser({ username: "", password: "" });
 
-      const response = await api.get("/users");
-      setUserList(response.data);
-    } catch (err) {
-      console.error("Error creating user:", err);
-      alert("Failed to create user");
-    }
-  };
+  //     const response = await api.get("/users");
+  //     setUserList(response.data);
+  //   } catch (err) {
+  //     console.error("Error creating user:", err);
+  //     alert("Failed to create user");
+  //   }
+  // };
 
   return (
     <div style={styles.container}>
@@ -119,9 +119,9 @@ function Login() {
 
           {/* Temporary Create User UI */}
           <div style={{ marginTop: "30px" }}>
-            <h4 style={styles.loginTitle}>Create User (Temporary)</h4>
+            {/* <h4 style={styles.loginTitle}>Create User (Temporary)</h4> */}
             <div style={styles.inputGroup}>
-              <input
+              {/* <input
                 type="text"
                 id="new-username"
                 name="new-username"
@@ -132,10 +132,10 @@ function Login() {
                   setNewUser({ ...newUser, username: e.target.value })
                 }
                 style={styles.input}
-              />
+              /> */}
             </div>
             <div style={styles.inputGroup}>
-              <input
+              {/* <input
                 type="password"
                 id="new-password"
                 name="new-password"
@@ -146,20 +146,20 @@ function Login() {
                   setNewUser({ ...newUser, password: e.target.value })
                 }
                 style={styles.input}
-              />
+              /> */}
             </div>
-            <button onClick={handleCreateUser} style={styles.button}>
+            {/* <button onClick={handleCreateUser} style={styles.button}>
               Create User
-            </button>
+            </button> */}
           </div>
 
-          <div style={styles.aboutSection}>
+          {/* <div style={styles.aboutSection}>
             <p>DC Networks - Secure Access Portal</p>
             <p style={styles.aboutText}>Version 2.0.0</p>
             <p style={styles.copyright}>
               © {new Date().getFullYear()} DC Networks. All rights reserved.
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

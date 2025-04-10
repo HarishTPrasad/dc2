@@ -7,7 +7,7 @@ import Dashboard from './Components/Pages/Dashboard';
 import Ticket from './Components/Pages/TicketDash/Ticket';
 import ChangeM from './Components/Pages/CMDash/ChangeM';
 import TicketForm from './Components/Pages/TicketDash/TicketForm';
-
+import Admin from './Components/Pages/Admin';
 import Oldview from './Components/Pages/CMDash/Oldview';
 
 
@@ -38,6 +38,7 @@ function App() {
                     <Route path="ticket" element={<Ticket />} />
                     <Route path="ticketform" element={<TicketForm />} />
                     <Route path="oldview" element={<Oldview />} />
+                    <Route path="admin" element={<Admin />} />
 
 
 

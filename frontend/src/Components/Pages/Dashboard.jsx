@@ -37,6 +37,14 @@ function Dashboard() {
             >   
               <p>Ticket Management</p>
             </button>
+            {(username === "Harish" || username === "KKSuthar") && (
+                <button 
+                  style={{ ...styles.centerBox, backgroundColor: "#4CAF50" }} 
+                  onClick={() => navigate("/dashboard/admin")}
+                >
+                  <p>Admin Panel</p>
+                </button>
+              )}
           </div>
 
           <div style={styles.bottomSection}>
