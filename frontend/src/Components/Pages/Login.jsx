@@ -6,7 +6,7 @@ import logo from "../Images/dclogo.png";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [userList, setUserList] = useState([]);
+  const [userList, setUserList] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [newUser, setNewUser] = useState({ username: "", password: "" });
