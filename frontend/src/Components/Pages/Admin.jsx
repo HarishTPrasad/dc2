@@ -7,7 +7,7 @@ const Admin = () => {
 
   // Fetch users from backend
   useEffect(() => {
-    api.get('/api/users')
+    api.get('/users')
       .then(res => setUsers(res.data))
       .catch(err => console.error(err));
   }, []);
@@ -17,7 +17,7 @@ const Admin = () => {
     e.preventDefault();
     if (!newUser.username || !newUser.password) return;
 
-    api.post('/api/users', newUser)
+    api.post('/users', newUser)
       .then(res => {
         setUsers([...users, res.data]);
         setNewUser({ username: '', password: '' });
@@ -27,7 +27,7 @@ const Admin = () => {
 
   // Remove user by ID
   const handleRemoveUser = (id) => {
-    api.delete(`/api/users/${id}`)
+    api.delete(`/users/${id}`)
       .then(() => {
         setUsers(users.filter(user => user._id !== id));
       })
