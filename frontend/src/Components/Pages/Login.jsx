@@ -16,7 +16,7 @@ function Login() {
     const fetchUsers = async () => {
       try {
         const response = await api.get("/users");
-        setUserList(response.data);
+        setUserList(response.data.data);
         console.log(response.data);
       } catch (err) {
         console.error("Error fetching users:", err);
