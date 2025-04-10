@@ -30,13 +30,22 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const matchedUser = userList.find(
-      (user) => user.username === username && user.password === password
-    );
-
+  
+    if (!username.trim() || !password) {
+      setError("Please enter both username and password.");
+      return;
+    }
+  
+    const matchedUser = Array.isArray(userList)
+      ? userList.find((user) =>
+          user?.username?.toLowerCase() === username.toLowerCase() &&
+          user?.password === password
+        )
+      : null;
+  
     if (matchedUser) {
       sessionStorage.setItem("authToken", "true");
-      sessionStorage.setItem("username", username);
+      sessionStorage.setItem("username", matchedUser.username);
       navigate("/dashboard");
     } else {
       setError("Invalid username or password");
@@ -44,7 +53,6 @@ function Login() {
       sessionStorage.removeItem("username");
     }
   };
-
   const handleCreateUser = async () => {
     if (!newUser.username || !newUser.password) return;
 
