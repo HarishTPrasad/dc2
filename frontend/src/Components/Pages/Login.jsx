@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../API/api";
@@ -13,7 +12,6 @@ function Login() {
   const [newUser, setNewUser] = useState({ username: "", password: "" });
   const navigate = useNavigate();
 
-  // Fetch users when component mounts
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -84,6 +82,8 @@ function Login() {
                 <input
                   type="text"
                   id="username"
+                  name="username"
+                  autoComplete="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   style={styles.input}
@@ -96,6 +96,8 @@ function Login() {
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
+                    name="password"
+                    autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     style={styles.input}
@@ -121,6 +123,9 @@ function Login() {
             <div style={styles.inputGroup}>
               <input
                 type="text"
+                id="new-username"
+                name="new-username"
+                autoComplete="username"
                 placeholder="Username"
                 value={newUser.username}
                 onChange={(e) =>
@@ -132,6 +137,9 @@ function Login() {
             <div style={styles.inputGroup}>
               <input
                 type="password"
+                id="new-password"
+                name="new-password"
+                autoComplete="new-password"
                 placeholder="Password"
                 value={newUser.password}
                 onChange={(e) =>
