@@ -8,7 +8,7 @@ const Admin = () => {
   // Fetch users from backend
   useEffect(() => {
     api.get('/users')
-      .then(res => setUsers(res.data))
+      .then(res => setUsers(res.data.data))
       .catch(err => console.error(err));
   }, []);
 
