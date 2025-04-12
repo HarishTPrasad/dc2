@@ -9,6 +9,7 @@ import ChangeM from './Components/Pages/CMDash/ChangeM';
 import TicketForm from './Components/Pages/TicketDash/TicketForm';
 import Admin from './Components/Pages/Admin';
 import Oldview from './Components/Pages/CMDash/Oldview';
+import TicketView from './Components/Pages/TicketDash/TicketView';
 
 
 const ProtectedRoute = ({ children }) => {
@@ -36,6 +37,7 @@ function App() {
                     <Route path="changem" element={<ChangeM />} />
                     <Route path="output" element={<OutputPage />} />
                     <Route path="ticket" element={<Ticket />} />
+                    <Route path="ticketview" element={<TicketView />} />
                     <Route path="ticketform" element={<TicketForm />} />
                     <Route path="oldview" element={<Oldview />} />
                     <Route path="admin" element={<Admin />} />
