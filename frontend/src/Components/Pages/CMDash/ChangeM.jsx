@@ -163,6 +163,11 @@ function ChangeM() {
     transition: 'all 0.3s ease',
   };
 
+  const smallTextStyle = {
+    fontSize: '0.8rem', // Or any other smaller unit like '12px', '0.7em'
+  };
+  
+
   const activeButtonStyle = {
     ...buttonStyle,
     backgroundColor: '#1679AB',
@@ -179,27 +184,26 @@ function ChangeM() {
   if (error) return <div className="container mt-4">Error: {error}</div>;
 
   return (
-    <div className="container-fluid mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="mb-0">Change Management</h1>
+    <div className="container-fluid mt-1">
+      <div className="d-flex justify-content-between align-items-center mb-1">
+        <h3 className="mb-1">Change Management</h3>
         <div>
           <button 
             className="btn btn-primary mr-2" 
-            style={{ backgroundColor: "#1679AB"}}
+            style={{ backgroundColor: "#1679AB",fontSize: '0.8rem' }}
             onClick={handleCreateNew}
+           
           >
             <i className="fas fa-plus mr-2"></i>Create New CMR
           </button>
-          <button className="btn btn-secondary mr-2" style={{ backgroundColor:"#A0C878"}}>
-            <i className="fas fa-file-export mr-2"></i>Export
-          </button>
-          <button className="btn btn-light" onClick={handleRefresh}>
+        
+          <button className="btn btn-light" onClick={handleRefresh} style={smallTextStyle}>
             <i className="fas fa-sync-alt mr-2"></i>Refresh
           </button>
         </div>
       </div>
 
-      <div className="d-flex flex-wrap mb-4 align-items-center">
+      <div className="d-flex flex-wrap mb-4 align-items-center" style={smallTextStyle}>
         <button
           style={filter === 'all' && !assignedFilter ? activeButtonStyle : buttonStyle}
           onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
@@ -279,7 +283,7 @@ function ChangeM() {
         </div>
       </div>
 
-      <div className="table-responsive">
+      <div className="table-responsive" style={smallTextStyle}>
         <table className="table table-striped table-hover table-bordered">
           <thead className="thead-dark">
             <tr>

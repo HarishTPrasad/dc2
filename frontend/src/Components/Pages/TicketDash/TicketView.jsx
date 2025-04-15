@@ -130,7 +130,7 @@ function TicketView() {
                 <i className="fas fa-comments mr-2"></i>Comments ({comments.length})
               </button>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <button 
                 className={`nav-link ${activeTab === 'attachments' ? 'active' : ''}`}
                 onClick={() => setActiveTab('attachments')}
@@ -145,7 +145,7 @@ function TicketView() {
               >
                 <i className="fas fa-history mr-2"></i>History
               </button>
-            </li>
+            </li> */}
           </ul>
         </div>
 

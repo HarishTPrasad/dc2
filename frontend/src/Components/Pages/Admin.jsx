@@ -4,64 +4,104 @@ import api from "../API/api";
 const Admin = () => {
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState({ username: '', password: '' });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch users from backend
   useEffect(() => {
-    api.get('/users')
-      .then(res => setUsers(res.data.data))
-      .catch(err => console.error(err));
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get('/users');
+        setUsers(res.data.data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    fetchUsers();
   }, []);
 
-  // Add a new user
-  const handleAddUser = (e) => {
+  const handleAddUser = async (e) => {
     e.preventDefault();
     if (!newUser.username || !newUser.password) return;
 
-    api.post('/users', newUser)
-      .then(res => {
-        setUsers([...users, res.data]);
-        setNewUser({ username: '', password: '' });
-      })
-      .catch(err => console.error(err));
+    try {
+      const res = await api.post('/users', newUser);
+      setUsers([...users, res.data]);
+      setNewUser({ username: '', password: '' });
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    }
   };
 
-  // Remove user by ID
-  const handleRemoveUser = (id) => {
-    api.delete(`/users/${id}`)
-      .then(() => {
-        setUsers(users.filter(user => user._id !== id));
-      })
-      .catch(err => console.error(err));
+  const handleRemoveUser = async (id) => {
+    try {
+      await api.delete(`/users/${id}`);
+      setUsers(users.filter(user => user._id !== id));
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    }
   };
+
+  if (loading) return <div className="container mt-5 text-center">Loading...</div>;
+  if (error) return <div className="container mt-5 text-center text-danger">Error: {error}</div>;
 
   return (
     <div className="container mt-5">
-      <h1 className="mb-4 text-center text-primary">Admin Dashboard</h1>
+      <h1 className="mb-4 text-center text-info">Admin Dashboard</h1>
 
       {/* Summary Cards */}
       <div className="row mb-4">
         <div className="col-md-6 mb-3">
-          <div className="card text-white bg-info h-100">
+          <div className="card shadow border-left-primary h-100 py-2">
             <div className="card-body">
-              <h5 className="card-title">Total Users</h5>
-              <p className="card-text display-4">{users.length}</p>
+              <div className="row no-gutters align-items-center">
+                <div className="col mr-2">
+                  <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
+                    Total Users
+                  </div>
+                  <div className="h5 mb-0 font-weight-bold text-gray-800">{users.length}</div>
+                </div>
+                <div className="col-auto">
+                  <i className="fas fa-users fa-2x text-gray-300"></i>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div className="col-md-6 mb-3">
-          <div className="card text-white bg-secondary h-100">
+          <div className="card shadow border-left-info h-100 py-2">
             <div className="card-body">
-              <h5 className="card-title">App Stats</h5>
-              <p className="card-text">Daily Active Users: n</p>
-              <p className="card-text">Get Data: n</p>
+              <div className="row no-gutters align-items-center">
+                <div className="col mr-2">
+                  <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
+                    App Stats
+                  </div>
+                  <div className="row no-gutters align-items-center">
+                    <div className="col-auto">
+                      <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                        Daily Active: HERE
+                      </div>
+                    </div>
+                  </div>
+                  <p className="mt-2 text-sm text-muted">Get Data: HERE</p>
+                </div>
+                <div className="col-auto">
+                  <i className="fas fa-chart-line fa-2x text-gray-300"></i>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Add User Form */}
-      <div className="card mb-4">
-        <div className="card-header bg-primary text-white">Add New User</div>
+      <div className="card mb-4 shadow">
+        <div className="card-header bg-dark text-white">Add New User</div> {/* Changed to bg-dark */}
         <div className="card-body">
           <form onSubmit={handleAddUser}>
             <div className="form-row">
@@ -94,37 +134,39 @@ const Admin = () => {
       </div>
 
       {/* User List Table */}
-      <div className="card">
+      <div className="card shadow">
         <div className="card-header bg-dark text-white">User List</div>
         <div className="card-body p-0">
-          <table className="table table-hover mb-0">
-            <thead className="thead-light">
-              <tr>
-                <th>Username</th>
-                <th style={{ width: '120px' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map(user => (
-                <tr key={user._id}>
-                  <td>{user.username}</td>
-                  <td>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => handleRemoveUser(user._id)}
-                    >
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {users.length === 0 && (
+          <div className="table-responsive">
+            <table className="table table-hover mb-0">
+              <thead className="thead-light">
                 <tr>
-                  <td colSpan="2" className="text-center text-muted">No users found.</td>
+                  <th>Username</th>
+                  <th style={{ width: '120px' }}>Actions</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {users.map(user => (
+                  <tr key={user._id}>
+                    <td>{user.username}</td>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleRemoveUser(user._id)}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {users.length === 0 && (
+                  <tr>
+                    <td colSpan="2" className="text-center text-muted">No users found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
