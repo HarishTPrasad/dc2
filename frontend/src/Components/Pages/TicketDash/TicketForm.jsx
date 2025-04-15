@@ -361,7 +361,7 @@ function TicketForm() {
       const response = await api.post('/ticket', formData);
       
       if (response.status === 201) {
-        navigate('/dashboard/tickets', { 
+        navigate('/dashboard/ticket', { 
           state: { message: 'Ticket created successfully!' } 
         });
       }
