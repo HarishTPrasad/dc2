@@ -342,7 +342,7 @@ router.post("/api/ticket/:id/comment", async (req, res) => {
       commentby: req.body.commentby,
     };
 
-    ticket.comments.push(newComment);
+    ticket.comment.push(newComment);
     await ticket.save();
 
     res.status(201).json({
@@ -368,7 +368,7 @@ router.get("/api/ticket/:id/comment", async (req, res) => {
 
     res.json({
       success: true,
-      data: ticket.comments,
+      data: ticket.comment,
       message: "Comments retrieved successfully"
     });
   } catch (error) {
@@ -382,49 +382,15 @@ router.get("/api/ticket/:id/comment", async (req, res) => {
 });
 
 // Delete a Comment from a Ticket
-// router.delete("/api/ticket/:id/comment/:commentId", async (req, res) => {
-//   try {
-//     const ticket = await Ticket.findById(req.params.id);
-//     if (!ticket) return res.status(404).json({ success: false, error: "Ticket not found" });
-
-//     const commentIndex = ticket.comments.findIndex(comment => comment._id.toString() === req.params.commentId);
-//     if (commentIndex === -1) return res.status(404).json({ success: false, error: "Comment not found" });
-
-//     ticket.comments.splice(commentIndex, 1);
-//     await ticket.save();
-
-//     res.json({
-//       success: true,
-//       data: ticket,
-//       message: "Comment deleted successfully"
-//     });
-//   } catch (error) {
-//     console.error("Error deleting comment:", error);
-//     res.status(500).json({
-//       success: false,
-//       error: "Failed to delete comment",
-//       details: error.message
-//     });
-//   }
-// });
-
 router.delete("/api/ticket/:id/comment/:commentId", async (req, res) => {
   try {
-    console.log("Ticket ID:", req.params.id);
-    console.log("Comment ID:", req.params.commentId);
-
     const ticket = await Ticket.findById(req.params.id);
     if (!ticket) return res.status(404).json({ success: false, error: "Ticket not found" });
 
-    console.log("Ticket:", ticket); // Log the entire ticket object
-
-    const commentIndex = ticket.comments.findIndex(comment => comment._id.toString() === req.params.commentId);
-
-    console.log("Comment Index:", commentIndex); // Log the comment index
-
+    const commentIndex = ticket.comment.findIndex(comment => comment._id.toString() === req.params.commentId);
     if (commentIndex === -1) return res.status(404).json({ success: false, error: "Comment not found" });
 
-    ticket.comments.splice(commentIndex, 1);
+    ticket.comment.splice(commentIndex, 1);
     await ticket.save();
 
     res.json({
@@ -441,8 +407,6 @@ router.delete("/api/ticket/:id/comment/:commentId", async (req, res) => {
     });
   }
 });
-
-
 
 
 
