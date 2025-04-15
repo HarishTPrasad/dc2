@@ -114,7 +114,11 @@ function Dashboard() {
                   <FaUserCircle size={40} />
                   <div>
                     <h4>{username}</h4>
-                    <small>Administrator</small>
+                    <small>{
+                              ['harish', 'kksuthar'].includes(username.toLowerCase())
+                                ? 'Administrator'
+                                : 'User'
+                            }</small>
                   </div>
                 </div>
                 <div style={styles.dropdownMenu}>
