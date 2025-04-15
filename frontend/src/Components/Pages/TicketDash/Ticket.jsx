@@ -1,144 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../API/api';
 
 function Ticket() {
   const username = sessionStorage.getItem("username") || "User";
   const navigate = useNavigate();
-  const [tickets, setTickets] = useState([
-    {
-      ticketNo: 'TCK-1000',
-      client: 'JNSB',
-      technology: 'React/Node.js',
-      subject: 'Dashboard Redesign',
-      priority: 'High',
-      assigned: 'Harish Prasad',
-      status: 'Open',
-      createdDate: '2025-03-20',
-      lastUpdated: '2025-03-25'
-    },
-    {
-      ticketNo: 'TCK-1001',
-      client: 'BWRUCB',
-      technology: 'USB Access',
-      subject: 'Need USB Access',
-      priority: 'High',
-      assigned: 'Bharat Suthar',
-      status: 'In Progress',
-      createdDate: '2025-03-18',
-      lastUpdated: '2025-03-24'
-    },
-    {
-      ticketNo: 'TCK-1002',
-      client: 'PNSB',
-      technology: 'Firewall Access',
-      subject: 'Need Firewall Access',
-      priority: 'Medium',
-      assigned: 'Laxman Suthar',
-      status: 'Completed',
-      createdDate: '2025-03-10',
-      lastUpdated: '2025-03-23'
-    },
-    {
-      ticketNo: 'TCK-1003',
-      client: 'VCOB',
-      technology: 'White list URL/IP/Port',
-      subject: 'Need to White List URL',
-      priority: 'Low',
-      assigned: 'Kailash Suthar',
-      status: 'Closed',
-      createdDate: '2025-03-05',
-      lastUpdated: '2025-03-22'
-    },
-    {
-      ticketNo: 'TCK-1004',
-      client: 'KNSB',
-      technology: 'Database Migration',
-      subject: 'MySQL to PostgreSQL Migration',
-      priority: 'High',
-      assigned: 'Harish Prasad',
-      status: 'Open',
-      createdDate: '2025-03-15',
-      lastUpdated: '2025-03-25'
-    },
-    {
-      ticketNo: 'TCK-1005',
-      client: 'RNBX',
-      technology: 'API Development',
-      subject: 'New Payment Gateway Integration',
-      priority: 'High',
-      assigned: 'Bharat Suthar',
-      status: 'In Progress',
-      createdDate: '2025-03-12',
-      lastUpdated: '2025-03-24'
-    },
-    {
-      ticketNo: 'TCK-1006',
-      client: 'SMCBL',
-      technology: 'Security',
-      subject: 'Implement Two-Factor Authentication',
-      priority: 'Medium',
-      assigned: 'Laxman Suthar',
-      status: 'In Progress',
-      createdDate: '2025-03-08',
-      lastUpdated: '2025-03-22'
-    },
-    {
-      ticketNo: 'TCK-1007',
-      client: 'INSB',
-      technology: 'Mobile App',
-      subject: 'iOS App Bug Fixes',
-      priority: 'Medium',
-      assigned: 'Kailash Suthar',
-      status: 'Open',
-      createdDate: '2025-03-22',
-      lastUpdated: '2025-03-25'
-    },
-    {
-      ticketNo: 'TCK-1008',
-      client: 'MUCB',
-      technology: 'Cloud Services',
-      subject: 'AWS Infrastructure Setup',
-      priority: 'High',
-      assigned: 'Harish Prasad',
-      status: 'In Progress',
-      createdDate: '2025-03-17',
-      lastUpdated: '2025-03-24'
-    },
-    {
-      ticketNo: 'TCK-1009',
-      client: 'GNCB',
-      technology: 'Data Analytics',
-      subject: 'Reporting Dashboard Implementation',
-      priority: 'Medium',
-      assigned: 'Bharat Suthar',
-      status: 'Completed',
-      createdDate: '2025-03-05',
-      lastUpdated: '2025-03-20'
-    },
-    {
-      ticketNo: 'TCK-1010',
-      client: 'VK-ENG',
-      technology: 'IoT',
-      subject: 'Device Firmware Update',
-      priority: 'Low',
-      assigned: 'Laxman Suthar',
-      status: 'Closed',
-      createdDate: '2025-02-28',
-      lastUpdated: '2025-03-15'
-    },
-  ]);
+  const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch tickets from API
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const response = await api.get('/ticket');
+        console.log('Ticket data:', response.data.data); // 👀 check this
+
+        setTickets(response.data.data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchTickets();
+  }, []);
 
   const [filter, setFilter] = useState('all');
-  const [sortConfig, setSortConfig] = useState({ key: 'ticketNo', direction: 'ascending' });
+  const [sortConfig, setSortConfig] = useState({ key: 'ticketno', direction: 'ascending' });
   const [assignedFilter, setAssignedFilter] = useState(null);
   const [showAssignedDropdown, setShowAssignedDropdown] = useState(false);
 
-
-  const assignees = [...new Set(tickets.map(ticket => ticket.assigned))];
+  const assignees = [...new Set(tickets.map(ticket => ticket.assignedto))];
 
   const handleFilter = (status) => {
     setFilter(status);
-    setAssignedFilter(null); 
+    setAssignedFilter(null);
   };
 
   const handleAssignedFilter = (assignee) => {
@@ -147,7 +45,7 @@ function Ticket() {
     } else {
       setAssignedFilter(assignee);
     }
-    setFilter('all'); 
+    setFilter('all');
     setShowAssignedDropdown(false);
   };
 
@@ -173,17 +71,19 @@ function Ticket() {
     return 0;
   });
 
-  const filteredTickets = filter === 'all' 
-    ? sortedTickets 
+  const filteredTickets = filter === 'all'
+    ? sortedTickets
     : sortedTickets.filter(ticket => ticket.status === filter);
 
-  
-  const finalTickets = assignedFilter 
-    ? filteredTickets.filter(ticket => ticket.assigned === assignedFilter)
+  const finalTickets = assignedFilter
+    ? filteredTickets.filter(ticket => ticket.assignedto === assignedFilter)
     : filteredTickets;
 
   const getPriorityClass = (priority) => {
-    switch(priority.toLowerCase()) {
+    if (!priority) {
+      return 'secondary'; // Default priority class if priority is undefined or null
+    }
+    switch (priority.toLowerCase()) {
       case 'high': return 'danger';
       case 'medium': return 'warning';
       case 'low': return 'success';
@@ -192,7 +92,10 @@ function Ticket() {
   };
 
   const getStatusClass = (status) => {
-    switch(status.toLowerCase()) {
+    if (!status) {
+      return 'secondary'; // Default status class if status is undefined or null
+    }
+    switch (status.toLowerCase()) {
       case 'open': return 'primary';
       case 'in progress': return 'info';
       case 'completed': return 'success';
@@ -201,7 +104,12 @@ function Ticket() {
     }
   };
 
-  
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   const buttonStyle = {
     borderRadius: '8px',
     border: '2px solid #1679AB',
@@ -219,24 +127,22 @@ function Ticket() {
     boxShadow: '0 0 0 0.2rem rgba(22, 121, 171, 0.25)'
   };
 
-  const hoverButtonStyle = {
-    boxShadow: '0 0 10px rgba(22, 121, 171, 0.5)',
-    transform: 'translateY(-1px)'
-  };
+  if (loading) return <div className="container mt-4">Loading tickets...</div>;
+  if (error) return <div className="container mt-4">Error: {error}</div>;
 
   return (
     <div className="container-fluid mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="mb-0">Ticket Dashboard</h1>
         <div>
-          <button 
-            className="btn btn-primary mr-2" 
-            style={{ backgroundColor: "#1679AB"}}
+          <button
+            className="btn btn-primary mr-2"
+            style={{ backgroundColor: "#1679AB" }}
             onClick={handleCreateNew}
           >
             <i className="fas fa-plus mr-2"></i>Create New Ticket
           </button>
-          <button className="btn btn-secondary mr-2" style={{ backgroundColor:"#A0C878"}}>
+          <button className="btn btn-secondary mr-2" style={{ backgroundColor: "#A0C878" }}>
             <i className="fas fa-file-export mr-2"></i>Export Tickets
           </button>
           <button className="btn btn-light">
@@ -248,40 +154,30 @@ function Ticket() {
       <div className="d-flex flex-wrap mb-4 align-items-center">
         <button
           style={filter === 'all' && !assignedFilter ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
           onClick={() => handleFilter('all')}
         >
           All Tickets
         </button>
         <button
           style={filter === 'Open' ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
           onClick={() => handleFilter('Open')}
         >
           Open
         </button>
         <button
           style={filter === 'In Progress' ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
           onClick={() => handleFilter('In Progress')}
         >
           In Progress
         </button>
         <button
           style={filter === 'Completed' ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
           onClick={() => handleFilter('Completed')}
         >
           Completed
         </button>
         <button
           style={filter === 'Closed' ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
           onClick={() => handleFilter('Closed')}
         >
           Closed
@@ -291,16 +187,14 @@ function Ticket() {
         <div className="position-relative">
           <button
             style={assignedFilter ? activeButtonStyle : buttonStyle}
-            onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-            onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
             onClick={() => setShowAssignedDropdown(!showAssignedDropdown)}
           >
             {assignedFilter ? `Assigned: ${assignedFilter}` : 'Filter by Assignee'}
             <i className={`fas fa-chevron-${showAssignedDropdown ? 'up' : 'down'} ml-2`}></i>
           </button>
-          
+
           {showAssignedDropdown && (
-            <div 
+            <div
               className="position-absolute bg-white shadow rounded mt-1"
               style={{ zIndex: 1000, minWidth: '200px' }}
               onMouseLeave={() => setShowAssignedDropdown(false)}
@@ -330,8 +224,8 @@ function Ticket() {
         <table className="table table-striped table-hover table-bordered">
           <thead className="thead-dark">
             <tr>
-              <th scope="col" onClick={() => requestSort('ticketNo')}>
-                Ticket No {sortConfig.key === 'ticketNo' && (
+              <th scope="col" onClick={() => requestSort('ticketno')}>
+                Ticket No {sortConfig.key === 'ticketno' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
@@ -340,23 +234,13 @@ function Ticket() {
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('technology')}>
-                Technology {sortConfig.key === 'technology' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
-              <th scope="col" onClick={() => requestSort('subject')}>
-                Subject {sortConfig.key === 'subject' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
               <th scope="col" onClick={() => requestSort('priority')}>
                 Priority {sortConfig.key === 'priority' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('assigned')}>
-                Assigned {sortConfig.key === 'assigned' && (
+              <th scope="col" onClick={() => requestSort('assignedto')}>
+                Assigned To {sortConfig.key === 'assignedto' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
@@ -365,13 +249,13 @@ function Ticket() {
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('createdDate')}>
-                Created {sortConfig.key === 'createdDate' && (
+              <th scope="col" onClick={() => requestSort('createdat')}>
+                Created {sortConfig.key === 'createdat' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
-              <th scope="col" onClick={() => requestSort('lastUpdated')}>
-                Last Updated {sortConfig.key === 'lastUpdated' && (
+              <th scope="col" onClick={() => requestSort('duedate')}>
+                Due Date {sortConfig.key === 'duedate' && (
                   <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
                 )}
               </th>
@@ -381,25 +265,26 @@ function Ticket() {
           <tbody>
             {finalTickets.map((ticket, index) => (
               <tr key={index}>
-                <th scope="row">{ticket.ticketNo}</th>
+                <th scope="row">{ticket.ticketno}</th>
                 <td>{ticket.client}</td>
-                <td>{ticket.technology}</td>
-                <td>{ticket.subject}</td>
                 <td>
                   <span className={`badge badge-${getPriorityClass(ticket.priority)}`}>
                     {ticket.priority}
                   </span>
                 </td>
-                <td>{ticket.assigned}</td>
+                <td>{ticket.assignedto}</td>
                 <td>
                   <span className={`badge badge-${getStatusClass(ticket.status)}`}>
                     {ticket.status}
                   </span>
                 </td>
-                <td>{ticket.createdDate}</td>
-                <td>{ticket.lastUpdated}</td>
+                <td>{formatDate(ticket.createdat)}</td>
+                <td>{formatDate(ticket.duedate)}</td>
                 <td>
-                  <button className="btn btn-sm btn-info mr-2">
+                  <button
+                    className="btn btn-sm btn-info mr-2"
+                    onClick={() => navigate(`/dashboard/tickets/${ticket._id}`)}
+                  >
                     <i className="fas fa-eye"></i>
                   </button>
                   <button className="btn btn-sm btn-warning">

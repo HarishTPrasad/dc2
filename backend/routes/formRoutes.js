@@ -4,6 +4,7 @@ const router = express.Router();
 // Models
 const User = require("../models/User");
 const formSchema = require("../models/FormDataModel");
+const Ticket = require("../models/Ticket");
 
 // Middleware
 router.use(express.json());
@@ -227,7 +228,7 @@ router.delete("/api/documents/:id", async (req, res) => {
 router.post("/api/ticket", async (req, res) => {
   try {
     console.log("Received Data:", req.body);
-    const newDoc = await formSchema.create(req.body);
+    const newDoc = await Ticket.create(req.body);
     res.status(201).json({
       success: true,
       data: newDoc,
@@ -254,12 +255,12 @@ router.get("/api/ticket", async (req, res) => {
 
     const skip = (page - 1) * limit;
 
-    const docs = await formSchema.find({}) // Removed filter object
+    const docs = await Ticket.find({}) // Removed filter object
       .sort({ [sortBy]: sortOrder === 'desc' ? -1 : 1 })
       .skip(skip)
       .limit(parseInt(limit));
 
-    const total = await formSchema.countDocuments({}); // Removed filter object
+    const total = await Ticket.countDocuments({}); // Removed filter object
 
     res.json({
       success: true,
@@ -280,7 +281,7 @@ router.get("/api/ticket", async (req, res) => {
 // Get Single Document
 router.get("/api/ticket/:id", async (req, res) => {
   try {
-    const doc = await formSchema.findById(req.params.id);
+    const doc = await Ticket.findById(req.params.id);
     if (!doc) return res.status(404).json({ success: false, error: "Document not found" });
     res.json({ success: true, data: doc });
   } catch (error) {
@@ -295,7 +296,7 @@ router.get("/api/ticket/:id", async (req, res) => {
 // Update Document
 router.put("/api/ticket/:id", async (req, res) => {
   try {
-    const updatedDoc = await formSchema.findByIdAndUpdate(
+    const updatedDoc = await Ticket.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true, runValidators: true }
@@ -318,7 +319,7 @@ router.put("/api/ticket/:id", async (req, res) => {
 // Delete Document
 router.delete("/api/ticket/:id", async (req, res) => {
   try {
-    const deletedDoc = await formSchema.findByIdAndDelete(req.params.id);
+    const deletedDoc = await Ticket.findByIdAndDelete(req.params.id);
     if (!deletedDoc) return res.status(404).json({ success: false, error: "Document not found" });
     res.json({ success: true, message: "Document deleted successfully" });
   } catch (error) {
