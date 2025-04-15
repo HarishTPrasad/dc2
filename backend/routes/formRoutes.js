@@ -243,30 +243,23 @@ router.post("/api/ticket", async (req, res) => {
   }
 });
 
-// Get All Documents with Filtering
 router.get("/api/ticket", async (req, res) => {
   try {
     const {
-      status,
-      assignedTo,
       sortBy = 'createdAt',
       sortOrder = 'desc',
       page = 1,
       limit = 10
     } = req.query;
 
-    const filter = {};
-    if (status) filter.implementationStatus = status;
-    if (assignedTo) filter.implementationAssigned = assignedTo;
-
     const skip = (page - 1) * limit;
 
-    const docs = await formSchema.find(filter)
+    const docs = await formSchema.find({}) // Removed filter object
       .sort({ [sortBy]: sortOrder === 'desc' ? -1 : 1 })
       .skip(skip)
       .limit(parseInt(limit));
 
-    const total = await formSchema.countDocuments(filter);
+    const total = await formSchema.countDocuments({}); // Removed filter object
 
     res.json({
       success: true,
@@ -278,13 +271,9 @@ router.get("/api/ticket", async (req, res) => {
         totalPages: Math.ceil(total / limit)
       }
     });
-
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: "Failed to fetch documents",
-      details: error.message
-    });
+    console.error("Error fetching tickets:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 });
 

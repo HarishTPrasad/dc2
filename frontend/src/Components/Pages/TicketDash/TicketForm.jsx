@@ -364,6 +364,8 @@ function TicketForm() {
         navigate('/dashboard/ticket', { 
           state: { message: 'Ticket created successfully!' } 
         });
+
+        console.log(formData)
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create ticket');
