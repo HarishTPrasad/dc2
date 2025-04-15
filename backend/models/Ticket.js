@@ -19,7 +19,7 @@ const TicketSchema = new mongoose.Schema({
 
       }
   },
-  comments: [{
+  comment: [{
     commenttext: String,
     commentby: String,
     timestamp: {

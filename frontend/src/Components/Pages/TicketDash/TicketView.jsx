@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import api from '../../API/api';
 
 function TicketView() {
+  const username = sessionStorage.getItem("username") || "User";
   const { ticketId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function TicketView() {
   const [error, setError] = useState(null);
   const [reassignOptions, setReassignOptions] = useState([]);
   const [showReassignDropdown, setShowReassignDropdown] = useState(false);
+  
 
   useEffect(() => {
     const fetchTicketDetails = async () => {
@@ -41,6 +43,8 @@ function TicketView() {
       }
     };
 
+
+
     if (location.state && location.state.ticket) {
       setTicket(location.state.ticket);
       setComments(location.state.ticket.comments || []);
@@ -49,6 +53,7 @@ function TicketView() {
     } else {
       fetchTicketDetails();
       fetchReassignOptions();
+
     }
   }, [ticketId, location.state]);
 
@@ -57,9 +62,9 @@ function TicketView() {
     if (!newComment.trim()) return;
 
     try {
-      const response = await api.post(`/ticket/${ticket._id}/comment`, {
-        text: newComment,
-        isInternal: isInternalComment,
+      const response = await api.post(`/ticket/${ticket._id}/comments`, {
+        commenttext: newComment,
+        commentby: username,
       });
 
       setComments([...comments, response.data.data]);
@@ -70,23 +75,15 @@ function TicketView() {
     }
   };
 
-  // const handleFileUpload = async (e) => {
-  //   const files = Array.from(e.target.files);
-  //   const formData = new FormData();
-  //   files.forEach((file) => formData.append('attachments', file));
-
-  //   try {
-  //     const response = await api.post(`/ticket/${ticketId}/attachment`, formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-  //     setAttachments([...attachments, ...response.data.data]);
-  //   } catch (err) {
-  //     console.error('Error uploading files:', err);
-  //     alert('Failed to upload files');
-  //   }
-  // };
+  const handleCommentDelete = async (commentId) => {
+    try {
+      await api.delete(`/ticket/${ticket._id}/comment/${commentId}`);
+      setComments(comments.filter((comment) => comment._id !== commentId));
+    } catch (err) {
+      console.error('Error deleting comment:', err);
+      alert('Failed to delete comment');
+    }
+  };
 
   const getPriorityClass = (priority) => {
     if (!priority) return 'secondary';
@@ -120,7 +117,7 @@ function TicketView() {
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
@@ -153,18 +150,14 @@ function TicketView() {
 
   const handleCloseTicket = async () => {
     try {
-      // await api.put(`/ticket/${ticketId}`, { status: 'Closed' });
-      // setTicket({ ...ticket, status: 'Closed' });
       await api.put(`/ticket/${ticket._id}`, { status: 'Closed' });
-    const response = await api.get(`/ticket/${ticket._id}`);
-    setTicket(response.data.data);
+      const response = await api.get(`/ticket/${ticket._id}`);
+      setTicket(response.data.data);
     } catch (err) {
       console.error('Error closing ticket:', err);
       alert('Failed to close ticket');
     }
   };
-
-  
 
   const handleReassign = async (assignedTo) => {
     try {
@@ -285,6 +278,10 @@ function TicketView() {
                         <span>Last Updated</span>
                         <span>{formatDate(ticket.updatedat)}</span>
                       </li>
+                      <li className="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Ticket ID</span>
+                        <span>{ticket._id}</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -325,15 +322,18 @@ function TicketView() {
                     className={`mb-3 p-3 rounded ${comment.isInternal ? 'bg-light' : 'bg-white border'}`}
                   >
                     <div className="d-flex justify-content-between mb-2">
-                      <strong>{comment.author}</strong>
-                      <small className="text-muted">{formatDate(comment.createdAt)}</small>
+                      <strong>{comment.commentby}</strong>
+                      <small className="text-muted">{formatDate(comment.timestamp)}</small>
                     </div>
-                    <p className="mb-0">{comment.text}</p>
+                    <p className="mb-0">{comment.commenttext}</p>
                     {comment.isInternal && (
                       <small className="text-muted">
                         <i className="fas fa-lock mr-1"></i>Internal note
                       </small>
                     )}
+                    <button className="btn btn-danger btn-sm mt-2" onClick={() => handleCommentDelete(comment._id)}>
+                      Delete
+                    </button>
                   </div>
                 ))}
               </div>
