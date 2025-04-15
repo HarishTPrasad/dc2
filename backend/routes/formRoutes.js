@@ -332,6 +332,82 @@ router.delete("/api/ticket/:id", async (req, res) => {
 });
 
 
+router.post("/api/ticket/:id/comments", async (req, res) => {
+  try {
+    const ticket = await Ticket.findById(req.params.id);
+    if (!ticket) return res.status(404).json({ success: false, error: "Ticket not found" });
+
+    const newComment = {
+      commenttext: req.body.commenttext,
+      commentby: req.body.commentby,
+    };
+
+    ticket.comments.push(newComment);
+    await ticket.save();
+
+    res.status(201).json({
+      success: true,
+      data: ticket,
+      message: "Comment added successfully"
+    });
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to add comment",
+      details: error.message
+    });
+  }
+});
+
+// Get Comments for a Ticket
+router.get("/api/ticket/:id/comments", async (req, res) => {
+  try {
+    const ticket = await Ticket.findById(req.params.id);
+    if (!ticket) return res.status(404).json({ success: false, error: "Ticket not found" });
+
+    res.json({
+      success: true,
+      data: ticket.comments,
+      message: "Comments retrieved successfully"
+    });
+  } catch (error) {
+    console.error("Error retrieving comments:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to retrieve comments",
+      details: error.message
+    });
+  }
+});
+
+// Delete a Comment from a Ticket
+router.delete("/api/ticket/:id/comments/:commentId", async (req, res) => {
+  try {
+    const ticket = await Ticket.findById(req.params.id);
+    if (!ticket) return res.status(404).json({ success: false, error: "Ticket not found" });
+
+    const commentIndex = ticket.comments.findIndex(comment => comment._id.toString() === req.params.commentId);
+    if (commentIndex === -1) return res.status(404).json({ success: false, error: "Comment not found" });
+
+    ticket.comments.splice(commentIndex, 1);
+    await ticket.save();
+
+    res.json({
+      success: true,
+      data: ticket,
+      message: "Comment deleted successfully"
+    });
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to delete comment",
+      details: error.message
+    });
+  }
+});
+
 
 
 
