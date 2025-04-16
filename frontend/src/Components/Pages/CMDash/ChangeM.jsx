@@ -24,12 +24,18 @@ function ChangeM() {
     return `${day}-${month}-${year}`;
   };
 
+  // Function to truncate text to show only 5-7 words
+  const truncateText = (text) => {
+    if (!text) return '';
+    const words = text.split(' ');
+    if (words.length <= 7) return text;
+    return words.slice(0, 6).join(' ') + '...';
+  };
+
   const verdanaStyle = {
     fontFamily: 'Verdana, Geneva, sans-serif'
   };
 
-
-  
   useEffect(() => {
     const fetchTickets = async () => {
       try {
@@ -172,7 +178,6 @@ function ChangeM() {
     fontSize: '0.8rem', // Or any other smaller unit like '12px', '0.7em'
   };
   
-
   const activeButtonStyle = {
     ...buttonStyle,
     backgroundColor: '#1679AB',
@@ -340,7 +345,7 @@ function ChangeM() {
                 <th scope="row">{ticket.changeRequestNo}</th>
                 <td>{ticket.client}</td>
                 <td>{ticket.technology}</td>
-                <td>{ticket.changeDescription}</td>
+                <td title={ticket.changeDescription}>{truncateText(ticket.changeDescription)}</td>
                 <td>{formatDate(ticket.date)}</td>
                 <td>{ticket.implementationAssigned || 'Unassigned'}</td>
                 <td>

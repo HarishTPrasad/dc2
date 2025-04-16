@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import logo from '../Images/dclogo.png';
-import { FaUserCircle, FaBell, FaSignOutAlt, FaTicketAlt, FaClipboardList, FaCogs, FaHome, FaChevronRight, FaUser, FaCog } from "react-icons/fa";
+import { FaUserCircle, FaBell, FaSignOutAlt, FaTicketAlt, FaCogs, FaHome, FaChevronRight, FaUser, FaCog } from "react-icons/fa";
 
 function Dashboard() {
   const username = sessionStorage.getItem("username") || "User";
@@ -214,7 +214,7 @@ function Dashboard() {
               </div>
               <FaChevronRight style={styles.arrowIcon} />
             </button>
-            <button 
+            {/* <button 
               style={styles.menuButton} 
               onClick={() => navigate("/dashboard/ticket")}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.menuHover}
@@ -225,7 +225,7 @@ function Dashboard() {
                 <span>Ticket Management</span>
               </div>
               <FaChevronRight style={styles.arrowIcon} />
-            </button>
+            </button> */}
           </div>
 
           {/* Bottom Section with Logout Button */}

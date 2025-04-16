@@ -307,6 +307,7 @@ const styles = {
     overflowY: "auto",
     padding: "20px",
     backgroundColor: "#f5f5f5",
+    fontFamily: 'Verdana, Geneva, sans-serif'
   },
   formContainer: {
     maxWidth: "1200px",
@@ -315,16 +316,19 @@ const styles = {
     borderRadius: "8px",
     boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
     padding: "30px",
+     fontFamily: 'Verdana, Geneva, sans-serif'
   },
   formHeader: {
     textAlign: "center",
     marginBottom: "30px",
     paddingBottom: "20px",
     borderBottom: "1px solid #eee",
+     fontFamily: 'Verdana, Geneva, sans-serif'
   },
   clientSelectContainer: {
     margin: "0 auto",
     maxWidth: "800px",
+     fontFamily: 'Verdana, Geneva, sans-serif'
   },
   clientSelect: {
     width: "100%",
@@ -333,16 +337,19 @@ const styles = {
     borderRadius: "4px",
     border: "1px solid #ddd",
     marginBottom: "10px",
+     fontFamily: 'Verdana, Geneva, sans-serif'
   },
   formTitle: {
     color: "#074173",
     marginTop: "10px",
     fontSize: "24px",
+     fontFamily: 'Verdana, Geneva, sans-serif'
   },
   formSections: {
     display: "flex",
     flexDirection: "column",
     gap: "30px",
+     fontFamily: 'Verdana, Geneva, sans-serif'
   },
   buttonContainer: {
     display: "flex",
@@ -351,10 +358,12 @@ const styles = {
     marginTop: "40px",
     paddingTop: "20px",
     borderTop: "1px solid #eee",
+     fontFamily: 'Verdana, Geneva, sans-serif'
   },
   submitButton: {
     padding: "12px 24px",
     fontSize: "16px",
+     fontFamily: 'Verdana, Geneva, sans-serif',
     backgroundColor: "#1679AB",
     color: "white",
     border: "none",
@@ -371,6 +380,7 @@ const styles = {
     padding: "12px 24px",
     fontSize: "16px",
     backgroundColor: "#6c757d",
+     fontFamily: 'Verdana, Geneva, sans-serif',
     color: "white",
     border: "none",
     borderRadius: "6px", 

@@ -167,6 +167,12 @@ function TicketView() {
     }
   };
 
+  const verdanaStyle = {
+    fontFamily: 'Verdana, Geneva, sans-serif'
+  };
+
+
+
   const handleEditTicket = () => {
     navigate(`/dashboard/ticketupdate`, { state: { ticket: ticket } });
   };
@@ -176,7 +182,7 @@ function TicketView() {
   if (!ticket) return <div className="container mt-4">Ticket not found.</div>;
 
   return (
-    <div className="container-fluid mt-4">
+    <div className="container-fluid mt-4" style={verdanaStyle}>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="mb-0">Ticket #{ticket.ticketno}</h1>
         <div>
@@ -360,7 +366,7 @@ function TicketView() {
                     </div>
                   </form>
                 </div>
-              </div>
+              </div>                                                                                                                              
             </div>
           )}
         </div>
