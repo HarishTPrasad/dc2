@@ -8,7 +8,7 @@ function TicketView() {
   const location = useLocation();
   const navigate = useNavigate();
   const [ticket, setTicket] = useState(null);
-  const [comment, setcomment] = useState([]);
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [isInternalComment, setIsInternalComment] = useState(false);
   const [activeTab, setActiveTab] = useState('details');
@@ -17,7 +17,6 @@ function TicketView() {
   const [error, setError] = useState(null);
   const [reassignOptions, setReassignOptions] = useState([]);
   const [showReassignDropdown, setShowReassignDropdown] = useState(false);
-  
 
   useEffect(() => {
     const fetchTicketDetails = async () => {
@@ -25,7 +24,7 @@ function TicketView() {
       try {
         const response = await api.get(`/ticket/${ticket._id}`);
         setTicket(response.data.data);
-        setcomment(response.data.data.comment || []);
+        setComments(response.data.data.comment || []);
         setAttachments(response.data.data.attachments || []);
         setLoading(false);
       } catch (err) {
@@ -43,31 +42,28 @@ function TicketView() {
       }
     };
 
-
-
     if (location.state && location.state.ticket) {
       setTicket(location.state.ticket);
-      setcomment(location.state.ticket.comment || []);
+      setComments(location.state.ticket.comment || []);
       setAttachments(location.state.ticket.attachments || []);
       setLoading(false);
     } else {
       fetchTicketDetails();
       fetchReassignOptions();
-
     }
   }, [ticketId, location.state]);
 
-  const handlecommentubmit = async (e) => {
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
 
     try {
-      const response = await api.post(`/ticket/${ticket._id}/comment`, {
+      await api.post(`/ticket/${ticket._id}/comment`, {
         commenttext: newComment,
         commentby: username,
       });
-
-      setcomment([...comment, response.data.data]);
+      const response = await api.get(`/ticket/${ticket._id}`);
+      setComments(response.data.data.comment || []);
       setNewComment('');
     } catch (err) {
       console.error('Error adding comment:', err);
@@ -78,7 +74,8 @@ function TicketView() {
   const handleCommentDelete = async (commentId) => {
     try {
       await api.delete(`/ticket/${ticket._id}/comment/${commentId}`);
-      setcomment(comment.filter((comment) => comment._id !== commentId));
+      const response = await api.get(`/ticket/${ticket._id}`);
+      setComments(response.data.data.comment || []);
     } catch (err) {
       console.error('Error deleting comment:', err);
       alert('Failed to delete comment');
@@ -205,7 +202,7 @@ function TicketView() {
                 className={`nav-link ${activeTab === 'comment' ? 'active' : ''}`}
                 onClick={() => setActiveTab('comment')}
               >
-                <i className="fas fa-comment mr-2"></i>comment ({comment.length})
+                <i className="fas fa-comment mr-2"></i>comment ({comments.length})
               </button>
             </li>
           </ul>
@@ -316,7 +313,7 @@ function TicketView() {
           {activeTab === 'comment' && (
             <div>
               <div className="mb-4">
-                {comment.map((comment) => (
+                {comments.map((comment) => (
                   <div
                     key={comment._id}
                     className={`mb-3 p-3 rounded ${comment.isInternal ? 'bg-light' : 'bg-white border'}`}
@@ -331,9 +328,11 @@ function TicketView() {
                         <i className="fas fa-lock mr-1"></i>Internal note
                       </small>
                     )}
-                    <button className="btn btn-danger btn-sm mt-2" onClick={() => handleCommentDelete(comment._id)}>
-                      Delete
-                    </button>
+                    {comment.commentby === username && (
+                      <button className="btn btn-danger btn-sm mt-2" onClick={() => handleCommentDelete(comment._id)}>
+                        Delete
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -343,7 +342,7 @@ function TicketView() {
                   <h5 className="mb-0">Add Comment</h5>
                 </div>
                 <div className="card-body">
-                  <form onSubmit={handlecommentubmit}>
+                  <form onSubmit={handleCommentSubmit}>
                     <div className="form-group">
                       <textarea
                         className="form-control"
