@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import api from "../API/api";
+import { FaUsers, FaPlusCircle, FaUserCircle, FaChartLine,  } from 'react-icons/fa'; // Import icons
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState({ username: '', password: '' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+
+  const verdanaStyle = {
+    fontFamily: 'Verdana, Geneva, sans-serif'
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -37,15 +44,20 @@ const Admin = () => {
     }
   };
 
-  const handleRemoveUser = async (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await api.delete(`/users/${id}`);
-        setUsers(users.filter(user => user._id !== id));
-      } catch (err) {
-        console.error(err);
-        setError(err.message);
-      }
+  const confirmDelete = (id) => {
+    setUserToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const handleRemoveUser = async () => {
+    try {
+      await api.delete(`/users/${userToDelete}`);
+      setUsers(users.filter(user => user._id !== userToDelete));
+      setShowDeleteModal(false);
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+      setShowDeleteModal(false);
     }
   };
 
@@ -53,8 +65,33 @@ const Admin = () => {
   if (error) return <div className="container mt-5 text-center text-danger">Error: {error}</div>;
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={verdanaStyle}>
       <h1 className="mb-4 text-center text-info">Admin Dashboard</h1>
+
+      {/* Delete Confirmation Modal */}
+      <div className={`modal fade ${showDeleteModal ? 'show d-block' : ''}`} tabIndex="-1" style={{ backgroundColor: showDeleteModal ? 'rgba(0,0,0,0.5)' : 'transparent' }}>
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Confirm Delete</h5>
+              <button type="button" className="close" onClick={() => setShowDeleteModal(false)}>
+                <span>&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>Are you sure you want to delete this user? This action cannot be undone.</p>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancel
+              </button>
+              <button type="button" className="btn btn-danger" onClick={handleRemoveUser}>
+                Delete User
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Summary Cards */}
       <div className="row mb-4">
@@ -69,7 +106,7 @@ const Admin = () => {
                   <div className="h5 mb-0 font-weight-bold text-gray-800">{users.length}</div>
                 </div>
                 <div className="col-auto">
-                  <i className="fas fa-users fa-2x text-gray-300"></i>
+                  {/* <FaUsers className="fa-2x text-gray-300" /> */}
                 </div>
               </div>
             </div>
@@ -93,7 +130,7 @@ const Admin = () => {
                   <p className="mt-2 text-sm text-muted">Get Data: HERE</p>
                 </div>
                 <div className="col-auto">
-                  <i className="fas fa-chart-line fa-2x text-gray-300"></i>
+                  <FaChartLine className="fa-2x text-gray-300" />
                 </div>
               </div>
             </div>
@@ -103,7 +140,9 @@ const Admin = () => {
 
       {/* Add User Form */}
       <div className="card mb-4 shadow">
-        <div className="card-header bg-dark text-white">Add New User</div>
+        <div className="card-header bg-dark text-white">
+          <FaPlusCircle className="mr-2" /> Add New User
+        </div>
         <div className="card-body">
           <form onSubmit={handleAddUser}>
             <div className="form-row">
@@ -137,7 +176,7 @@ const Admin = () => {
 
       {/* User List Table */}
       <div className="card shadow">
-        <div className="card-header bg-dark text-white">User List</div>
+        <div className="card-header bg-dark text-white">  <FaUsers className="fa-2x text-gray-300" />  User List</div>
         <div className="card-body p-0">
           <div className="table-responsive">
             <table className="table table-hover mb-0">
@@ -150,12 +189,13 @@ const Admin = () => {
               <tbody>
                 {users.map(user => (
                   <tr key={user._id}>
-                    <td>{user.username}</td>
+                    <td>  <FaUserCircle size={20} />  {user.username}</td>
                     <td>
                       <button
                         className="btn btn-sm btn-outline-danger"
-                        onClick={() => handleRemoveUser(user._id)}
+                        onClick={() => confirmDelete(user._id)}
                       >
+                        {/* <FaTrashAlt className="mr-1" />  */}
                         Remove
                       </button>
                     </td>

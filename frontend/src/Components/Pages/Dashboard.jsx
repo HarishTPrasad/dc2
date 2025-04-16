@@ -42,6 +42,8 @@ function Dashboard() {
     { id: 3, text: "Password change required", time: "3 days ago", read: true },
   ];
 
+  
+
   return (
     <div style={styles.container}>
       {/* Top Navigation Bar */}
@@ -283,7 +285,7 @@ const styles = {
     height: "100vh",
     overflow: "hidden",
     backgroundColor: colors.background,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    fontFamily: 'Verdana, Geneva, sans-serif'
   },
   navbar: {
     backgroundColor: colors.primary,

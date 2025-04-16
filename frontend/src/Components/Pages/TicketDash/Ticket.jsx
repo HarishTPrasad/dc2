@@ -151,6 +151,10 @@ function Ticket() {
       ]
     });
   };
+  const verdanaStyle = {
+    fontFamily: 'Verdana, Geneva, sans-serif'
+  };
+
 
   const handleRowClick = (ticket) => {
     navigate('/dashboard/ticketview', { state: { ticket } });
@@ -160,7 +164,7 @@ function Ticket() {
   if (error) return <div className="container mt-4">Error: {error}</div>;
 
   return (
-    <div className="container-fluid mt-1">
+    <div className="container-fluid mt-1" style={verdanaStyle}>
       <div className="d-flex justify-content-between align-items-center mb-1">
         <h3 className="mb-0">Ticket Dashboard</h3>
         <div>
@@ -229,8 +233,8 @@ function Ticket() {
                 <td>{formatDate(ticket.duedate)}</td>
                 <td>{ticket.description}</td>
                 <td>
-                  <button className="btn btn-sm btn-info mr-2" onClick={(e) => { e.stopPropagation(); navigate(`/dashboard/tickets/${ticket._id}`) }}><i className="fas fa-eye"></i></button>
-                  <button className="btn btn-sm btn-warning mr-2" onClick={(e) => e.stopPropagation()}><i className="fas fa-edit"></i></button>
+                  <button className="btn btn-sm btn-info mr-2" ><i className="fas fa-eye"></i></button>
+              
                   <button className="btn btn-sm btn-danger" onClick={(e) => handleDelete(ticket._id, e)}><i className="fas fa-trash"></i></button>
                 </td>
               </tr>

@@ -24,6 +24,11 @@ function ChangeM() {
     return `${day}-${month}-${year}`;
   };
 
+  const verdanaStyle = {
+    fontFamily: 'Verdana, Geneva, sans-serif'
+  };
+
+
   
   useEffect(() => {
     const fetchTickets = async () => {
@@ -184,7 +189,7 @@ function ChangeM() {
   if (error) return <div className="container mt-4">Error: {error}</div>;
 
   return (
-    <div className="container-fluid mt-1">
+    <div className="container-fluid mt-1" style={verdanaStyle}>
       <div className="d-flex justify-content-between align-items-center mb-1">
         <h3 className="mb-1">Change Management</h3>
         <div>

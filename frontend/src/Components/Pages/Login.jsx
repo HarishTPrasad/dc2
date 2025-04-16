@@ -172,6 +172,7 @@ const styles = {
     flexDirection: "column",
     height: "100vh",
     backgroundColor: "#f9f9f9",
+     fontFamily: 'Verdana, Geneva, sans-serif'
   },
   navbar: {
     backgroundColor: "#1a365d",
