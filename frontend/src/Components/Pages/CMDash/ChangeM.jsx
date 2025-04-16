@@ -283,7 +283,7 @@ function ChangeM() {
         </div>
       </div>
 
-      <div className="table-responsive" style={smallTextStyle}>
+      <div className="table-responsive table-sm" style={smallTextStyle}>
         <table className="table table-striped table-hover table-bordered">
           <thead className="thead-dark">
             <tr>

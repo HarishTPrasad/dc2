@@ -202,7 +202,7 @@ function Ticket() {
         </div>
       </div>
 
-      <div className="table-responsive" style={smallTextStyle}>
+      <div className="table-responsive table-sm" style={smallTextStyle}>
         <table className="table table-striped table-hover table-bordered">
           <thead className="thead-dark">
             <tr>
@@ -213,6 +213,7 @@ function Ticket() {
               <th scope="col" onClick={() => requestSort('status')}>Status {sortConfig.key === 'status' && (<i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>)}</th>
               <th scope="col" onClick={() => requestSort('createdat')}>Created {sortConfig.key === 'createdat' && (<i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>)}</th>
               <th scope="col" onClick={() => requestSort('duedate')}>Due Date {sortConfig.key === 'duedate' && (<i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>)}</th>
+              <th scope="col" onClick={() => requestSort('description')}>Description {sortConfig.key === 'description' && (<i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>)}</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -226,6 +227,7 @@ function Ticket() {
                 <td><span className={`badge badge-${getStatusClass(ticket.status)}`}>{ticket.status}</span></td>
                 <td>{formatDate(ticket.createdat)}</td>
                 <td>{formatDate(ticket.duedate)}</td>
+                <td>{ticket.description}</td>
                 <td>
                   <button className="btn btn-sm btn-info mr-2" onClick={(e) => { e.stopPropagation(); navigate(`/dashboard/tickets/${ticket._id}`) }}><i className="fas fa-eye"></i></button>
                   <button className="btn btn-sm btn-warning mr-2" onClick={(e) => e.stopPropagation()}><i className="fas fa-edit"></i></button>

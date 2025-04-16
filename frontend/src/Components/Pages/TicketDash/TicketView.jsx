@@ -280,7 +280,7 @@ function TicketView() {
                       </li>
                       <li className="list-group-item d-flex justify-content-between align-items-center">
                         <span>Ticket ID</span>
-                        <span>{ticket._id}</span>
+                        <span>{ticket.ticketno}</span>
                       </li>
                     </ul>
                   </div>
