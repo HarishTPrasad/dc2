@@ -18,6 +18,7 @@ const formatDate = (dateString) => {
 
 function Oldview() {
   const [renderKey, setRenderKey] = useState(0);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const location = useLocation();
   const contentRef = useRef();
   const [isEditing, setIsEditing] = useState(false);
@@ -42,7 +43,6 @@ function Oldview() {
     const { name, value, type, checked } = e.target;
     
     if (type === "checkbox") {
-      // Handle nested objects for checkboxes
       const [parent, child] = name.split('.');
       setFormData(prev => ({
         ...prev,
@@ -69,11 +69,11 @@ function Oldview() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-     
       const response = await api.put(`/documents/${ticket._id}`, formData);
       setticket(response.data);
       setIsEditing(false);
-      alert("CMR Decument updated successfully!");
+      alert("CMR Document updated successfully!");
+      navigate("/dashboard/changem");
     } catch (error) {
       console.error("Error updating ticket:", error);
       alert("Failed to update ticket");
@@ -81,6 +81,7 @@ function Oldview() {
   };
 
   const downloadPDF = () => {
+    setIsGeneratingPDF(true);
     setRenderKey((prevKey) => prevKey + 1);
 
     setTimeout(() => {
@@ -113,6 +114,7 @@ function Oldview() {
         }
 
         pdf.save("Change_Request_Form.pdf");
+        setIsGeneratingPDF(false);
       });
     }, 300);
   };
@@ -166,32 +168,136 @@ function Oldview() {
     );
   };
 
+  // Styles for web view
+  const webStyles = {
+    container: {
+      paddingLeft: "7%",
+      paddingRight: "7%",
+      paddingTop: "1%",
+      fontSize: "14px",
+      fontFamily: "Verdana",
+      color: "black",
+      maxWidth: "1200px",  // Reduced from full width
+      margin: "0 auto",   // Center the container
+    },
+    content: { 
+      marginBottom: "10px",
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+      border: "1px solid black",
+    },
+    th: {
+      border: "1px solid black",
+      padding: "0.7%",
+      textAlign: "left",
+      fontFamily: "Verdana",
+      color: "black",
+    },
+    td: {
+      border: "1px solid black",
+      padding: "0.7%",
+      fontFamily: "Verdana",
+      color: "black",
+    },
+    header: {
+      textAlign: "center",
+      fontSize: "25px",
+      fontFamily: "Verdana",
+      color: "black",
+    },
+    subheader: {
+      textAlign: "center",
+      fontSize: "15px",
+      fontFamily: "Verdana",
+      color: "black",
+    },
+    button: {
+      // your existing styles...
+      marginRight: '10px',
+    },
+  };
+
+  // Styles for PDF generation
+  const pdfStyles = {
+    container: {
+      paddingLeft: "7%",
+      paddingRight: "7%",
+      paddingTop: "1%",
+      fontSize: "1.6rem",
+      fontFamily: "Verdana",
+      color: "black",
+    },
+    content: { 
+      marginBottom: "3%",
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+      border: "1px solid black",
+    },
+    th: {
+      border: "1px solid black",
+      padding: "0.7%",
+      textAlign: "left",
+      fontFamily: "Verdana",
+      color: "black",
+    },
+    td: {
+      border: "1px solid black",
+      padding: "0.7%",
+      fontFamily: "Verdana",
+      color: "black",
+    },
+    header: {
+      textAlign: "center",
+      fontSize: "60px",
+      fontFamily: "Verdana",
+      color: "black",
+    },
+    subheader: {
+      textAlign: "center",
+      fontSize: "40px",
+      fontFamily: "Verdana",
+      color: "black",
+    }
+  };
+
+  // Use PDF styles when generating PDF, otherwise use web styles
+  const styles = isGeneratingPDF ? pdfStyles : webStyles;
+
   return (
     <>
-      <div style={styles.container} ref={contentRef} key={renderKey}>
+      <div 
+        className={isGeneratingPDF ? "pdf-mode" : "web-mode"}
+        style={styles.container} 
+        ref={contentRef} 
+        key={renderKey}
+      >
         {isEditing ? (
           <form onSubmit={handleSubmit}>
             <div style={styles.content}>
               <div className="head">
-                <h1 style={{ textAlign: "center", ...styles.font, fontSize: "60px" }}>
+                <h1 style={styles.header}>
                   <input
                     type="text"
                     name="client"
                     value={formData.client || ""}
                     onChange={handleInputChange}
-                    style={{ width: "100%", textAlign: "center", fontSize: "60px", ...styles.font }}
+                    style={{ ...styles.header, width: "100%", border: "none", textAlign: "center" }}
                   />
                 </h1>
-                <h2 style={{ textAlign: "center", ...styles.font, fontSize: "40px" }}>Change Request Form</h2>
+                <h2 style={styles.subheader}>Change Request Form</h2>
               </div>
             </div>
 
             {/* Table 1: Change Description / Change Request */}
-            <div style={{...styles.content, marginTop:"100px"}}>
+            <div style={{...styles.content, marginTop: isGeneratingPDF ? "10px" : "30px"}}>
               <table style={styles.table}>
                 <thead>
                   <tr>
-                    <th colSpan="4" style={{ ...styles.th, textAlign: "center",backgroundColor: "#d3d3d3" }}>
+                    <th colSpan="4" style={{ ...styles.th, textAlign: "center", backgroundColor: "#d3d3d3" }}>
                       Change Description / Change Request : {renderField("project", formData.project)}
                     </th>
                   </tr>
@@ -240,7 +346,7 @@ function Oldview() {
               <table style={styles.table}>
                 <thead>
                   <tr>
-                    <th colSpan="6" style={{ ...styles.th, textAlign: "center", verticalAlign: "middle",backgroundColor: "#d3d3d3" }}>
+                    <th colSpan="6" style={{ ...styles.th, textAlign: "center", verticalAlign: "middle", backgroundColor: "#d3d3d3" }}>
                       Change Impact Evaluation
                     </th>
                   </tr>
@@ -358,7 +464,7 @@ function Oldview() {
               <table style={styles.table}>
                 <thead>
                   <tr>
-                    <th colSpan="5" style={{ ...styles.th, textAlign: "center",backgroundColor: "#d3d3d3" }}>
+                    <th colSpan="5" style={{ ...styles.th, textAlign: "center", backgroundColor: "#d3d3d3" }}>
                       Change Approval or Rejection
                     </th>
                   </tr>
@@ -392,11 +498,11 @@ function Oldview() {
             </div>
 
             {/* Table 4: Change Implementation Details */}
-            <div style={{...styles.content, marginTop:"30%"}}>
+            <div style={{...styles.content, marginTop: isGeneratingPDF ? "25%" : "10px"}}>
               <table style={styles.table}>
                 <thead>
                   <tr>
-                    <th colSpan="4" style={{ ...styles.th, textAlign: "center",backgroundColor: "#d3d3d3" }}>
+                    <th colSpan="4" style={{ ...styles.th, textAlign: "center", backgroundColor: "#d3d3d3" }}>
                       Change Implementation Details
                     </th>
                   </tr>
@@ -419,11 +525,11 @@ function Oldview() {
             </div>
 
             {/* Table 5: Change Implementation */}
-            <div  style={styles.content}  >
+            <div style={styles.content}>
               <table style={styles.table}>
                 <thead>
                   <tr>
-                    <th colSpan="4" style={{ ...styles.th, textAlign: "center",backgroundColor: "#d3d3d3" }}>
+                    <th colSpan="4" style={{ ...styles.th, textAlign: "center", backgroundColor: "#d3d3d3" }}>
                       Change Implementation
                     </th>
                   </tr>
@@ -444,7 +550,7 @@ function Oldview() {
                     <td style={styles.td}>{renderField("implementationStatus", formData.implementationStatus)}</td>
                   </tr>
                   <tr>
-                    <th style={{ ...styles.th, height: "200px" }}>CAB Sign off</th>
+                    <th style={{ ...styles.th, height: isGeneratingPDF ? "200px" : "100px" }}>CAB Sign off</th>
                     <td style={styles.td}></td>
                     <th style={styles.th}>Date</th>
                     <td style={styles.td}>{renderDateField("cabSignOffDate", formData.cabSignOffDate)}</td>
@@ -453,25 +559,25 @@ function Oldview() {
               </table>
             </div>
             <div style={{ textAlign: "center", margin: "20px 0" }}>
-              <button type="submit" style={styles.button}>Save Changes</button>
-              <button type="button" onClick={() => setIsEditing(false)} style={styles.button}>Cancel</button>
+              <button type="submit" style={webStyles.button} class="btn btn-info" >Save Changes</button>
+              <button type="button" onClick={() => setIsEditing(false)} style={webStyles.button} class="btn btn-info">Cancel</button>
             </div>
           </form>
         ) : (
           <>
             <div style={styles.content}>
-              <div className="head" >
-                <h1 style={{ textAlign: "center", ...styles.font, fontSize: "60px" }}>{ticket.client}</h1>
-                <h2 style={{ textAlign: "center", ...styles.font, fontSize: "40px" }}>Change Request Form</h2>
+              <div className="head">
+                <h1 style={styles.header}>{ticket.client}</h1>
+                <h2 style={styles.subheader}>Change Request Form</h2>
               </div>
             </div>
 
             {/* Table 1: Change Description / Change Request */}
-            <div style={{...styles.content, marginTop:"100px"}}>
+            <div style={{...styles.content, marginTop: isGeneratingPDF ? "100px" : "30px"}}>
               <table style={styles.table}>
                 <thead>
                   <tr>
-                    <th colSpan="4" style={{ ...styles.th, textAlign: "center",backgroundColor: "#d3d3d3" }}>
+                    <th colSpan="4" style={{ ...styles.th, textAlign: "center", backgroundColor: "#d3d3d3" }}>
                       Change Description / Change Request : {ticket.project}
                     </th>
                   </tr>
@@ -520,7 +626,7 @@ function Oldview() {
               <table style={styles.table}>
                 <thead>
                   <tr>
-                    <th colSpan="6" style={{ ...styles.th, textAlign: "center", verticalAlign: "middle",backgroundColor: "#d3d3d3" }}>
+                    <th colSpan="6" style={{ ...styles.th, textAlign: "center", verticalAlign: "middle", backgroundColor: "#d3d3d3" }}>
                       Change Impact Evaluation
                     </th>
                   </tr>
@@ -638,7 +744,7 @@ function Oldview() {
               <table style={styles.table}>
                 <thead>
                   <tr>
-                    <th colSpan="5" style={{ ...styles.th, textAlign: "center",backgroundColor: "#d3d3d3" }}>
+                    <th colSpan="5" style={{ ...styles.th, textAlign: "center", backgroundColor: "#d3d3d3" }}>
                       Change Approval or Rejection
                     </th>
                   </tr>
@@ -672,11 +778,11 @@ function Oldview() {
             </div>
 
             {/* Table 4: Change Implementation Details */}
-            <div style={{...styles.content, marginTop:"30%"}}>
+            <div style={{...styles.content, marginTop: isGeneratingPDF ? "30%" : "20px"}}>
               <table style={styles.table}>
                 <thead>
                   <tr>
-                    <th colSpan="4" style={{ ...styles.th, textAlign: "center",backgroundColor: "#d3d3d3" }}>
+                    <th colSpan="4" style={{ ...styles.th, textAlign: "center", backgroundColor: "#d3d3d3" }}>
                       Change Implementation Details
                     </th>
                   </tr>
@@ -699,11 +805,11 @@ function Oldview() {
             </div>
 
             {/* Table 5: Change Implementation */}
-            <div  style={styles.content}  >
+            <div style={styles.content}>
               <table style={styles.table}>
                 <thead>
                   <tr>
-                    <th colSpan="4" style={{ ...styles.th, textAlign: "center",backgroundColor: "#d3d3d3" }}>
+                    <th colSpan="4" style={{ ...styles.th, textAlign: "center", backgroundColor: "#d3d3d3" }}>
                       Change Implementation
                     </th>
                   </tr>
@@ -724,7 +830,7 @@ function Oldview() {
                     <td style={styles.td}>{ticket.implementationStatus}</td>
                   </tr>
                   <tr>
-                    <th style={{ ...styles.th, height: "200px" }}>CAB Sign off</th>
+                    <th style={{ ...styles.th, height: isGeneratingPDF ? "200px" : "100px" }}>CAB Sign off</th>
                     <td style={styles.td}></td>
                     <th style={styles.th}>Date</th>
                     <td style={styles.td}>{formatDate(ticket.cabSignOffDate)}</td>
@@ -736,68 +842,21 @@ function Oldview() {
         )}
       </div>
 
-      {!isEditing && (
-        <>
-          <button onClick={downloadPDF} style={styles.button}>
+      {!isEditing && !isGeneratingPDF && (
+        <div style={{ textAlign: "center", margin: "20px 0" }}>
+          <button onClick={downloadPDF} style={webStyles.button} class="btn btn-info">
             Download as PDF
           </button>
-          <button onClick={handleEditClick} style={styles.button}>
+          <button onClick={handleEditClick} style={webStyles.button} class="btn btn-info">
             Update
           </button>
-          <button style={styles.button} onClick={handleBackToDashboard}>
+          <button style={webStyles.button} onClick={handleBackToDashboard} class="btn btn-info">
             Back to Dashboard
           </button>
-        </>
+        </div>
       )}
     </>
   );
 }
-
-const styles = {
-  container: {
-    paddingLeft: "7%",     
-    paddingRight: "7%",
-    paddingTop: "1%",       
-    fontSize: "1.6rem",     
-    fontFamily: "Verdana",
-    color: "black",
-  },
-  content: { marginBottom: "5%" }, 
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-    border: "1px solid black",
-  },
-  th: {
-    border: "1px solid black",
-    padding: "0.7%",        
-    textAlign: "left",
-    fontFamily: "Verdana",
-    color: "black",
-  },
-  td: { 
-    border: "1px solid black",
-    padding: "0.7%",          
-    fontFamily: "Verdana",
-    color: "black",
-  },
-  button: {
-    display: "block",
-    padding: "1% 2%",     
-    fontSize: "1rem",   
-    backgroundColor: "#1679AB",
-    color: "white",
-    border: "none",
-    cursor: "pointer",
-    borderRadius: "0.5rem",
-    margin: "1% auto 5%",   
-    fontFamily: "Verdana",
-    fontWeight: "bold",
-  },
-  font: {
-    fontFamily: "Verdana",
-    color: "black",
-  },
-};
 
 export default Oldview;

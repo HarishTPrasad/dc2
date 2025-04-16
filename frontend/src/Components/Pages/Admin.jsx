@@ -38,12 +38,14 @@ const Admin = () => {
   };
 
   const handleRemoveUser = async (id) => {
-    try {
-      await api.delete(`/users/${id}`);
-      setUsers(users.filter(user => user._id !== id));
-    } catch (err) {
-      console.error(err);
-      setError(err.message);
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      try {
+        await api.delete(`/users/${id}`);
+        setUsers(users.filter(user => user._id !== id));
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+      }
     }
   };
 
@@ -101,7 +103,7 @@ const Admin = () => {
 
       {/* Add User Form */}
       <div className="card mb-4 shadow">
-        <div className="card-header bg-dark text-white">Add New User</div> {/* Changed to bg-dark */}
+        <div className="card-header bg-dark text-white">Add New User</div>
         <div className="card-body">
           <form onSubmit={handleAddUser}>
             <div className="form-row">

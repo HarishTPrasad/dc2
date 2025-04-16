@@ -115,7 +115,7 @@ function Dashboard() {
                   <div>
                     <h4>{username}</h4>
                     <small>{
-                              ['harish', 'kksuthar'].includes(username.toLowerCase())
+                              ['harish', 'kksuthar', 'lakshman'].includes(username.toLowerCase())
                                 ? 'Administrator'
                                 : 'User'
                             }</small>
@@ -155,7 +155,7 @@ function Dashboard() {
 
           <div style={styles.menuSection}>
            
-            {(username === "Harish" || username === "KKSuthar") && (
+            {(username === "Harish" || username === "kksuthar" || username === "Lakshman") && (
                 
                 <button 
                   style={styles.menuButton} 
