@@ -344,13 +344,7 @@ function ChangeM() {
                   </span>
                 </td>
                 <td>
-                  {/* <button 
-                    className="btn btn-sm btn-danger"
-                    onClick={(e) => handleDelete(ticket._id, e)}
-                  >
-                    <i className="fas fa-trash"></i> 
-                  </button> */}
-                  <div style={{ display: 'flex', justifyContent: 'center' }}> {/* Center the button */}
+                  <div style={{ display: 'flex', justifyContent: 'center' }}> 
                     <button 
                       className="btn btn-sm btn-danger"
                       onClick={(e) => handleDelete(ticket._id, e)}
