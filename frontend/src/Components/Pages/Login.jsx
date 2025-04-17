@@ -9,7 +9,6 @@ function Login() {
   const [userList, setUserList] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  // const [newUser, setNewUser] = useState({ username: "", password: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,124 +42,58 @@ function Login() {
     }
   };
 
-  // const handleCreateUser = async () => {
-  //   if (!newUser.username || !newUser.password) return;
-
-  //   try {
-  //     await api.post("/users", newUser);
-  //     alert("User created successfully");
-  //     setNewUser({ username: "", password: "" });
-
-  //     const response = await api.get("/users");
-  //     setUserList(response.data);
-  //   } catch (err) {
-  //     console.error("Error creating user:", err);
-  //     alert("Failed to create user");
-  //   }
-  // };
-
   return (
     <div style={styles.container}>
-      <div style={styles.navbar}>
-        <img src={logo} alt="Logo" style={styles.logo} />
+      <div style={styles.loginContainer}>
+        <div style={styles.logoContainer}>
+          <img src={logo} alt="Logo" style={styles.logo} />
+        </div>
+        <h2 style={styles.loginTitle}>Welcome Back</h2>
+        <form onSubmit={handleSubmit} style={styles.form}>
+          <div style={styles.inputGroup}>
+            <label htmlFor="username" style={styles.label}>Username:</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              autoComplete="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              style={styles.input}
+              required
+            />
+          </div>
+          <div style={styles.inputGroup}>
+            <label htmlFor="password" style={styles.label}>Password:</label>
+            <div style={styles.passwordContainer}>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={styles.input}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={styles.eyeButton}
+              >
+                {showPassword ? "👁️" : "👁️‍🗨️"}
+              </button>
+            </div>
+          </div>
+          {error && <p style={styles.error}>{error}</p>}
+          <button type="submit" style={styles.button}>Log In</button>
+        </form>
       </div>
-
-      <div style={styles.mainContent}>
-        <div style={styles.centerSpace}>
-          <div style={styles.logoContainer}>
-            <img src={logo} alt="Logo" style={styles.centerLogo} />
-          </div>
-          <h1 style={styles.welcomeTitle}>Support Center</h1>
-        </div>
-
-        <div style={styles.sidebar}>
-          <div style={styles.sidebarContent}>
-            <h3 style={styles.loginTitle}>Login</h3>
-            <form onSubmit={handleSubmit} style={styles.form}>
-              <div style={styles.inputGroup}>
-                <label htmlFor="username" style={styles.label}>Username:</label>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  autoComplete="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  style={styles.input}
-                  required
-                />
-              </div>
-              <div style={styles.inputGroup}>
-                <label htmlFor="password" style={styles.label}>Password:</label>
-                <div style={styles.passwordContainer}>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    name="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    style={styles.input}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    style={styles.eyeButton}
-                  >
-                    {showPassword ? "👁️" : "👁️‍🗨️"}
-                  </button>
-                </div>
-              </div>
-              {error && <p style={styles.error}>{error}</p>}
-              <button type="submit" style={styles.button}>Submit</button>
-            </form>
-          </div>
-
-          {/* Temporary Create User UI */}
-          <div style={{ marginTop: "30px" }}>
-            {/* <h4 style={styles.loginTitle}>Create User (Temporary)</h4> */}
-            <div style={styles.inputGroup}>
-              {/* <input
-                type="text"
-                id="new-username"
-                name="new-username"
-                autoComplete="username"
-                placeholder="Username"
-                value={newUser.username}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, username: e.target.value })
-                }
-                style={styles.input}
-              /> */}
-            </div>
-            <div style={styles.inputGroup}>
-              {/* <input
-                type="password"
-                id="new-password"
-                name="new-password"
-                autoComplete="new-password"
-                placeholder="Password"
-                value={newUser.password}
-                onChange={(e) =>
-                  setNewUser({ ...newUser, password: e.target.value })
-                }
-                style={styles.input}
-              /> */}
-            </div>
-            {/* <button onClick={handleCreateUser} style={styles.button}>
-              Create User
-            </button> */}
-          </div>
-
-          <div style={styles.aboutSection}>
-            <p>DC Networks - Secure Access Portal</p>
-            <p style={styles.aboutText}>Version 2.1.1</p>
-            <p style={styles.copyright}>
-              © {new Date().getFullYear()} DC Networks. All rights reserved.
-            </p>
-          </div>
-        </div>
+      <div style={styles.copyrightSection}>
+        <p style={styles.version}>Version 2.1.1</p>
+        <p style={styles.copyright}>
+          © {new Date().getFullYear()} DC Networks. All rights reserved.
+        </p>
       </div>
     </div>
   );
@@ -170,87 +103,62 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    height: "100vh",
-    backgroundColor: "#f9f9f9",
-     fontFamily: 'Verdana, Geneva, sans-serif'
-  },
-  navbar: {
-    backgroundColor: "#1a365d",
-    padding: "10px 20px",
-    display: "flex",
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "flex-start",
-    boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+    height: "100vh",
+    background: "linear-gradient(135deg, #f0f2f0 0%, #e0e0e0 100%)", // A softer gradient
+    fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
-  logo: {
-    paddingLeft: "10px",
-    width: "200px",
-    height: "40px",
-  },
-  mainContent: {
-    display: "flex",
-    flex: 1,
-  },
-  centerSpace: {
-    flex: 1,
+  loginContainer: {
+    width: "400px", // Reduced width
+    padding: "30px", // Slightly reduced padding
+    borderRadius: "12px", // More rounded corners
+    backgroundColor: "white",
+    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)", // More pronounced shadow
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    padding: "40px",
-    textAlign: "center",
-    backgroundColor: "#FBFFF9",
   },
   logoContainer: {
-    marginBottom: "30px",
+    marginBottom: "25px", // Slightly reduced margin
   },
-  centerLogo: {
-    width: "530px",
-    height: "120px",
-  },
-  welcomeTitle: {
-    fontSize: "2.5rem",
-    color: "#1679AB",
-    marginBottom: "10px",
-  },
-  sidebar: {
-    width: "400px",
-    backgroundColor: "#fff",
-    padding: "30px",
-    boxShadow: "-2px 0 10px rgba(0, 0, 0, 0.1)",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  sidebarContent: {
-    flex: 1,
+  logo: {
+    width: "180px", // Slightly smaller logo
+    height: "36px",
   },
   loginTitle: {
-    fontSize: "24px",
+    fontSize: "1.3rem", // Slightly smaller title
     color: "#333",
-    marginBottom: "20px",
+    marginBottom: "20px", // Reduced margin
     textAlign: "center",
   },
   form: {
     display: "flex",
     flexDirection: "column",
+    width: "100%",
   },
   inputGroup: {
-    marginBottom: "15px",
+    marginBottom: "18px", // Reduced margin
   },
   label: {
     display: "block",
-    marginBottom: "8px",
+    marginBottom: "6px", // Reduced margin
     fontWeight: "500",
     color: "#555",
+    fontSize: "0.8rem", // Slightly smaller label
   },
   input: {
     width: "100%",
-    padding: "12px",
-    borderRadius: "6px",
-    border: "1px solid #ddd",
-    fontSize: "16px",
+    padding: "8px", // Reduced padding
+    borderRadius: "8px", // More rounded corners
+    border: "1px solid #ccc", // Lighter border
+    fontSize: "15px",
     transition: "border 0.3s",
+    "&:focus": {
+      borderColor: "#3A59D1",
+      outline: "none",
+      boxShadow: "0 0 6px rgba(58, 89, 209, 0.3)",
+    },
   },
   passwordContainer: {
     display: "flex",
@@ -262,43 +170,49 @@ const styles = {
     border: "none",
     cursor: "pointer",
     position: "absolute",
-    right: "10px",
-    fontSize: "20px",
+    right: "8px", // Slightly adjusted position
+    fontSize: "18px", // Slightly smaller icon
+    color: "#777",
+    outline: "none",
   },
   button: {
-    marginTop: "10px",
-    padding: "12px",
-    backgroundColor: "#1679AB",
+    marginTop: "12px", // Reduced margin
+    padding: "8px 15px", // Adjusted padding
+    backgroundColor: "#3A59D1",
     color: "white",
     border: "none",
-    borderRadius: "6px",
+    borderRadius: "8px", // More rounded corners
     cursor: "pointer",
     fontSize: "16px",
     fontWeight: "500",
     transition: "background-color 0.3s",
+    "&:hover": {
+      backgroundColor: "#2c47b8",
+    },
   },
   error: {
     color: "#dc3545",
     fontSize: "14px",
-    marginBottom: "10px",
+    marginBottom: "8px", // Reduced margin
     textAlign: "center",
   },
-  aboutSection: {
-    paddingTop: "20px",
-    borderTop: "1px solid #eee",
+  copyrightSection: {
+    position: "absolute",
+    bottom: "15px", // Reduced bottom margin
+    left: 0,
+    right: 0,
     textAlign: "center",
-    color: "#666",
-    fontSize: "14px",
+    color: "#777", // Darker copyright text
+    fontSize: "0.85rem", // Slightly smaller font
   },
-  aboutText: {
-    marginTop: "5px",
-    fontSize: "12px",
+  version: {
+    marginBottom: "3px", // Reduced margin
     color: "#999",
+    fontSize: "0.8rem",
   },
   copyright: {
-    marginTop: "10px",
-    fontSize: "11px",
-    color: "#aaa",
+    color: "#999",
+    fontSize: "0.75rem",
   },
 };
 

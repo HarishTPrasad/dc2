@@ -43,7 +43,7 @@ const clientDataMap = {
     approver: "Manubhai M Patel",
     departmentLocation: "IT/HNSB",
   },
-  
+
   "Kota Nagarik Sahakari Bank Ltd.": {
     requester: "Brijesh Gautam",
     approver: "Nand Kishore Ji Chouhan",
@@ -119,24 +119,23 @@ const clientDataMap = {
 const getTodayDate = () => {
   const today = new Date();
   const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0"); 
+  const month = String(today.getMonth() + 1).padStart(2, "0");
   const day = String(today.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
 function FormA() {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     client: "",
     changeRequestNo: "",
     project: "",
     requester: "",
-    date: getTodayDate(), 
+    date: getTodayDate(),
     departmentLocation: "",
     phoneNo: "",
     changeDescription: "",
-    changeNeededBy: getTodayDate(), 
+    changeNeededBy: getTodayDate(),
     reasonForChange: "",
     approver: "",
     changeType: {
@@ -168,7 +167,7 @@ function FormA() {
       rejected: false,
     },
     comments: "Change request has been approved by ",
-    changeScheduled: getTodayDate(), 
+    changeScheduled: getTodayDate(),
     implementationAssigned: "",
     technology: "",
     policy: "N/A",
@@ -176,7 +175,7 @@ function FormA() {
     rollBack: "Will remove the newly created policy if required",
     stagingTestResults: "",
     implementationTestResults: "",
-    dateOfImplementation: getTodayDate(), 
+    dateOfImplementation: getTodayDate(),
     implementationStatus: "",
     cabSignOffDate: getTodayDate(),
   });
@@ -220,46 +219,35 @@ function FormA() {
     }
   };
 
- 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  console.log("🔹 Frontend Form Data (Before Submission):", formData); 
+    console.log("🔹 Frontend Form Data (Before Submission):", formData);
 
-  
-  localStorage.setItem("formData", JSON.stringify(formData));
+    localStorage.setItem("formData", JSON.stringify(formData));
 
-  try {
+    try {
       const { data } = await api.post("/submit", formData, {
-          headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       });
 
-      console.log("✅ API Response Data (After Submission):", data); 
+      console.log("✅ API Response Data (After Submission):", data);
 
       if (!data || !data.savedData) {
-          throw new Error("Server returned an empty response");
+        throw new Error("Server returned an empty response");
       }
-
-     
-      navigate("/dashboard/output", { state: { formData } });
-
-  } catch (error) {
+    } catch (error) {
       console.error("❌ Submission error:", error);
-
-      
-     
-      navigate("/dashboard/output", { state: { formData } });
-  }
-};
-
-
-
+    } finally {
+      navigate("/dashboard/changem");
+    }
+  };
 
   return (
     <div style={styles.formWrapper}>
       <div style={styles.formContainer}>
         <div style={styles.formHeader}>
+          <h4 style={styles.formTitle}>Change Request Form</h4>
           <h1 style={styles.clientSelectContainer}>
             <select
               name="client"
@@ -268,30 +256,46 @@ const handleSubmit = async (e) => {
               style={styles.clientSelect}
             >
               <option>Select Client</option>
-              {Object.keys(clientDataMap).map(client => (
-                <option key={client} value={client}>{client}</option>
+              {Object.keys(clientDataMap).map((client) => (
+                <option key={client} value={client}>
+                  {client}
+                </option>
               ))}
             </select>
           </h1>
-          <h4 style={styles.formTitle}>Change Request Form</h4>
         </div>
 
         <div style={styles.formSections}>
-          <ClientAndProjectTable formData={formData} handleInputChange={handleInputChange} />
-          <ChangeImpactEvaluationTable formData={formData} handleInputChange={handleInputChange} />
-          <ChangeApprovalTable formData={formData} handleInputChange={handleInputChange} />
-          <ChangeImplementationDetailsTable formData={formData} handleInputChange={handleInputChange} />
-          <ChangeImplementationTable formData={formData} handleInputChange={handleInputChange} />
+          <div style={styles.tileRow}>
+            <div style={styles.tile}>
+              <ClientAndProjectTable formData={formData} handleInputChange={handleInputChange} />
+            </div>
+            <div style={styles.tile}>
+              <ChangeImpactEvaluationTable formData={formData} handleInputChange={handleInputChange} />
+            </div>
+          </div>
+          <div style={styles.tileRow}>
+            <div style={styles.tile}>
+              <ChangeApprovalTable formData={formData} handleInputChange={handleInputChange} />
+            </div>
+            <div style={styles.tile}>
+              <ChangeImplementationDetailsTable formData={formData} handleInputChange={handleInputChange} />
+            </div>
+          </div>
+          <div style={styles.tileRow}>
+            <div style={styles.tile}>
+              <ChangeImplementationTable formData={formData} handleInputChange={handleInputChange} />
+            </div>
+            <div style={{ ...styles.tile, flexGrow: 1, backgroundColor: "#fff" }}>
+              {/* Intentionally empty tile to balance layout */}
+            </div>
+          </div>
         </div>
-
         <div style={styles.buttonContainer}>
-          <button style={styles.submitButton} onClick={handleSubmit} >
-         submit
+          <button style={styles.submitButton} onClick={handleSubmit} className="btn btn-success">
+            Submit
           </button>
-          <button 
-            style={styles.backButton} 
-            onClick={() => navigate("/dashboard/changem")}
-          >
+          <button style={styles.backButton} onClick={() => navigate("/dashboard/changem")} className="btn btn-info">
             Back to Dashboard
           </button>
         </div>
@@ -303,32 +307,35 @@ const handleSubmit = async (e) => {
 const styles = {
   formWrapper: {
     width: "100%",
-    height: "calc(100vh - 60px)", 
+    height: "calc(100vh - 60px)",
     overflowY: "auto",
     padding: "20px",
     backgroundColor: "#f5f5f5",
-    fontFamily: 'Verdana, Geneva, sans-serif'
+    fontFamily: "Verdana, Geneva, sans-serif",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start", // Align items to the top to prevent content squishing
   },
   formContainer: {
-    maxWidth: "1200px",
-    margin: "0 auto",
+    // maxWidth: "1200px", // Limit the maximum width of the form container
+    width: "100%",
     backgroundColor: "#fff",
     borderRadius: "8px",
     boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
     padding: "30px",
-     fontFamily: 'Verdana, Geneva, sans-serif'
+    fontFamily: "Verdana, Geneva, sans-serif",
   },
   formHeader: {
     textAlign: "center",
     marginBottom: "30px",
     paddingBottom: "20px",
     borderBottom: "1px solid #eee",
-     fontFamily: 'Verdana, Geneva, sans-serif'
+    fontFamily: "Verdana, Geneva, sans-serif",
   },
   clientSelectContainer: {
     margin: "0 auto",
     maxWidth: "800px",
-     fontFamily: 'Verdana, Geneva, sans-serif'
+    fontFamily: "Verdana, Geneva, sans-serif",
   },
   clientSelect: {
     width: "100%",
@@ -337,34 +344,46 @@ const styles = {
     borderRadius: "4px",
     border: "1px solid #ddd",
     marginBottom: "10px",
-     fontFamily: 'Verdana, Geneva, sans-serif'
+    fontFamily: "Verdana, Geneva, sans-serif",
   },
   formTitle: {
-    color: "#074173",
+    color: "#5a3d8a",
+    fontWeight: "600",
     marginTop: "10px",
     fontSize: "24px",
-     fontFamily: 'Verdana, Geneva, sans-serif'
+    fontFamily: "Verdana, Geneva, sans-serif",
   },
   formSections: {
     display: "flex",
     flexDirection: "column",
-    gap: "30px",
-     fontFamily: 'Verdana, Geneva, sans-serif'
+    gap: "20px", // Spacing between rows
+    fontFamily: "Verdana, Geneva, sans-serif",
+  },
+  tileRow: {
+    display: "flex",
+    gap: "20px", // Spacing between tiles in a row
+    marginBottom: "20px", // Add margin between rows of tiles
+  },
+  tile: {
+    backgroundColor: "#ebf8ff", // Lightest purple color
+    borderRadius: "6px",
+    padding: "20px",
+    flexGrow: 1, // Allow tiles to grow and take available space
+    // border: "1px solidrgb(250, 238, 255)", // Slightly darker purple for border
   },
   buttonContainer: {
     display: "flex",
     justifyContent: "center",
     gap: "20px",
-    marginTop: "40px",
+    marginTop: "20px",
     paddingTop: "20px",
-    borderTop: "1px solid #eee",
-     fontFamily: 'Verdana, Geneva, sans-serif'
+    // borderTop: "1px solid #eee",
+    fontFamily: "Verdana, Geneva, sans-serif",
   },
   submitButton: {
     padding: "12px 24px",
     fontSize: "16px",
-     fontFamily: 'Verdana, Geneva, sans-serif',
-    backgroundColor: "#1679AB",
+    fontFamily: "Verdana, Geneva, sans-serif",
     color: "white",
     border: "none",
     borderRadius: "6px",
@@ -379,11 +398,10 @@ const styles = {
   backButton: {
     padding: "12px 24px",
     fontSize: "16px",
-    backgroundColor: "#6c757d",
-     fontFamily: 'Verdana, Geneva, sans-serif',
+    fontFamily: "Verdana, Geneva, sans-serif",
     color: "white",
     border: "none",
-    borderRadius: "6px", 
+    borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "bold",
     minWidth: "120px",

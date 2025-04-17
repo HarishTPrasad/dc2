@@ -357,7 +357,7 @@ function ChangeM() {
                   <div style={{ display: 'flex', justifyContent: 'center' }}> 
                     <button 
                       className="btn btn-sm btn-danger"
-                      // onClick={(e) => handleDelete(ticket._id, e)}
+                      onClick={(e) => handleDelete(ticket._id, e)}
                     >
                       <i className="fas fa-trash"></i> 
                     </button>

@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import logo from '../Images/dclogo.png';
 import { FaUserCircle, FaBell, FaSignOutAlt, FaTicketAlt, FaCogs, FaHome, FaChevronRight, FaUser, FaCog } from "react-icons/fa";
 
 function Dashboard() {
   const username = sessionStorage.getItem("username") || "User";
   const navigate = useNavigate();
+  const location = useLocation(); // Get current location
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   
@@ -35,14 +36,28 @@ function Dashboard() {
     navigate("/");
   };
 
+  // Function to check if a path is active
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
+  // Function to get menu button styles based on active state
+  const getMenuButtonStyles = (path) => {
+    const active = isActive(path);
+    return {
+      ...styles.menuButton,
+      backgroundColor: active ? colors.menuHover : colors.menuActive,
+      borderLeft: `3px solid ${active ? colors.primary : colors.accent}`,
+      fontWeight: active ? '600' : '500'
+    };
+  };
+
   // Sample notifications data
   const notifications = [
     { id: 1, text: "New ticket submitted", time: "2 mins ago", read: false },
     { id: 2, text: "System update available", time: "1 hour ago", read: true },
     { id: 3, text: "Password change required", time: "3 days ago", read: true },
   ];
-
-  
 
   return (
     <div style={styles.container}>
@@ -160,72 +175,62 @@ function Dashboard() {
             {(username === "Harish" || username === "kksuthar" || username === "Lakshman") && (
                 
                 <button 
-                  style={styles.menuButton} 
+                  style={getMenuButtonStyles("/dashboard/admin")}
                   onClick={() => navigate("/dashboard/admin")}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.menuHover}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.menuActive}
+                  onMouseEnter={(e) => {
+                    if (!isActive("/dashboard/admin")) {
+                      e.currentTarget.style.backgroundColor = colors.menuHover;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive("/dashboard/admin")) {
+                      e.currentTarget.style.backgroundColor = colors.menuActive;
+                    }
+                  }}
                 >   
                   <div style={styles.buttonContent}>
-                    <FaCogs style={styles.buttonIcon} />
+                    <FaCogs style={{
+                      ...styles.buttonIcon,
+                      color: isActive("/dashboard/admin") ? colors.primary : colors.textLight
+                    }} />
                     <span>Admin Dashboard</span>
                   </div>
-                  <FaChevronRight style={styles.arrowIcon} />
+                  <FaChevronRight style={{
+                    ...styles.arrowIcon,
+                    color: isActive("/dashboard/admin") ? colors.primary : colors.textLight
+                  }} />
                 </button>
-
-
               )}
-            {/* <button 
-              style={styles.menuButton} 
-              onClick={() => navigate("/dashboard/ticketview")}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.menuHover}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.menuActive}
-            >   
-              <div style={styles.buttonContent}>
-                <FaTicketAlt style={styles.buttonIcon} />
-                <span>Ticket View</span>
-              </div>
-              <FaChevronRight style={styles.arrowIcon} />
-            </button> */}
-            {/* <button 
-              style={styles.menuButton} 
-              onClick={() => navigate("/dashboard/ticketform")}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.menuHover}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.menuActive}
-            >   
-              <div style={styles.buttonContent}>
-                <FaClipboardList style={styles.buttonIcon} />
-                <span>Ticket Form</span>
-              </div>
-              <FaChevronRight style={styles.arrowIcon} />
-            </button> */}
           </div>
 
           <div style={styles.menuSection}>
             <h3 style={styles.menuSectionTitle}>Management</h3>
             <button 
-              style={styles.menuButton} 
+              style={getMenuButtonStyles("/dashboard/changem")}
               onClick={() => navigate("/dashboard/changem")}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.menuHover}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.menuActive}
+              onMouseEnter={(e) => {
+                if (!isActive("/dashboard/changem")) {
+                  e.currentTarget.style.backgroundColor = colors.menuHover;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive("/dashboard/changem")) {
+                  e.currentTarget.style.backgroundColor = colors.menuActive;
+                }
+              }}
             >
               <div style={styles.buttonContent}>
-                <FaCogs style={styles.buttonIcon} />
+                <FaCogs style={{
+                  ...styles.buttonIcon,
+                  color: isActive("/dashboard/changem") ? colors.primary : colors.textLight
+                }} />
                 <span>Change Management</span>
               </div>
-              <FaChevronRight style={styles.arrowIcon} />
+              <FaChevronRight style={{
+                ...styles.arrowIcon,
+                color: isActive("/dashboard/changem") ? colors.primary : colors.textLight
+              }} />
             </button>
-            {/* <button 
-              style={styles.menuButton} 
-              onClick={() => navigate("/dashboard/ticket")}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.menuHover}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.menuActive}
-            >   
-              <div style={styles.buttonContent}>
-                <FaTicketAlt style={styles.buttonIcon} />
-                <span>Ticket Management</span>
-              </div>
-              <FaChevronRight style={styles.arrowIcon} />
-            </button> */}
           </div>
 
           {/* Bottom Section with Logout Button */}
@@ -258,9 +263,6 @@ function Dashboard() {
     </div>
   );
 }
-
-
-
 
 const colors = {
   primary: "#1a365d",       // Deep blue
@@ -579,14 +581,14 @@ const styles = {
     display: "flex",
     backgroundColor: colors.background,
     overflow: "auto", 
-    padding: "30px",
+    // padding: "30px",
   },
   scrollContainer: {
     width: "100%",
-    padding: "25px",
+    // padding: "25px",
     minHeight: "min-content",
     backgroundColor: "white",
-    borderRadius: "12px",
+    // borderRadius: "12px",
     boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)",
   },
   sidebarLogoutButton: {
@@ -611,4 +613,4 @@ const styles = {
   },
 };
 
-export default Dashboard; 
+export default Dashboard;
