@@ -317,7 +317,7 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    gap: "35px",
+    gap: "32px",
     padding: "12px",
     backgroundColor: "#fff",
     borderRadius: "12px",

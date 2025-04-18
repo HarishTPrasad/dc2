@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import {generateFormPDF} from "../../Utils/PDFgenerator";
 
 const formatDate = (dateString) => {
   if (!dateString) return ""; 
@@ -365,6 +366,9 @@ function Oldview() {
       <div style={{ textAlign: "center", margin: "20px 0" }}>
         <button onClick={handleUpdateClick} style={styles.button} className="btn btn-info">
           Update
+        </button>
+        <button style={styles.button} onClick={() => generateFormPDF(ticket)} className="btn btn-info">
+          Download
         </button>
         <button style={styles.button} onClick={handleBackToDashboard} className="btn btn-info">
           Back to Dashboard
