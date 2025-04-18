@@ -46,14 +46,14 @@ const SummaryCard = ({ title, count, icon: Icon, color, active, onClick }) => {
 const UserForm = ({ newUser, setNewUser, handleAddUser }) => {
   return (
     <div className="card shadow mb-4 border-0">
-      <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-primary-to-secondary text-white">
+      <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-info-to-secondary text-white">
         <h6 className="m-0 font-weight-bold">
           <FiUserPlus className="mr-2" />
           Add New User
         </h6>
         <div className="dropdown no-arrow">
           <button
-            className="btn btn-sm btn-light text-primary"
+            className="btn btn-sm btn-light text-info"
             type="button"
           >
             <FiSettings />
@@ -68,7 +68,7 @@ const UserForm = ({ newUser, setNewUser, handleAddUser }) => {
               <div className="input-group">
                 <div className="input-group-prepend">
                   <span className="input-group-text bg-light border-right-0">
-                    <FaUserCircle className="text-primary" />
+                    <FaUserCircle className="text-info" />
                   </span>
                 </div>
                 <input
@@ -95,7 +95,7 @@ const UserForm = ({ newUser, setNewUser, handleAddUser }) => {
             <div className="form-group col-md-2 d-flex align-items-end">
               <button
                 type="submit"
-                className="btn btn-primary btn-block"
+                className="btn btn-info btn-block"
                 disabled={!newUser.username || !newUser.password}
               >
                 <FiUserPlus className="mr-1" /> Add User
@@ -117,7 +117,7 @@ const UsersTable = ({ users, confirmDelete, searchTerm }) => {
   return (
     <div className="card shadow mb-4 border-0">
       <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 className="m-0 font-weight-bold text-primary">User Management</h6>
+        <h6 className="m-0 font-weight-bold text-info">User Management</h6>
         <div className="dropdown no-arrow">
           <button
             className="btn btn-sm btn-light"
@@ -143,7 +143,7 @@ const UsersTable = ({ users, confirmDelete, searchTerm }) => {
                   <tr key={user._id}>
                     <td className="align-middle pl-4">
                       <div className="d-flex align-items-center">
-                        <div className="avatar-circle bg-primary text-white mr-3">
+                        <div className="mr-3">
                           <FaUserCircle size={24} />
                         </div>
                         <span className="font-weight-medium">{user.username}</span>
@@ -152,7 +152,7 @@ const UsersTable = ({ users, confirmDelete, searchTerm }) => {
                     <td className="align-middle">Jan 1, 2023</td>
                     <td className="align-middle text-center">
                       <button
-                        className="btn btn-sm btn-outline-primary mr-2"
+                        className="btn btn-sm btn-outline-info mr-2"
                         title="Edit User"
                       >
                         <FaEdit size={14} className="mr-1" /> Edit
@@ -299,7 +299,7 @@ const Admin = () => {
   // Loading state
   if (loading) return (
     <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-      <div className="spinner-grow text-primary" role="status">
+      <div className="spinner-grow text-info" role="status">
         <span className="sr-only">Loading...</span>
       </div>
     </div>
@@ -314,7 +314,7 @@ const Admin = () => {
 
   // Summary card data
   const summaryCards = [
-    { title: 'Users', count: users.length, icon: FaUsers, color: 'primary', id: 'users' },
+    { title: 'Users', count: users.length, icon: FaUsers, color: 'info', id: 'users' },
     { title: 'Clients', count: 24, icon: FaBuilding, color: 'success', id: 'clients' },
     { title: 'Projects', count: 18, icon: FaBriefcase, color: 'info', id: 'projects' },
     { title: 'Technologies', count: 12, icon: FaLaptopCode, color: 'warning', id: 'technologies' }
@@ -338,7 +338,7 @@ const Admin = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <div className="input-group-append">
-              <button className="btn btn-primary" type="button">
+              <button className="btn btn-info" type="button">
                 <FaSearch />
               </button>
             </div>
@@ -389,7 +389,7 @@ const Admin = () => {
                 <h4 className="text-muted mb-3">Under Development</h4>
                 <p>The {activeForm} management section is currently being developed.</p>
                 <button 
-                  className="btn btn-primary mt-3" 
+                  className="btn btn-info mt-3" 
                   onClick={() => setActiveForm('users')}
                 >
                   Return to Users
@@ -468,14 +468,14 @@ export default Admin;
 // const UserForm = ({ newUser, setNewUser, handleAddUser }) => {
 //   return (
 //     <div className="card shadow mb-4 border-0">
-//       <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-primary-to-secondary ">
+//       <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-info-to-secondary ">
 //         <h6 className="m-0 font-weight-bold">
 //           <FiUserPlus className="mr-2" />
 //           Add New User
 //         </h6>
 //         <div className="dropdown no-arrow">
 //           <button
-//             className="btn btn-sm btn-light text-primary"
+//             className="btn btn-sm btn-light text-info"
 //             type="button"
 //           >
 //             <FiSettings />
@@ -490,7 +490,7 @@ export default Admin;
 //               <div className="input-group">
 //                 <div className="input-group-prepend">
 //                   <span className="input-group-text bg-light border-right-0">
-//                     <FaUserCircle className="text-primary" />
+//                     <FaUserCircle className="text-info" />
 //                   </span>
 //                 </div>
 //                 <input
@@ -517,7 +517,7 @@ export default Admin;
 //             <div className="form-group col-md-2 d-flex align-items-end">
 //               <button
 //                 type="submit"
-//                 className="btn btn-primary btn-block"
+//                 className="btn btn-info btn-block"
 //                 disabled={!newUser.username || !newUser.password}
 //               >
 //                 <FiUserPlus className="mr-1" /> Add User
@@ -839,7 +839,7 @@ export default Admin;
 //                     <td className="align-middle">Jan 1, 2023</td>
 //                     <td className="align-middle text-center">
 //                       <button
-//                         className="btn btn-sm btn-outline-primary mr-2"
+//                         className="btn btn-sm btn-outline-info mr-2"
 //                         title="Edit User"
 //                       >
 //                         <FaEdit size={14} className="mr-1" /> Edit
@@ -1064,7 +1064,7 @@ export default Admin;
 // const getStatusBadgeClass = (status) => {
 //   switch(status) {
 //     case 'Planning': return 'secondary';
-//     case 'In Progress': return 'primary';
+//     case 'In Progress': return 'info';
 //     case 'On Hold': return 'warning';
 //     case 'Completed': return 'success';
 //     default: return 'light';
@@ -1162,7 +1162,7 @@ export default Admin;
 // // Helper function for technology category badges
 // const getCategoryBadgeClass = (category) => {
 //   switch(category) {
-//     case 'Frontend': return 'primary';
+//     case 'Frontend': return 'info';
 //     case 'Backend': return 'success';
 //     case 'Database': return 'info';
 //     case 'DevOps': return 'danger';
@@ -1398,7 +1398,7 @@ export default Admin;
 //   // Loading state
 //   if (loading) return (
 //     <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-//       <div className="spinner-grow text-primary" role="status">
+//       <div className="spinner-grow text-info" role="status">
 //         <span className="sr-only">Loading...</span>
 //       </div>
 //     </div>
@@ -1413,7 +1413,7 @@ export default Admin;
 
 //   // Summary card data
 //   const summaryCards = [
-//     { title: 'Users', count: users.length, icon: FaUsers, color: 'primary', id: 'users' },
+//     { title: 'Users', count: users.length, icon: FaUsers, color: 'info', id: 'users' },
 //     { title: 'Clients', count: clients.length, icon: FaBuilding, color: 'success', id: 'clients' },
 //     { title: 'Projects', count: projects.length, icon: FaBriefcase, color: 'info', id: 'projects' },
 //     { title: 'Technologies', count: technologies.length, icon: FaLaptopCode, color: 'warning', id: 'technologies' }
@@ -1437,7 +1437,7 @@ export default Admin;
 //               onChange={(e) => setSearchTerm(e.target.value)}
 //             />
 //             <div className="input-group-append">
-//               <button className="btn btn-primary" type="button">
+//               <button className="btn btn-info" type="button">
 //                 <FaSearch />
 //               </button>
 //             </div>
