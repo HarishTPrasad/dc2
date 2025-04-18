@@ -71,7 +71,7 @@ function Dashboard() {
           <div style={styles.welcomeText}>Welcome back, {username}</div>
           
           {/* Notification Bell with Dropdown */}
-          <div style={styles.notificationWrapper} ref={notificationRef}>
+          {/* <div style={styles.notificationWrapper} ref={notificationRef}>
             <div 
               style={styles.notificationIcon} 
               onClick={() => {
@@ -111,7 +111,7 @@ function Dashboard() {
                 <div style={styles.viewAll}>View all notifications</div>
               </div>
             )}
-          </div>
+          </div> */}
           
           {/* User Profile with Dropdown */}
           <div style={styles.profileWrapper} ref={profileRef}>

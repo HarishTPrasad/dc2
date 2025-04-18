@@ -78,6 +78,7 @@ function ChangeM() {
     try {
       const response = await api.get('/documents');
       setTickets(response.data.data || response.data);
+      console.log('Fetched data:', response.data);
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -87,6 +88,9 @@ function ChangeM() {
 
   const handleRowClick = (ticket) => {
     navigate('/dashboard/oldview', { state: { ticket } });
+  };
+  const handleUpdateClick = (ticket) => {
+    navigate("/Dashboard/form-a", { state: { ticket } });
   };
 
   const handleDelete = (id, e) => {
@@ -195,8 +199,8 @@ function ChangeM() {
 
   return (
     <div className="container-fluid mt-1" style={verdanaStyle}>
-      <div className="d-flex justify-content-between align-items-center mb-1">
-        <h3 className="mb-1">Change Management</h3>
+      <div className="d-flex justify-content-between align-items-center mb-1" style={{ marginTop: "20px"}}>
+        <h3 className="mb-1" style={{  fontSize: "2rem", fontWeight: "600",}}>Change Management</h3>
         <div>
           <button 
             className="btn btn-primary mr-2" 
@@ -354,13 +358,27 @@ function ChangeM() {
                   </span>
                 </td>
                 <td>
-                  <div style={{ display: 'flex', justifyContent: 'center' }}> 
+                  <div style={{ display: 'flex', gap: '10px' }}> 
+                  <button
+                      className="btn btn-sm btn-info"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleUpdateClick(ticket);
+                      }}
+                      style={{ padding: '1px 1px' }}
+                    >
+                    <i className="fas fa-trash">
+                      <span class="badge badge-info">Update</span>
+                    </i> 
+                    </button>
                     <button 
                       className="btn btn-sm btn-danger"
                       onClick={(e) => handleDelete(ticket._id, e)}
+                      style={{ padding: '1px 1px' }}
                     >
-                      <i className="fas fa-trash"></i> 
+                      <i className="fas fa-trash"><span class="badge badge-danger">Delete</span></i> 
                     </button>
+                    
                   </div>
                 </td>
               </tr>

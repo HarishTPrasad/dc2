@@ -324,7 +324,7 @@ const styles = {
     borderRadius: "8px", // Reduced border radius
     border: "1px solid #e0e0e0",
     boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)", // Slightly reduced shadow
-    maxWidth: "800px", // Slightly reduced max-width
+    maxWidth: "100%",
     margin: "0 auto",
   },
   formRow: {

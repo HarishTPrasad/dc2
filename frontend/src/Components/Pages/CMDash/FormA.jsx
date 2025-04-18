@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import ClientAndProjectTable from "../../FormTables/ClientAndProjectTable";
 import ChangeImpactEvaluationTable from "../../FormTables/ChangeImpactEvaluationTable";
 import ChangeApprovalTable from "../../FormTables/ChangeApprovalTable";
@@ -43,7 +43,6 @@ const clientDataMap = {
     approver: "Manubhai M Patel",
     departmentLocation: "IT/HNSB",
   },
-
   "Kota Nagarik Sahakari Bank Ltd.": {
     requester: "Brijesh Gautam",
     approver: "Nand Kishore Ji Chouhan",
@@ -116,6 +115,50 @@ const clientDataMap = {
   },
 };
 
+// Utility functions for date formatting
+const formatDateForInput = (dateString) => {
+  if (!dateString) return '';
+  
+  // If already in yyyy-mm-dd format, return as is
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    return dateString;
+  }
+  
+  // Try to parse other formats (like dd/mm/yyyy)
+  const parts = dateString.split(/[\/-]/);
+  if (parts.length === 3) {
+    // If day comes first (dd/mm/yyyy)
+    if (parts[0].length === 2 && parts[1].length === 2 && parts[2].length === 4) {
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    // If month comes first (mm/dd/yyyy)
+    if (parts[0].length === 2 && parts[1].length === 2 && parts[2].length === 4) {
+      return `${parts[2]}-${parts[0]}-${parts[1]}`;
+    }
+  }
+  
+  // Fallback to current date if parsing fails
+  return getTodayDate();
+};
+
+const formatDateForDisplay = (dateString) => {
+  if (!dateString) return '';
+  
+  // Try to parse yyyy-mm-dd format
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  }
+  
+  // If already in dd/mm/yyyy format, return as is
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
+    return dateString;
+  }
+  
+  // Fallback to returning the original string
+  return dateString;
+};
+
 const getTodayDate = () => {
   const today = new Date();
   const year = today.getFullYear();
@@ -124,8 +167,44 @@ const getTodayDate = () => {
   return `${year}-${month}-${day}`;
 };
 
+// Custom DateInput component
+const DateInput = ({ name, value, onChange, ...props }) => {
+  const handleDateChange = (e) => {
+    const inputValue = e.target.value;
+    
+    // Convert from dd/mm/yyyy to yyyy-mm-dd for storage
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(inputValue)) {
+      const [day, month, year] = inputValue.split('/');
+      onChange({
+        target: {
+          name,
+          value: `${year}-${month}-${day}`
+        }
+      });
+    } else {
+      // Pass through other formats (like yyyy-mm-dd)
+      onChange(e);
+    }
+  };
+
+  return (
+    <input
+      type="text"
+      name={name}
+      value={formatDateForDisplay(value)}
+      onChange={handleDateChange}
+      placeholder="DD/MM/YYYY"
+      {...props}
+    />
+  );
+};
+
 function FormA() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [ticketId, setTicketId] = useState(null);
+  
   const [formData, setFormData] = useState({
     client: "",
     changeRequestNo: "",
@@ -180,6 +259,30 @@ function FormA() {
     cabSignOffDate: getTodayDate(),
   });
 
+  useEffect(() => {
+    if (location.state?.ticket) {
+      const ticket = location.state.ticket;
+      setIsEditMode(true);
+      setTicketId(ticket._id || ticket.id);
+      
+      // Format dates before setting form data
+      const formattedData = {
+        ...ticket,
+        date: formatDateForInput(ticket.date),
+        changeNeededBy: formatDateForInput(ticket.changeNeededBy),
+        changeScheduled: formatDateForInput(ticket.changeScheduled),
+        dateOfImplementation: formatDateForInput(ticket.dateOfImplementation),
+        cabSignOffDate: formatDateForInput(ticket.cabSignOffDate),
+        changeType: ticket.changeType || formData.changeType,
+        changePriority: ticket.changePriority || formData.changePriority,
+        changeImpact: ticket.changeImpact || formData.changeImpact,
+        changeRequestStatus: ticket.changeRequestStatus || formData.changeRequestStatus
+      };
+      
+      setFormData(formattedData);
+    }
+  }, [location.state]);
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -222,24 +325,24 @@ function FormA() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("🔹 Frontend Form Data (Before Submission):", formData);
-
-    localStorage.setItem("formData", JSON.stringify(formData));
-
     try {
-      const { data } = await api.post("/submit", formData, {
+      let endpoint = isEditMode ? `/documents/${ticketId}` : "/submit";
+      let method = isEditMode ? "put" : "post";
+
+      const { data } = await api[method](endpoint, formData, {
         headers: { "Content-Type": "application/json" },
       });
 
-      console.log("✅ API Response Data (After Submission):", data);
-
-      if (!data || !data.savedData) {
+      if (!data) {
         throw new Error("Server returned an empty response");
       }
-    } catch (error) {
-      console.error("❌ Submission error:", error);
-    } finally {
+
+      alert(isEditMode ? "Ticket updated successfully!" : "Ticket created successfully!");
       navigate("/dashboard/changem");
+      
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert(`Error: ${error.response?.data?.message || error.message}`);
     }
   };
 
@@ -247,13 +350,16 @@ function FormA() {
     <div style={styles.formWrapper}>
       <div style={styles.formContainer}>
         <div style={styles.formHeader}>
-          <h4 style={styles.formTitle}>Change Request Form</h4>
+          <h4 style={styles.formTitle}>
+            {isEditMode ? "Edit Change Request" : "Change Request Form"}
+          </h4>
           <h1 style={styles.clientSelectContainer}>
             <select
               name="client"
               value={formData.client}
               onChange={handleInputChange}
               style={styles.clientSelect}
+              disabled={isEditMode}
             >
               <option>Select Client</option>
               {Object.keys(clientDataMap).map((client) => (
@@ -268,7 +374,11 @@ function FormA() {
         <div style={styles.formSections}>
           <div style={styles.tileRow}>
             <div style={styles.tile}>
-              <ClientAndProjectTable formData={formData} handleInputChange={handleInputChange} />
+              <ClientAndProjectTable 
+                formData={formData} 
+                handleInputChange={handleInputChange} 
+                DateInput={DateInput} 
+              />
             </div>
             <div style={styles.tile}>
               <ChangeImpactEvaluationTable formData={formData} handleInputChange={handleInputChange} />
@@ -279,21 +389,29 @@ function FormA() {
               <ChangeApprovalTable formData={formData} handleInputChange={handleInputChange} />
             </div>
             <div style={styles.tile}>
-              <ChangeImplementationDetailsTable formData={formData} handleInputChange={handleInputChange} />
+              <ChangeImplementationDetailsTable 
+                formData={formData} 
+                handleInputChange={handleInputChange} 
+                DateInput={DateInput} 
+              />
             </div>
           </div>
           <div style={styles.tileRow}>
             <div style={styles.tile}>
-              <ChangeImplementationTable formData={formData} handleInputChange={handleInputChange} />
+              <ChangeImplementationTable 
+                formData={formData} 
+                handleInputChange={handleInputChange} 
+                DateInput={DateInput} 
+              />
             </div>
             <div style={{ ...styles.tile, flexGrow: 1, backgroundColor: "#fff" }}>
-              {/* Intentionally empty tile to balance layout */}
+              {/* Empty tile for layout balance */}
             </div>
           </div>
         </div>
         <div style={styles.buttonContainer}>
           <button style={styles.submitButton} onClick={handleSubmit} className="btn btn-success">
-            Submit
+            {isEditMode ? "Update" : "Submit"}
           </button>
           <button style={styles.backButton} onClick={() => navigate("/dashboard/changem")} className="btn btn-info">
             Back to Dashboard
@@ -307,17 +425,14 @@ function FormA() {
 const styles = {
   formWrapper: {
     width: "100%",
-    height: "calc(100vh - 60px)",
     overflowY: "auto",
-    padding: "20px",
     backgroundColor: "#f5f5f5",
     fontFamily: "Verdana, Geneva, sans-serif",
     display: "flex",
     justifyContent: "center",
-    alignItems: "flex-start", // Align items to the top to prevent content squishing
+    alignItems: "flex-start",
   },
   formContainer: {
-    // maxWidth: "1200px", // Limit the maximum width of the form container
     width: "100%",
     backgroundColor: "#fff",
     borderRadius: "8px",
@@ -356,20 +471,25 @@ const styles = {
   formSections: {
     display: "flex",
     flexDirection: "column",
-    gap: "20px", // Spacing between rows
+    gap: "20px",
     fontFamily: "Verdana, Geneva, sans-serif",
   },
   tileRow: {
     display: "flex",
-    gap: "20px", // Spacing between tiles in a row
-    marginBottom: "20px", // Add margin between rows of tiles
+    gap: "20px",
+    marginBottom: "20px",
+    "@media (max-width: 768px)": {
+      flexDirection: "column",
+    },
   },
   tile: {
-    backgroundColor: "#ebf8ff", // Lightest purple color
+    backgroundColor: "#ebf8ff",
     borderRadius: "6px",
     padding: "20px",
-    flexGrow: 1, // Allow tiles to grow and take available space
-    // border: "1px solidrgb(250, 238, 255)", // Slightly darker purple for border
+    flexGrow: 1,
+    "@media (max-width: 768px)": {
+      width: "100%",
+    },
   },
   buttonContainer: {
     display: "flex",
@@ -377,8 +497,11 @@ const styles = {
     gap: "20px",
     marginTop: "20px",
     paddingTop: "20px",
-    // borderTop: "1px solid #eee",
     fontFamily: "Verdana, Geneva, sans-serif",
+    "@media (max-width: 480px)": {
+      flexDirection: "column",
+      gap: "10px",
+    },
   },
   submitButton: {
     padding: "12px 24px",
@@ -391,8 +514,9 @@ const styles = {
     fontWeight: "bold",
     minWidth: "120px",
     transition: "background-color 0.2s",
+    backgroundColor: "#28a745",
     ":hover": {
-      backgroundColor: "#12648a",
+      backgroundColor: "#218838",
     },
   },
   backButton: {
@@ -406,8 +530,9 @@ const styles = {
     fontWeight: "bold",
     minWidth: "120px",
     transition: "background-color 0.2s",
+    backgroundColor: "#17a2b8",
     ":hover": {
-      backgroundColor: "#5a6268",
+      backgroundColor: "#138496",
     },
   },
 };
