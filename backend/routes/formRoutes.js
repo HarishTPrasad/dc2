@@ -4,7 +4,8 @@ const router = express.Router();
 // Models
 const User = require("../models/User");
 const formSchema = require("../models/FormDataModel");
-const Ticket = require("../models/Ticket");
+const AutoData = require("../models/AutoData");
+// const Ticket = require("../models/Ticket");
 
 // Middleware
 router.use(express.json());
@@ -221,6 +222,69 @@ router.delete("/api/documents/:id", async (req, res) => {
 });
 
 
+// CREATE - POST new AutoData
+router.post('/api/autodata', async (req, res) => {
+  try {
+    const newAutoData = new AutoData(req.body);
+    const savedAutoData = await newAutoData.save();
+    res.status(201).json(savedAutoData);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// READ ALL - GET all AutoData
+router.get('/api/autodata', async (req, res) => {
+  try {
+    const autoDataList = await AutoData.find();
+    res.json(autoDataList);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// READ ONE - GET single AutoData by ID
+router.get('/api/autodata/:id', async (req, res) => {
+  try {
+    const autoData = await AutoData.findById(req.params.id);
+    if (!autoData) {
+      return res.status(404).json({ message: 'AutoData not found' });
+    }
+    res.json(autoData);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// UPDATE - PUT update AutoData by ID
+router.put('/api/autodata/:id', async (req, res) => {
+  try {
+    const updatedAutoData = await AutoData.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedAutoData) {
+      return res.status(404).json({ message: 'AutoData not found' });
+    }
+    res.json(updatedAutoData);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// DELETE - DELETE AutoData by ID
+router.delete('/api/autodata/:id', async (req, res) => {
+  try {
+    const deletedAutoData = await AutoData.findByIdAndDelete(req.params.id);
+    if (!deletedAutoData) {
+      return res.status(404).json({ message: 'AutoData not found' });
+    }
+    res.json({ message: 'AutoData deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // // ------------------- Ticket / DOC ROUTES -------------------
 
