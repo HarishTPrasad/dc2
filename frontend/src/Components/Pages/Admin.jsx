@@ -46,7 +46,7 @@ const SummaryCard = ({ title, count, icon: Icon, color, active, onClick }) => {
 const UserForm = ({ newUser, setNewUser, handleAddUser }) => {
   return (
     <div className="card shadow mb-4 border-0">
-      <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-primary-to-secondary ">
+      <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-primary-to-secondary text-white">
         <h6 className="m-0 font-weight-bold">
           <FiUserPlus className="mr-2" />
           Add New User
@@ -117,7 +117,7 @@ const UsersTable = ({ users, confirmDelete, searchTerm }) => {
   return (
     <div className="card shadow mb-4 border-0">
       <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 className="m-0 font-weight-bold">User Management</h6>
+        <h6 className="m-0 font-weight-bold text-primary">User Management</h6>
         <div className="dropdown no-arrow">
           <button
             className="btn btn-sm btn-light"
@@ -143,7 +143,7 @@ const UsersTable = ({ users, confirmDelete, searchTerm }) => {
                   <tr key={user._id}>
                     <td className="align-middle pl-4">
                       <div className="d-flex align-items-center">
-                        <div className=" mr-2">
+                        <div className="avatar-circle bg-primary text-white mr-3">
                           <FaUserCircle size={24} />
                         </div>
                         <span className="font-weight-medium">{user.username}</span>
@@ -321,7 +321,7 @@ const Admin = () => {
   ];
 
   return (
-    <div className="container-fluid py-4" style={{ fontFamily: 'Verdana, Geneva, sans-serif', backgroundColor: '#f8f9fc', minHeight: '100vh' }}>
+    <div className="container-fluid py-4" style={{ fontFamily: 'Verdana, Geneva, sans-serif', minHeight: '100vh' }}>
       {/* Page Heading */}
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <div>
