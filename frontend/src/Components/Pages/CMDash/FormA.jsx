@@ -437,13 +437,13 @@ const styles = {
     backgroundColor: "#fff",
     borderRadius: "8px",
     boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-    padding: "30px",
+    padding: "10px",
     fontFamily: "Verdana, Geneva, sans-serif",
   },
   formHeader: {
     textAlign: "center",
-    marginBottom: "30px",
-    paddingBottom: "20px",
+    marginBottom: "20px",
+    // paddingBottom: "20px",
     borderBottom: "1px solid #eee",
     fontFamily: "Verdana, Geneva, sans-serif",
   },
@@ -484,7 +484,7 @@ const styles = {
   },
   tile: {
     backgroundColor: "#ebf8ff",
-    borderRadius: "6px",
+    borderRadius: "20px",
     padding: "20px",
     flexGrow: 1,
     "@media (max-width: 768px)": {

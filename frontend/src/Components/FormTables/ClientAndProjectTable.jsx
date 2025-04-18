@@ -313,63 +313,55 @@ const ClientAndProjectTable = ({ formData, handleInputChange }) => {
   );
 };
 
-
 const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    gap: "16px", // Reduced gap
-    padding: "20px", // Reduced padding
-    backgroundColor: "#ffffff",
-    borderRadius: "8px", // Reduced border radius
-    border: "1px solid #e0e0e0",
-    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)", // Slightly reduced shadow
+    gap: "35px",
+    padding: "12px",
+    backgroundColor: "#fff",
+    borderRadius: "12px",
+    border: "1px solid #ddd",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
     maxWidth: "100%",
     margin: "0 auto",
   },
   formRow: {
     display: "flex",
-    gap: "16px", // Reduced gap
-    marginBottom: "8px", // Reduced margin
+    gap: "8px",
+    marginBottom: "6px",
     flexWrap: "wrap",
   },
   formGroup: {
     flex: "1",
-    minWidth: "200px", // Reduced min-width
+    minWidth: "160px",
   },
   header: {
-    paddingBottom: "12px", // Reduced padding
-    borderBottom: "2px solid #7e57c2",
-    marginBottom: "12px", // Reduced margin
+    paddingBottom: "8px",
+    borderBottom: "1px solid #7e57c2",
+    marginBottom: "8px",
   },
   headerText: {
     color: "#5a3d8a",
-    fontSize: "1.2rem", // Reduced font size
+    fontSize: "1rem",
     fontWeight: "600",
     margin: 0,
   },
   label: {
     display: "block",
-    fontSize: "0.85rem", // Reduced font size
+    fontSize: "0.75rem",
     color: "#5a3d8a",
-    marginBottom: "6px", // Reduced margin
+    marginBottom: "4px",
     fontWeight: "500",
   },
   input: {
     width: "100%",
-    padding: "10px 12px", // Reduced padding
-    borderRadius: "6px",
-    border: "1px solid #d1c4e9",
-    fontSize: "0.9rem", // Reduced font size
-    transition: "all 0.3s ease",
+    padding: "6px 8px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    fontSize: "0.8rem",
     backgroundColor: "#f5f5f5",
     boxSizing: "border-box",
-    ":focus": {
-      borderColor: "#7e57c2",
-      boxShadow: "0 0 0 3px rgba(126, 87, 194, 0.2)",
-      outline: "none",
-      backgroundColor: "#fff",
-    },
   },
   selectContainer: {
     position: "relative",
@@ -377,34 +369,120 @@ const styles = {
   },
   select: {
     width: "100%",
-    padding: "10px 12px", // Reduced padding
-    borderRadius: "6px",
-    border: "1px solid #d1c4e9",
-    fontSize: "0.9rem", // Reduced font size
+    padding: "6px 8px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    fontSize: "0.8rem",
     appearance: "none",
     backgroundColor: "#f5f5f5",
     cursor: "pointer",
-    transition: "all 0.3s ease",
-    ":focus": {
-      borderColor: "#7e57c2",
-      boxShadow: "0 0 0 3px rgba(126, 87, 194, 0.2)",
-      outline: "none",
-      backgroundColor: "#fff",
-    },
   },
   selectArrow: {
     position: "absolute",
-    right: "12px", // Reduced right position
+    right: "8px",
     top: "50%",
     transform: "translateY(-50%)",
     width: "0",
     height: "0",
-    borderLeft: "5px solid transparent", // Reduced arrow size
-    borderRight: "5px solid transparent", // Reduced arrow size
-    borderTop: "5px solid #5a3d8a",
+    borderLeft: "4px solid transparent",
+    borderRight: "4px solid transparent",
+    borderTop: "4px solid #5a3d8a",
     pointerEvents: "none",
   },
 };
+
+
+// const styles = {
+//   container: {
+//     display: "flex",
+//     flexDirection: "column",
+//     gap: "16px", // Reduced gap
+//     padding: "20px", // Reduced padding
+//     backgroundColor: "#ffffff",
+//     borderRadius: "8px", // Reduced border radius
+//     border: "1px solid #e0e0e0",
+//     boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)", // Slightly reduced shadow
+//     maxWidth: "100%",
+//     margin: "0 auto",
+//   },
+//   formRow: {
+//     display: "flex",
+//     gap: "16px", // Reduced gap
+//     marginBottom: "8px", // Reduced margin
+//     flexWrap: "wrap",
+//   },
+//   formGroup: {
+//     flex: "1",
+//     minWidth: "200px", // Reduced min-width
+//   },
+//   header: {
+//     paddingBottom: "12px", // Reduced padding
+//     borderBottom: "2px solid #7e57c2",
+//     marginBottom: "12px", // Reduced margin
+//   },
+//   headerText: {
+//     color: "#5a3d8a",
+//     fontSize: "1.2rem", // Reduced font size
+//     fontWeight: "600",
+//     margin: 0,
+//   },
+//   label: {
+//     display: "block",
+//     fontSize: "0.85rem", // Reduced font size
+//     color: "#5a3d8a",
+//     marginBottom: "6px", // Reduced margin
+//     fontWeight: "500",
+//   },
+//   input: {
+//     width: "100%",
+//     padding: "10px 12px", // Reduced padding
+//     borderRadius: "6px",
+//     border: "1px solid #d1c4e9",
+//     fontSize: "0.9rem", // Reduced font size
+//     transition: "all 0.3s ease",
+//     backgroundColor: "#f5f5f5",
+//     boxSizing: "border-box",
+//     ":focus": {
+//       borderColor: "#7e57c2",
+//       boxShadow: "0 0 0 3px rgba(126, 87, 194, 0.2)",
+//       outline: "none",
+//       backgroundColor: "#fff",
+//     },
+//   },
+//   selectContainer: {
+//     position: "relative",
+//     width: "100%",
+//   },
+//   select: {
+//     width: "100%",
+//     padding: "10px 12px", // Reduced padding
+//     borderRadius: "6px",
+//     border: "1px solid #d1c4e9",
+//     fontSize: "0.9rem", // Reduced font size
+//     appearance: "none",
+//     backgroundColor: "#f5f5f5",
+//     cursor: "pointer",
+//     transition: "all 0.3s ease",
+//     ":focus": {
+//       borderColor: "#7e57c2",
+//       boxShadow: "0 0 0 3px rgba(126, 87, 194, 0.2)",
+//       outline: "none",
+//       backgroundColor: "#fff",
+//     },
+//   },
+//   selectArrow: {
+//     position: "absolute",
+//     right: "12px", // Reduced right position
+//     top: "50%",
+//     transform: "translateY(-50%)",
+//     width: "0",
+//     height: "0",
+//     borderLeft: "5px solid transparent", // Reduced arrow size
+//     borderRight: "5px solid transparent", // Reduced arrow size
+//     borderTop: "5px solid #5a3d8a",
+//     pointerEvents: "none",
+//   },
+// };
 
 
 

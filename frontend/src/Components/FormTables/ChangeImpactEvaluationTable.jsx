@@ -244,83 +244,178 @@ const ChangeImpactEvaluationTable = ({ formData, handleInputChange }) => {
 };
 
 
+// const styles = {
+//   container: {
+//     display: "flex",
+//     flexDirection: "column",
+//     gap: "16px",
+//     padding: "20px",
+//     backgroundColor: "#ffffff",
+//     borderRadius: "8px",
+//     border: "1px solid #e0e0e0",
+//     boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
+//     maxWidth: "100%",
+//     margin: "16px auto",
+//   },
+//   header: {
+//     paddingBottom: "12px",
+//     borderBottom: "2px solid #7e57c2",
+//     marginBottom: "12px",
+//   },
+//   headerText: {
+//     color: "#5a3d8a",
+//     fontSize: "1.2rem",
+//     fontWeight: "600",
+//     margin: 0,
+//   },
+//   section: {
+//     marginBottom: "20px", // Reduced margin
+//     padding: "12px",    // Reduced padding
+//     backgroundColor: "#f9f9f9",
+//     borderRadius: "6px",  // Reduced borderRadius
+//   },
+//   sectionTitle: {
+//     color: "#5a3d8a",
+//     fontSize: "1rem",    // Reduced fontSize
+//     fontWeight: "500",
+//     marginTop: "0",
+//     marginBottom: "10px",  // Reduced margin
+//   },
+//   formRow: {
+//     display: "flex",
+//     gap: "16px",
+//     marginBottom: "12px",  // Reduced margin
+//   },
+//   formGroup: {
+//     marginBottom: "16px",
+//   },
+//   label: {
+//     display: "block",
+//     fontSize: "0.85rem",
+//     color: "#5a3d8a",
+//     marginBottom: "6px",
+//     fontWeight: "500",
+//   },
+//   input: {
+//     width: "100%",
+//     padding: "10px 12px",
+//     borderRadius: "6px",
+//     border: "1px solid #d1c4e9",
+//     fontSize: "0.9rem",
+//     transition: "all 0.3s ease",
+//     backgroundColor: "#f5f5f5",
+//     boxSizing: "border-box",
+//     ":focus": {
+//       borderColor: "#7e57c2",
+//       boxShadow: "0 0 0 3px rgba(126, 87, 194, 0.2)",
+//       outline: "none",
+//       backgroundColor: "#fff",
+//     },
+//   },
+//   checkboxGrid: {
+//     display: "grid",
+//     gridTemplateColumns: "repeat(2, 1fr)",
+//     gap: "12px",      // Reduced gap
+//   },
+//   checkboxList: {
+//     display: "flex",
+//     flexDirection: "column",
+//     gap: "10px",      // Reduced gap
+//   },
+//   checkboxItem: {
+//     display: "flex",
+//     alignItems: "center",
+//   },
+//   checkboxLabel: {
+//     display: "flex",
+//     alignItems: "center",
+//     cursor: "pointer",
+//     fontSize: "0.9rem",    // Reduced fontSize
+//     color: "#34495e",
+//   },
+//   checkbox: {
+//     width: "16px",      // Reduced width
+//     height: "16px",     // Reduced height
+//     marginRight: "8px",    // Reduced margin
+//     accentColor: "#7e57c2",
+//     cursor: "pointer",
+//   },
+//   checkboxText: {
+//     flex: 1,
+//   },
+// };
+
 const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    gap: "16px",
-    padding: "20px",
-    backgroundColor: "#ffffff",
-    borderRadius: "8px",
-    border: "1px solid #e0e0e0",
-    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
+    gap: "8px",
+    padding: "12px",
+    backgroundColor: "#fff",
+    borderRadius: "12px",
+    border: "1px solid #ddd",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
     maxWidth: "100%",
-    margin: "16px auto",
+    margin: "0px auto",
   },
   header: {
-    paddingBottom: "12px",
-    borderBottom: "2px solid #7e57c2",
-    marginBottom: "12px",
+    paddingBottom: "6px",
+    borderBottom: "1px solid #7e57c2",
+    marginBottom: "6px",
   },
   headerText: {
     color: "#5a3d8a",
-    fontSize: "1.2rem",
+    fontSize: "1rem",
     fontWeight: "600",
     margin: 0,
   },
   section: {
-    marginBottom: "20px", // Reduced margin
-    padding: "12px",    // Reduced padding
+    marginBottom: "12px",
+    padding: "8px",
     backgroundColor: "#f9f9f9",
-    borderRadius: "6px",  // Reduced borderRadius
+    borderRadius: "4px",
   },
   sectionTitle: {
     color: "#5a3d8a",
-    fontSize: "1rem",    // Reduced fontSize
+    fontSize: "0.95rem",
     fontWeight: "500",
-    marginTop: "0",
-    marginBottom: "10px",  // Reduced margin
+    margin: "0 0 6px 0",
   },
   formRow: {
     display: "flex",
-    gap: "16px",
-    marginBottom: "12px",  // Reduced margin
+    gap: "12px",
+    marginBottom: "8px",
+    flexWrap: "wrap",
   },
   formGroup: {
-    marginBottom: "16px",
+    marginBottom: "10px",
+    flex: 1,
   },
   label: {
     display: "block",
-    fontSize: "0.85rem",
+    fontSize: "0.75rem",
     color: "#5a3d8a",
-    marginBottom: "6px",
+    marginBottom: "4px",
     fontWeight: "500",
   },
   input: {
     width: "100%",
-    padding: "10px 12px",
-    borderRadius: "6px",
-    border: "1px solid #d1c4e9",
-    fontSize: "0.9rem",
-    transition: "all 0.3s ease",
+    padding: "6px 10px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    fontSize: "0.8rem",
     backgroundColor: "#f5f5f5",
     boxSizing: "border-box",
-    ":focus": {
-      borderColor: "#7e57c2",
-      boxShadow: "0 0 0 3px rgba(126, 87, 194, 0.2)",
-      outline: "none",
-      backgroundColor: "#fff",
-    },
   },
   checkboxGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(2, 1fr)",
-    gap: "12px",      // Reduced gap
+    gap: "8px",
   },
   checkboxList: {
     display: "flex",
     flexDirection: "column",
-    gap: "10px",      // Reduced gap
+    gap: "6px",
   },
   checkboxItem: {
     display: "flex",
@@ -330,13 +425,13 @@ const styles = {
     display: "flex",
     alignItems: "center",
     cursor: "pointer",
-    fontSize: "0.9rem",    // Reduced fontSize
+    fontSize: "0.8rem",
     color: "#34495e",
   },
   checkbox: {
-    width: "16px",      // Reduced width
-    height: "16px",     // Reduced height
-    marginRight: "8px",    // Reduced margin
+    width: "14px",
+    height: "14px",
+    marginRight: "6px",
     accentColor: "#7e57c2",
     cursor: "pointer",
   },
@@ -344,5 +439,6 @@ const styles = {
     flex: 1,
   },
 };
+
 
 export default ChangeImpactEvaluationTable;

@@ -86,75 +86,147 @@ const ChangeApprovalTable = ({ formData, handleInputChange }) => {
 };
 
 
+// const styles = {
+//   container: {
+//     display: "flex",
+//     flexDirection: "column",
+//     gap: "16px",
+//     padding: "20px",
+//     backgroundColor: "#ffffff",
+//     borderRadius: "8px",
+//     border: "1px solid #e0e0e0",
+//     boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
+//     maxWidth: "100%",
+//     margin: "16px auto",
+//   },
+//   header: {
+//     paddingBottom: "12px",
+//     borderBottom: "2px solid #7e57c2",
+//     marginBottom: "12px",
+//   },
+//   headerText: {
+//     color: "#5a3d8a",
+//     fontSize: "1.2rem",
+//     fontWeight: "600",
+//     margin: 0,
+//   },
+//   section: {
+//     marginBottom: "12px",
+//   },
+//   formGroup: {
+//     marginBottom: "16px",
+//   },
+//   label: {
+//     display: "block",
+//     fontSize: "0.85rem",
+//     color: "#5a3d8a",
+//     marginBottom: "6px",
+//     fontWeight: "500",
+//   },
+//   input: {
+//     width: "100%",
+//     padding: "10px 12px",
+//     borderRadius: "6px",
+//     border: "1px solid #d1c4e9",
+//     fontSize: "0.9rem",
+//     transition: "all 0.3s ease",
+//     backgroundColor: "#f5f5f5",
+//     boxSizing: "border-box",
+//     ":focus": {
+//       borderColor: "#7e57c2",
+//       boxShadow: "0 0 0 3px rgba(126, 87, 194, 0.2)",
+//       outline: "none",
+//       backgroundColor: "#fff",
+//     },
+//   },
+//   checkboxGroup: {
+//     display: "flex",
+//     gap: "16px",
+//     marginTop: "6px",
+//   },
+//   checkboxLabel: {
+//     display: "flex",
+//     alignItems: "center",
+//     cursor: "pointer",
+//     fontSize: "0.9rem",
+//     color: "#34495e",
+//   },
+//   checkbox: {
+//     width: "16px",
+//     height: "16px",
+//     marginRight: "8px",
+//     accentColor: "#7e57c2",
+//     cursor: "pointer",
+//   },
+//   checkboxText: {
+//     flex: 1,
+//   },
+// };
+
+
+
 const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    gap: "16px",
-    padding: "20px",
-    backgroundColor: "#ffffff",
-    borderRadius: "8px",
-    border: "1px solid #e0e0e0",
-    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
+    gap: "12px",
+    padding: "12px",
+    backgroundColor: "#fff",
+    borderRadius: "12px",
+    border: "1px solid #ddd",
+    boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
     maxWidth: "100%",
-    margin: "16px auto",
+    margin: "0px auto",
   },
   header: {
-    paddingBottom: "12px",
-    borderBottom: "2px solid #7e57c2",
-    marginBottom: "12px",
+    paddingBottom: "6px",
+    borderBottom: "1px solid #7e57c2",
+    marginBottom: "8px",
   },
   headerText: {
     color: "#5a3d8a",
-    fontSize: "1.2rem",
+    fontSize: "1rem",
     fontWeight: "600",
     margin: 0,
   },
   section: {
-    marginBottom: "12px",
+    marginBottom: "8px",
   },
   formGroup: {
-    marginBottom: "16px",
+    marginBottom: "12px",
   },
   label: {
     display: "block",
-    fontSize: "0.85rem",
+    fontSize: "0.75rem",
     color: "#5a3d8a",
-    marginBottom: "6px",
+    marginBottom: "4px",
     fontWeight: "500",
   },
   input: {
     width: "100%",
-    padding: "10px 12px",
-    borderRadius: "6px",
-    border: "1px solid #d1c4e9",
-    fontSize: "0.9rem",
-    transition: "all 0.3s ease",
+    padding: "8px 10px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    fontSize: "0.8rem",
     backgroundColor: "#f5f5f5",
     boxSizing: "border-box",
-    ":focus": {
-      borderColor: "#7e57c2",
-      boxShadow: "0 0 0 3px rgba(126, 87, 194, 0.2)",
-      outline: "none",
-      backgroundColor: "#fff",
-    },
   },
   checkboxGroup: {
     display: "flex",
-    gap: "16px",
-    marginTop: "6px",
+    gap: "12px",
+    marginTop: "4px",
   },
   checkboxLabel: {
     display: "flex",
     alignItems: "center",
     cursor: "pointer",
-    fontSize: "0.9rem",
+    fontSize: "0.8rem",
     color: "#34495e",
   },
   checkbox: {
-    width: "16px",
-    height: "16px",
-    marginRight: "8px",
+    width: "14px",
+    height: "14px",
+    marginRight: "6px",
     accentColor: "#7e57c2",
     cursor: "pointer",
   },
@@ -162,5 +234,6 @@ const styles = {
     flex: 1,
   },
 };
+
 
 export default ChangeApprovalTable;
