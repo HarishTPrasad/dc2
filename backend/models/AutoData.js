@@ -2,11 +2,21 @@ const mongoose = require('mongoose');
 
 const AutoDataSchema = new mongoose.Schema({
   client: {
-    clientname: "",
-    requestor: "",
-    approver: "",
-    department: "",
-    phoneno: "",
+    clientname: {
+        type: String,
+    },
+    requestor: {
+        type: String,
+    },
+    approver: {
+        type: String,
+    },
+    department: {
+        type: String,
+    },
+    phoneno: {
+        type: String,
+    },
   },
 
   technology: {
