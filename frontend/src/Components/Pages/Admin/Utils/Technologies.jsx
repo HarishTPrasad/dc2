@@ -24,7 +24,7 @@ function Technologies() {
   const fetchTechnologies = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/autodata');
+      const response = await api.get('/techdata');
       setTechList(response.data);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to fetch technologies');
@@ -63,14 +63,14 @@ function Technologies() {
       let response;
       
       if (isEditing && currentTech?._id) {
-        response = await api.put(`/autodata/${currentTech._id}`, {
+        response = await api.put(`/techdata/${currentTech._id}`, {
           client: currentTech.client || {},
           technology: formData.technology,
           project: currentTech.project || ''
         });
         setTechList(techList.map(tech => tech._id === currentTech._id ? response.data : tech));
       } else {
-        response = await api.post('/autodata', {
+        response = await api.post('/techdata', {
           client: {},
           technology: formData.technology,
           project: ''
@@ -105,7 +105,7 @@ function Technologies() {
 
     try {
       setDeleteLoading(true);
-      await api.delete(`/autodata/${currentTech._id}`);
+      await api.delete(`/techdata/${currentTech._id}`);
       setTechList(techList.filter(tech => tech._id !== currentTech._id));
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to delete technology');

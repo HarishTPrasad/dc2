@@ -24,7 +24,7 @@ function Projects() {
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/autodata');
+      const response = await api.get('/projectdata');
       setProjectList(response.data);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to fetch projects');
@@ -63,14 +63,14 @@ function Projects() {
       let response;
       
       if (isEditing && currentProject?._id) {
-        response = await api.put(`/autodata/${currentProject._id}`, {
+        response = await api.put(`/projectdata/${currentProject._id}`, {
           client: currentProject.client || {},
           technology: currentProject.technology || '',
           project: formData.project
         });
         setProjectList(projectList.map(project => project._id === currentProject._id ? response.data : project));
       } else {
-        response = await api.post('/autodata', {
+        response = await api.post('/projectdata', {
           client: {},
           technology: '',
           project: formData.project
@@ -105,7 +105,7 @@ function Projects() {
 
     try {
       setDeleteLoading(true);
-      await api.delete(`/autodata/${currentProject._id}`);
+      await api.delete(`/projectdata/${currentProject._id}`);
       setProjectList(projectList.filter(project => project._id !== currentProject._id));
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to delete project');

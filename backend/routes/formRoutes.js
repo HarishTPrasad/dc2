@@ -241,7 +241,7 @@ async function getClient(req, res, next) {
 }
 
 // CREATE - Add a new client
-router.post('/', async (req, res) => {
+router.post('/api/clientdata', async (req, res) => {
   const clientData = new ClientData({
     client: {
       clientname: req.body.client?.clientname,
@@ -261,7 +261,7 @@ router.post('/', async (req, res) => {
 });
 
 // READ - Get all clients
-router.get('/', async (req, res) => {
+router.get('/api/clientdata', async (req, res) => {
   try {
     const clients = await ClientData.find();
     res.json(clients);
@@ -271,12 +271,12 @@ router.get('/', async (req, res) => {
 });
 
 // READ - Get one client by ID
-router.get('/:id', getClient, (req, res) => {
+router.get('/api/clientdata/:id', getClient, (req, res) => {
   res.json(res.client);
 });
 
 // UPDATE - Update a client
-router.patch('/:id', getClient, async (req, res) => {
+router.patch('/api/clientdata/:id', getClient, async (req, res) => {
   if (req.body.client?.clientname != null) {
     res.client.client.clientname = req.body.client.clientname;
   }
@@ -302,7 +302,7 @@ router.patch('/:id', getClient, async (req, res) => {
 });
 
 // DELETE - Remove a client
-router.delete('/:id', getClient, async (req, res) => {
+router.delete('/api/clientdata/:id', getClient, async (req, res) => {
   try {
     await res.client.remove();
     res.json({ message: 'Deleted client' });
@@ -335,7 +335,7 @@ async function getProject(req, res, next) {
 }
 
 // CREATE - Add a new project
-router.post('/', async (req, res) => {
+router.post('/api/projectdata', async (req, res) => {
   const projectData = new ProjectData({
     project: req.body.project
   });
@@ -349,7 +349,7 @@ router.post('/', async (req, res) => {
 });
 
 // READ - Get all projects
-router.get('/', async (req, res) => {
+router.get('/api/projectdata', async (req, res) => {
   try {
     const projects = await ProjectData.find();
     res.json(projects);
@@ -359,12 +359,12 @@ router.get('/', async (req, res) => {
 });
 
 // READ - Get one project by ID
-router.get('/:id', getProject, (req, res) => {
+router.get('/api/projectdata/:id', getProject, (req, res) => {
   res.json(res.project);
 });
 
 // UPDATE - Update a project
-router.patch('/:id', getProject, async (req, res) => {
+router.patch('/api/projectdata/:id', getProject, async (req, res) => {
   if (req.body.project != null) {
     res.project.project = req.body.project;
   }
@@ -378,7 +378,7 @@ router.patch('/:id', getProject, async (req, res) => {
 });
 
 // DELETE - Remove a project
-router.delete('/:id', getProject, async (req, res) => {
+router.delete('/api/projectdata/:id', getProject, async (req, res) => {
   try {
     await res.project.remove();
     res.json({ message: 'Deleted project' });
@@ -410,7 +410,7 @@ async function getTechnology(req, res, next) {
 }
 
 // CREATE - Add new technology
-router.post('/', async (req, res) => {
+router.post('/api/techdata', async (req, res) => {
   const techData = new TechData({
     technology: req.body.technology
   });
@@ -424,7 +424,7 @@ router.post('/', async (req, res) => {
 });
 
 // READ - Get all technologies
-router.get('/', async (req, res) => {
+router.get('/api/techdata', async (req, res) => {
   try {
     const technologies = await TechData.find();
     res.json(technologies);
@@ -434,12 +434,12 @@ router.get('/', async (req, res) => {
 });
 
 // READ - Get single technology
-router.get('/:id', getTechnology, (req, res) => {
+router.get('/api/techdata/:id', getTechnology, (req, res) => {
   res.json(res.technology);
 });
 
 // UPDATE - Update technology
-router.patch('/:id', getTechnology, async (req, res) => {
+router.patch('/api/techdata/:id', getTechnology, async (req, res) => {
   if (req.body.technology != null) {
     res.technology.technology = req.body.technology;
   }
@@ -453,7 +453,7 @@ router.patch('/:id', getTechnology, async (req, res) => {
 });
 
 // DELETE - Remove technology
-router.delete('/:id', getTechnology, async (req, res) => {
+router.delete('/api/techdata/:id', getTechnology, async (req, res) => {
   try {
     await res.technology.deleteOne();
     res.json({ message: 'Technology deleted' });

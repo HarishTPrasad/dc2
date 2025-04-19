@@ -28,7 +28,7 @@ function Clients() {
   const fetchClients = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/autodata');
+      const response = await api.get('/clientdata');
       setClientList(response.data);
       console.log(response.data);
     } catch (err) {
@@ -68,7 +68,7 @@ function Clients() {
       let response;
       
       if (isEditing && currentClient?._id) {
-        response = await api.put(`/autodata/${currentClient._id}`, {
+        response = await api.put(`/clientdata/${currentClient._id}`, {
           client: {
             clientname: formData.clientname,
             department: formData.department,
@@ -81,7 +81,7 @@ function Clients() {
         });
         setClientList(clientList.map(client => client._id === currentClient._id ? response.data : client));
       } else {
-        response = await api.post('/autodata', {
+        response = await api.post('/clientdata', {
           client: {
             clientname: formData.clientname,
             department: formData.department,
@@ -127,7 +127,7 @@ function Clients() {
 
     try {
       setDeleteLoading(true);
-      await api.delete(`/autodata/${currentClient._id}`);
+      await api.delete(`/clientdata/${currentClient._id}`);
       setClientList(clientList.filter(client => client._id !== currentClient._id));
 
     } catch (err) {
