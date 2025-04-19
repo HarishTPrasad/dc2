@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import ClientAndProjectTable from "../../FormTables/ClientAndProjectTable";
-import ChangeImpactEvaluationTable from "../../FormTables/ChangeImpactEvaluationTable";
-import ChangeApprovalTable from "../../FormTables/ChangeApprovalTable";
-import ChangeImplementationDetailsTable from "../../FormTables/ChangeImplementationDetailsTable";
-import ChangeImplementationTable from "../../FormTables/ChangeImplementationTable";
+import ClientAndProjectTable from "../../Utils/FormTables/ClientAndProjectTable";
+import ChangeImpactEvaluationTable from "../../Utils/FormTables/ChangeImpactEvaluationTable";
+import ChangeApprovalTable from "../../Utils/FormTables/ChangeApprovalTable";
+import ChangeImplementationDetailsTable from "../../Utils/FormTables/ChangeImplementationDetailsTable";
+import ChangeImplementationTable from "../../Utils/FormTables/ChangeImplementationTable";
 import api from "../../API/api";
 
 const clientDataMap = {

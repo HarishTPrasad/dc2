@@ -335,7 +335,7 @@ const styles = {
   formGroup: {
     flex: "1",
     minWidth: "160px",
-  },
+  },          
   header: {
     paddingBottom: "8px",
     borderBottom: "1px solid #7e57c2",
