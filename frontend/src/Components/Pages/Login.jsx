@@ -33,7 +33,14 @@ function Login() {
 
     if (matchedUser) {
       sessionStorage.setItem("authToken", "true");
-      sessionStorage.setItem("username", username);
+      // sessionStorage.setItem("username", username);
+      sessionStorage.setItem("userData", JSON.stringify({
+        username: matchedUser.username,
+        role: matchedUser.role,
+        fullname: matchedUser.fullname,
+        userid: matchedUser.userid
+        // Add any other fields you need
+      }));
       navigate("/dashboard");
     } else {
       setError("Invalid username or password");

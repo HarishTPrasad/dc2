@@ -4,7 +4,7 @@ const router = express.Router();
 // Models
 const User = require("../models/User");
 const formSchema = require("../models/FormDataModel");
-const AutoData = require("../models/AutoData");
+
 
 
 // Middleware
@@ -221,77 +221,243 @@ router.delete("/api/documents/:id", async (req, res) => {
   }
 });
 
-// ------------------- AUTODATA / ROUTES -------------------
-// CREATE - POST new AutoData
-router.post('/api/autodata', async (req, res) => {
-  try {
-    const newAutoData = new AutoData(req.body);
-    const savedAutoData = await newAutoData.save();
-    res.status(201).json(savedAutoData);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
 
-// READ ALL - GET all AutoData
-router.get('/api/autodata', async (req, res) => {
-  try {
-    const autoDataList = await AutoData.find();
-    res.json(autoDataList);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+const ClientData = require('../models/ClientData'); // Adjust the path as needed
 
-// READ ONE - GET single AutoData by ID
-router.get('/api/autodata/:id', async (req, res) => {
+// Middleware to get a single client by ID
+async function getClient(req, res, next) {
+  let client;
   try {
-    const autoData = await AutoData.findById(req.params.id);
-    if (!autoData) {
-      return res.status(404).json({ message: 'AutoData not found' });
+    client = await ClientData.findById(req.params.id);
+    if (client == null) {
+      return res.status(404).json({ message: 'Cannot find client' });
     }
-    res.json(autoData);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
   }
-});
 
-// UPDATE - PUT update AutoData by ID
-router.put('/api/autodata/:id', async (req, res) => {
-  try {
-    const updatedAutoData = await AutoData.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
-    if (!updatedAutoData) {
-      return res.status(404).json({ message: 'AutoData not found' });
+  res.client = client;
+  next();
+}
+
+// CREATE - Add a new client
+router.post('/', async (req, res) => {
+  const clientData = new ClientData({
+    client: {
+      clientname: req.body.client?.clientname,
+      requestor: req.body.client?.requestor,
+      approver: req.body.client?.approver,
+      department: req.body.client?.department,
+      phoneno: req.body.client?.phoneno
     }
-    res.json(updatedAutoData);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+  });
 
-// DELETE - DELETE AutoData by ID
-router.delete('/api/autodata/:id', async (req, res) => {
   try {
-    const deletedAutoData = await AutoData.findByIdAndDelete(req.params.id);
-    if (!deletedAutoData) {
-      return res.status(404).json({ message: 'AutoData not found' });
-    }
-    res.json({ message: 'AutoData deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    const newClient = await clientData.save();
+    res.status(201).json(newClient);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// READ - Get all clients
+router.get('/', async (req, res) => {
+  try {
+    const clients = await ClientData.find();
+    res.json(clients);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// READ - Get one client by ID
+router.get('/:id', getClient, (req, res) => {
+  res.json(res.client);
+});
+
+// UPDATE - Update a client
+router.patch('/:id', getClient, async (req, res) => {
+  if (req.body.client?.clientname != null) {
+    res.client.client.clientname = req.body.client.clientname;
+  }
+  if (req.body.client?.requestor != null) {
+    res.client.client.requestor = req.body.client.requestor;
+  }
+  if (req.body.client?.approver != null) {
+    res.client.client.approver = req.body.client.approver;
+  }
+  if (req.body.client?.department != null) {
+    res.client.client.department = req.body.client.department;
+  }
+  if (req.body.client?.phoneno != null) {
+    res.client.client.phoneno = req.body.client.phoneno;
+  }
+
+  try {
+    const updatedClient = await res.client.save();
+    res.json(updatedClient);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// DELETE - Remove a client
+router.delete('/:id', getClient, async (req, res) => {
+  try {
+    await res.client.remove();
+    res.json({ message: 'Deleted client' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
 
-// Test Route
-router.get("/api/test-route", (req, res) => {
-  res.json({ success: true, status: "Backend is working!" });
+
+
+
+
+const ProjectData = require('../models/ProjectData'); // Adjust the path as needed
+
+// Middleware to get a single project by ID
+async function getProject(req, res, next) {
+  let project;
+  try {
+    project = await ProjectData.findById(req.params.id);
+    if (project == null) {
+      return res.status(404).json({ message: 'Cannot find project' });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+
+  res.project = project;
+  next();
+}
+
+// CREATE - Add a new project
+router.post('/', async (req, res) => {
+  const projectData = new ProjectData({
+    project: req.body.project
+  });
+
+  try {
+    const newProject = await projectData.save();
+    res.status(201).json(newProject);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
-module.exports = router;
+// READ - Get all projects
+router.get('/', async (req, res) => {
+  try {
+    const projects = await ProjectData.find();
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// READ - Get one project by ID
+router.get('/:id', getProject, (req, res) => {
+  res.json(res.project);
+});
+
+// UPDATE - Update a project
+router.patch('/:id', getProject, async (req, res) => {
+  if (req.body.project != null) {
+    res.project.project = req.body.project;
+  }
+
+  try {
+    const updatedProject = await res.project.save();
+    res.json(updatedProject);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// DELETE - Remove a project
+router.delete('/:id', getProject, async (req, res) => {
+  try {
+    await res.project.remove();
+    res.json({ message: 'Deleted project' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 
+
+
+
+const TechData = require('../models/TechData'); // Adjust path as needed
+
+// Middleware to get technology by ID
+async function getTechnology(req, res, next) {
+  let technology;
+  try {
+    technology = await TechData.findById(req.params.id);
+    if (!technology) {
+      return res.status(404).json({ message: 'Technology not found' });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+
+  res.technology = technology;
+  next();
+}
+
+// CREATE - Add new technology
+router.post('/', async (req, res) => {
+  const techData = new TechData({
+    technology: req.body.technology
+  });
+
+  try {
+    const newTech = await techData.save();
+    res.status(201).json(newTech);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// READ - Get all technologies
+router.get('/', async (req, res) => {
+  try {
+    const technologies = await TechData.find();
+    res.json(technologies);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// READ - Get single technology
+router.get('/:id', getTechnology, (req, res) => {
+  res.json(res.technology);
+});
+
+// UPDATE - Update technology
+router.patch('/:id', getTechnology, async (req, res) => {
+  if (req.body.technology != null) {
+    res.technology.technology = req.body.technology;
+  }
+
+  try {
+    const updatedTech = await res.technology.save();
+    res.json(updatedTech);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// DELETE - Remove technology
+router.delete('/:id', getTechnology, async (req, res) => {
+  try {
+    await res.technology.deleteOne();
+    res.json({ message: 'Technology deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});

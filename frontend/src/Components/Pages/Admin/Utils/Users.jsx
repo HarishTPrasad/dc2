@@ -1,234 +1,471 @@
-// import React, { useState, useEffect } from 'react';
-// import { Modal, Button, Form, Table, Alert, Spinner } from 'react-bootstrap';
-// import api from "../../../API/api"
-// import moment from 'moment';
-
-// function Users() {
-//   const [users, setUsers] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [showModal, setShowModal] = useState(false);
-//   const [formData, setFormData] = useState({
-//     username: '',
-//     fullname: '',
-//     password: '',
-//     role: 'user'
-//   });
-//   const [validationErrors, setValidationErrors] = useState({});
-
-//   // Fetch users on component mount
-//   useEffect(() => {
-//     const fetchUsers = async () => {
-//       try {
-//         const response = await api.get('/users');
-//         setUsers(response.data.data);
-//       } catch (err) {
-//         setError(err.response?.data?.error || 'Failed to fetch users');
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     fetchUsers();
-//   }, []);
-
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData(prev => ({
-//       ...prev,
-//       [name]: value
-//     }));
-//     // Clear validation error when user types
-//     if (validationErrors[name]) {
-//       setValidationErrors(prev => ({
-//         ...prev,
-//         [name]: null
-//       }));
-//     }
-//   };
-
-//   const validateForm = () => {
-//     const errors = {};
-//     if (!formData.username.trim()) errors.username = 'Username is required';
-//     if (!formData.fullname.trim()) errors.fullname = 'Full name is required';
-//     if (!formData.password) errors.password = 'Password is required';
-//     if (formData.password.length < 6) errors.password = 'Password must be at least 6 characters';
-    
-//     setValidationErrors(errors);
-//     return Object.keys(errors).length === 0;
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!validateForm()) return;
-
-//     try {
-//       setLoading(true);
-//       const response = await api.post('/users', formData);
-//       setUsers([...users, response.data.data]);
-//       setShowModal(false);
-//       setFormData({
-//         username: '',
-//         fullname: '',
-//         password: '',
-//         role: 'user'
-//       });
-//     } catch (err) {
-//       setError(err.response?.data?.error || 'Failed to create user');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="container-fluid p-4">
-//       <div className="d-flex justify-content-between align-items-center mb-4">
-//         <h2 className="mb-0">User Management</h2>
-//         <Button variant="primary" onClick={() => setShowModal(true)}>
-//           <i className="fas fa-plus mr-2"></i>Add User
-//         </Button>
-//       </div>
-
-//       {error && (
-//         <Alert variant="danger" onClose={() => setError(null)} dismissible>
-//           {error}
-//         </Alert>
-//       )}
-
-//       {loading && users.length === 0 ? (
-//         <div className="text-center py-5">
-//           <Spinner animation="border" role="status">
-//             <span className="sr-only">Loading...</span>
-//           </Spinner>
-//         </div>
-//       ) : (
-//         <div className="card shadow-sm">
-//           <div className="card-body p-0">
-//             <div className="table-responsive">
-//               <Table striped bordered hover className="mb-0">
-//                 <thead className="bg-light">
-//                   <tr>
-//                     <th>User ID</th>
-//                     <th>Username</th>
-//                     <th>Full Name</th>
-//                     <th>Role</th>
-//                     <th>Date Created</th>
-//                   </tr>
-//                 </thead>
-//                 <tbody>
-//                   {users.map(user => (
-//                     <tr key={user._id}>
-//                       <td>{user.userid || 'N/A'}</td>
-//                       <td>{user.username}</td>
-//                       <td>{user.fullname}</td>
-//                       <td>
-//                         <span className={`badge ${user.role === 'admin' ? 'badge-primary' : 'badge-secondary'}`}>
-//                           {user.role}
-//                         </span>
-//                       </td>
-//                       <td>{moment(user.createdAt).format('MMM D, YYYY h:mm A')}</td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </Table>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-
-//       {/* Add User Modal */}
-//       <Modal show={showModal} onHide={() => setShowModal(false)}>
-//         <Modal.Header closeButton>
-//           <Modal.Title>Create New User</Modal.Title>
-//         </Modal.Header>
-//         <Form onSubmit={handleSubmit}>
-//           <Modal.Body>
-//             <Form.Group>
-//               <Form.Label>Username *</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 name="username"
-//                 value={formData.username}
-//                 onChange={handleInputChange}
-//                 isInvalid={!!validationErrors.username}
-//               />
-//               <Form.Control.Feedback type="invalid">
-//                 {validationErrors.username}
-//               </Form.Control.Feedback>
-//             </Form.Group>
-
-//             <Form.Group>
-//               <Form.Label>Full Name *</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 name="fullname"
-//                 value={formData.fullname}
-//                 onChange={handleInputChange}
-//                 isInvalid={!!validationErrors.fullname}
-//               />
-//               <Form.Control.Feedback type="invalid">
-//                 {validationErrors.fullname}
-//               </Form.Control.Feedback>
-//             </Form.Group>
-
-//             <Form.Group>
-//               <Form.Label>Password *</Form.Label>
-//               <Form.Control
-//                 type="password"
-//                 name="password"
-//                 value={formData.password}
-//                 onChange={handleInputChange}
-//                 isInvalid={!!validationErrors.password}
-//               />
-//               <Form.Control.Feedback type="invalid">
-//                 {validationErrors.password}
-//               </Form.Control.Feedback>
-//               <Form.Text className="text-muted">
-//                 Minimum 6 characters
-//               </Form.Text>
-//             </Form.Group>
-
-//             <Form.Group>
-//               <Form.Label>Role</Form.Label>
-//               <Form.Control
-//                 as="select"
-//                 name="role"
-//                 value={formData.role}
-//                 onChange={handleInputChange}
-//               >
-//                 <option value="user">User</option>
-//                 <option value="admin">Admin</option>
-//               </Form.Control>
-//             </Form.Group>
-//           </Modal.Body>
-//           <Modal.Footer>
-//             <Button variant="secondary" onClick={() => setShowModal(false)}>
-//               Cancel
-//             </Button>
-//             <Button variant="primary" type="submit" disabled={loading}>
-//               {loading ? (
-//                 <>
-//                   <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-//                   <span className="sr-only">Creating...</span>
-//                 </>
-//               ) : (
-//                 'Create User'
-//               )}
-//             </Button>
-//           </Modal.Footer>
-//         </Form>
-//       </Modal>
-//     </div>
-//   );
-// }
-
-// export default Users;
-
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import api from "../../../API/api";
+import { FiUserPlus, FiEdit2, FiTrash2, FiSearch } from 'react-icons/fi';
 
 function Users() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [formData, setFormData] = useState({
+    userid: '',
+    username: '',
+    fullname: '',
+    password: '',
+    role: 'user'
+  });
+  const [validationErrors, setValidationErrors] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get('/users');
+      setUsers(response.data.data);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to fetch users');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    if (validationErrors[name]) {
+      setValidationErrors(prev => ({
+        ...prev,
+        [name]: null
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!isEditing && !formData.password) errors.password = 'Password is required';
+    if (!isEditing && formData.password && formData.password.length < 6) {
+      errors.password = 'Password must be at least 6 characters';
+    }
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    try {
+      setLoading(true);
+      let response;
+      
+      if (isEditing) {
+        const dataToSend = formData.password 
+          ? formData 
+          : { 
+              userid: formData.userid,
+              username: formData.username, 
+              fullname: formData.fullname, 
+              role: formData.role 
+            };
+        
+        response = await api.put(`/users/${currentUser._id}`, dataToSend);
+        setUsers(users.map(user => user._id === currentUser._id ? response.data.data : user));
+      } else {
+        response = await api.post('/users', formData);
+        setUsers([...users, response.data.data]);
+      }
+
+      setShowModal(false);
+      resetForm();
+    } catch (err) {
+      setError(err.response?.data?.error || `Failed to ${isEditing ? 'update' : 'create'} user`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEdit = (user) => {
+    setCurrentUser(user);
+    setFormData({
+      userid: user.userid || '',
+      username: user.username || '',
+      fullname: user.fullname || '',
+      password: '',
+      role: user.role || 'user'
+    });
+    setIsEditing(true);
+    setShowModal(true);
+  };
+
+  const handleDelete = async () => {
+    if (!currentUser?._id) {
+      setError("Cannot delete user: Missing user ID");
+      setShowDeleteModal(false);
+      return;
+    }
+
+    try {
+      setDeleteLoading(true);
+      await api.delete(`/users/${currentUser._id}`);
+      setUsers(users.filter(user => user._id !== currentUser._id));
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to delete user');
+    } finally {
+      setDeleteLoading(false);
+      setShowDeleteModal(false);
+      setCurrentUser(null);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      userid: '',
+      username: '',
+      fullname: '',
+      password: '',
+      role: 'user'
+    });
+    setCurrentUser(null);
+    setIsEditing(false);
+  };
+
+  // Fixed filtering logic with null checks
+  const filteredUsers = users.filter(user => {
+    if (!searchTerm) return true;
+    const searchTermLower = searchTerm.toLowerCase();
+    return (
+      (user.username && user.username.toLowerCase().includes(searchTermLower)) ||
+      (user.fullname && user.fullname.toLowerCase().includes(searchTermLower)) ||
+      (user.userid && user.userid.toLowerCase().includes(searchTermLower))
+    );
+  });
+
+  // For controlling body scroll when modal is open
+  useEffect(() => {
+    if (showModal || showDeleteModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showModal, showDeleteModal]);
+
   return (
-    <div>Users</div>
-  )
+    <div className="p-4 bg-white rounded shadow-sm">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h5 className="mb-0 font-weight-bold text-primary">User Management</h5>
+        <button 
+          className="btn btn-primary btn-sm d-flex align-items-center shadow-sm"
+          onClick={() => {
+            resetForm();
+            setShowModal(true);
+          }}
+        >
+          <FiUserPlus className="mr-1" /> Add User
+        </button>
+      </div>
+
+      {error && (
+        <div className="alert alert-danger py-2 mb-3 shadow-sm alert-dismissible fade show" role="alert">
+          {error}
+          <button type="button" className="close" onClick={() => setError(null)}>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      )}
+
+      <div className="mb-3 position-relative">
+        <div className="input-group input-group-sm shadow-sm">
+          <div className="input-group-prepend">
+            <span className="input-group-text bg-white border-right-0">
+              <FiSearch className="text-muted" />
+            </span>
+          </div>
+          <input
+            type="text"
+            placeholder="Search users..."
+            className="form-control border-left-0"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
+      {loading && users.length === 0 ? (
+        <div className="text-center py-5">
+          <div className="spinner-border spinner-border-sm text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+          <p className="text-muted mt-2 small">Loading users...</p>
+        </div>
+      ) : (
+        <div className="border rounded shadow-sm">
+          <table className="table table-hover table-sm mb-0 user-table">
+            <thead className="bg-light">
+              <tr>
+                <th className="py-2 pl-3 border-0">ID</th>
+                <th className="py-2 border-0">Username</th>
+                <th className="py-2 border-0">Full Name</th>
+                <th className="py-2 border-0">Role</th>
+                <th className="py-2 pr-3 border-0 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.length > 0 ? (
+                filteredUsers.map(user => (
+                  <tr key={user._id}>
+                    <td className="py-2 pl-3 text-muted small">{user.userid || '-'}</td>
+                    <td className="py-2 font-weight-medium">{user.username || '-'}</td>
+                    <td className="py-2">{user.fullname || '-'}</td>
+                    <td className="py-2">
+                      <span className={`badge badge-pill ${user.role === 'admin' ? 'badge-primary' : 'badge-secondary'} px-2 py-1 font-weight-normal`}>
+                        {user.role || 'user'}
+                      </span>
+                    </td>
+                    <td className="py-2 pr-3 text-right">
+                      <button 
+                        className="btn btn-outline-secondary btn-sm mr-1 btn-sm-icon"
+                        onClick={() => handleEdit(user)}
+                      >
+                        <FiEdit2 size={14} />
+                      </button>
+                      <button 
+                        className="btn btn-outline-danger btn-sm btn-sm-icon"
+                        onClick={() => {
+                          setCurrentUser(user);
+                          setShowDeleteModal(true);
+                        }}
+                      >
+                        <FiTrash2 size={14} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="text-center py-4 text-muted">
+                    {searchTerm ? 'No users match your search' : 'No users found'}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* User Modal */}
+      {showModal && (
+        <>
+          <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
+            <div className="modal-dialog modal-sm modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header py-2 bg-light">
+                  <h6 className="modal-title text-primary">{isEditing ? 'Edit User' : 'New User'}</h6>
+                  <button type="button" className="close" onClick={() => {
+                    setShowModal(false);
+                    resetForm();
+                  }}>
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form onSubmit={handleSubmit}>
+                  <div className="modal-body py-3">
+                    <div className="form-group mb-3">
+                      <label className="small font-weight-bold">User ID</label>
+                      <input
+                        className="form-control form-control-sm shadow-sm"
+                        type="text"
+                        name="userid"
+                        placeholder="Optional"
+                        value={formData.userid}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+
+                    <div className="form-group mb-3">
+                      <label className="small font-weight-bold">Username *</label>
+                      <input
+                        className="form-control form-control-sm shadow-sm"
+                        type="text"
+                        name="username"
+                        placeholder="Enter username"
+                        value={formData.username}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group mb-3">
+                      <label className="small font-weight-bold">Full Name *</label>
+                      <input
+                        className="form-control form-control-sm shadow-sm"
+                        type="text"
+                        name="fullname"
+                        placeholder="Enter full name"
+                        value={formData.fullname}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group mb-3">
+                      <label className="small font-weight-bold">
+                        Password {!isEditing ? '*' : '(leave blank to keep unchanged)'}
+                      </label>
+                      <input
+                        className={`form-control form-control-sm shadow-sm ${validationErrors.password ? 'is-invalid' : ''}`}
+                        type="password"
+                        name="password"
+                        placeholder={isEditing ? "••••••" : "Minimum 6 characters"}
+                        value={formData.password}
+                        onChange={handleInputChange}
+                      />
+                      {validationErrors.password && (
+                        <small className="text-danger">
+                          {validationErrors.password}
+                        </small>
+                      )}
+                    </div>
+
+                    <div className="form-group">
+                      <label className="small font-weight-bold">Role *</label>
+                      <select
+                        className="form-control form-control-sm shadow-sm"
+                        name="role"
+                        value={formData.role}
+                        onChange={handleInputChange}
+                      >
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="modal-footer py-2 bg-light">
+                    <button 
+                      type="button"
+                      className="btn btn-light btn-sm shadow-sm"
+                      onClick={() => {
+                        setShowModal(false);
+                        resetForm();
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary btn-sm shadow-sm"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      ) : (
+                        isEditing ? 'Update' : 'Create'
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop fade show"></div>
+        </>
+      )}
+
+      {/* Delete Modal */}
+      {showDeleteModal && (
+        <>
+          <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
+            <div className="modal-dialog modal-sm modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header py-2 bg-light">
+                  <h6 className="modal-title text-danger">Confirm Deletion</h6>
+                  <button 
+                    type="button" 
+                    className="close" 
+                    onClick={() => setShowDeleteModal(false)}
+                    disabled={deleteLoading}
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body py-4 text-center">
+                  <div className="mb-3 text-danger">
+                    <FiTrash2 size={28} />
+                  </div>
+                  <p>Are you sure you want to delete user <strong>{currentUser?.username || 'this user'}</strong>?</p>
+                  <p className="text-muted small mb-0">This action cannot be undone.</p>
+                </div>
+                <div className="modal-footer py-2 bg-light">
+                  <button 
+                    type="button"
+                    className="btn btn-light btn-sm shadow-sm"
+                    onClick={() => setShowDeleteModal(false)}
+                    disabled={deleteLoading}
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="button"
+                    className="btn btn-danger btn-sm shadow-sm"
+                    onClick={handleDelete}
+                    disabled={deleteLoading}
+                  >
+                    {deleteLoading ? (
+                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    ) : (
+                      'Delete'
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop fade show"></div>
+        </>
+      )}
+
+      <style jsx>{`
+        .user-table th {
+          font-size: 0.8rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: #6c757d;
+        }
+        .user-table td {
+          vertical-align: middle;
+          font-size: 0.9rem;
+        }
+        .btn-sm-icon {
+          width: 32px;
+          height: 32px;
+          padding: 0;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .font-weight-medium {
+          font-weight: 500;
+        }
+        .modal {
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+      `}</style>
+    </div>
+  );
 }
 
-export default Users
+export default Users;

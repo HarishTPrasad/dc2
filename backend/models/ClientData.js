@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const AutoDataSchema = new mongoose.Schema({
+const ClientDataSchema = new mongoose.Schema({
   client: {
     clientname: {
         type: String,
@@ -19,13 +19,6 @@ const AutoDataSchema = new mongoose.Schema({
     },
   },
 
-  technology: {
-    type: String,
-  },
-
-  project: {
-    type: String,
-  }
 });
 
-module.exports = mongoose.model('AutoData', AutoDataSchema);
+module.exports = mongoose.model('ClientData', ClientDataSchema);

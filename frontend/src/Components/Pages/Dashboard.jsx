@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import logo from '../Images/dclogo.png';
 import { FaUserCircle, FaBell, FaSignOutAlt, FaTicketAlt, FaCogs, FaHome, FaChevronRight, FaUser, FaCog } from "react-icons/fa";
+import { isAdmin, getFullName } from '../Utils/Auth';
 
 function Dashboard() {
   const username = sessionStorage.getItem("username") || "User";
@@ -68,7 +69,7 @@ function Dashboard() {
         </div>
         
         <div style={styles.navRight}>
-          <div style={styles.welcomeText}>Welcome back, {username}</div>
+          <div style={styles.welcomeText}>Welcome back, {getFullName()}</div>
           
           {/* Notification Bell with Dropdown */}
           {/* <div style={styles.notificationWrapper} ref={notificationRef}>
@@ -129,14 +130,19 @@ function Dashboard() {
               <div style={styles.profileDropdown}>
                 <div style={styles.profileHeader}>
                   <FaUserCircle size={40} />
-                  <div>
+                  {/* <div>
                     <h4>{username}</h4>
                     <small>{
                               ['harish', 'kksuthar', 'lakshman'].includes(username.toLowerCase())
                                 ? 'Administrator'
                                 : 'User'
                             }</small>
-                  </div>
+                  </div> */}
+
+                      <div>
+                        <h4>{getFullName()}</h4>
+                        <small>{isAdmin() ? 'Administrator' : 'User'}</small>
+                      </div>
                 </div>
                 <div style={styles.dropdownMenu}>
                   <button style={styles.dropdownItem}>
@@ -170,7 +176,39 @@ function Dashboard() {
             Dashboard
           </h2>
 
+
           <div style={styles.menuSection}>
+                {isAdmin() && (                
+                  <button 
+                    style={getMenuButtonStyles("/dashboard/admin")}
+                    onClick={() => navigate("/dashboard/admin")}
+                    onMouseEnter={(e) => {
+                      if (!isActive("/dashboard/admin")) {
+                        e.currentTarget.style.backgroundColor = colors.menuHover;
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive("/dashboard/admin")) {
+                        e.currentTarget.style.backgroundColor = colors.menuActive;
+                      }
+                    }}
+                  >   
+                    <div style={styles.buttonContent}>
+                      <FaCogs style={{
+                        ...styles.buttonIcon,
+                        color: isActive("/dashboard/admin") ? colors.primary : colors.textLight
+                      }} />
+                      <span>Admin Dashboard</span>
+                    </div>
+                    <FaChevronRight style={{
+                      ...styles.arrowIcon,
+                      color: isActive("/dashboard/admin") ? colors.primary : colors.textLight
+                    }} />
+                  </button>
+                )}
+              </div>
+
+          {/* <div style={styles.menuSection}>
            
             {(username === "Harish" || username === "kksuthar" || username === "Lakshman") && (
                 
@@ -201,7 +239,7 @@ function Dashboard() {
                   }} />
                 </button>
               )}
-          </div>
+          </div> */}
 
           <div style={styles.menuSection}>
             <h3 style={styles.menuSectionTitle}>Management</h3>
