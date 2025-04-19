@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../API/api';
 import { FiPlus, FiEdit2, FiTrash2, FiSearch } from 'react-icons/fi';
+import { useNavigate } from "react-router-dom";
+
 
 function Technologies() {
   const [techList, setTechList] = useState([]);
@@ -16,6 +18,12 @@ function Technologies() {
   const [validationErrors, setValidationErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+   const navigate = useNavigate();
+
+   const handleBackToDashboard = () => {
+    navigate("/dashboard/admin");
+  };
+
 
   useEffect(() => {
     fetchTechnologies();
@@ -147,16 +155,24 @@ function Technologies() {
   return (
     <div className="p-4 bg-white rounded shadow-sm">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h5 className="mb-0 font-weight-bold text-primary">Technology Management</h5>
-        <button 
-          className="btn btn-primary btn-sm d-flex align-items-center shadow-sm"
-          onClick={() => {
-            resetForm();
-            setShowModal(true);
-          }}
-        >
-          <FiPlus className="mr-1" /> Add Technology
-        </button>
+        <h5 className="mb-0 font-weight-bold text-info">Technology Management</h5>
+       <div className="d-flex justify-content-between align-items-center mb-4 " style={{ gap: '1rem' }}>
+               <button 
+                 className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
+                 onClick={() => {
+                   resetForm();
+                   setShowModal(true);
+                 }}
+               >
+                 <FiPlus className="mr-1" /> Add Client
+               </button>
+               <button 
+                 className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
+                 onClick={handleBackToDashboard}
+               >
+                  back
+               </button>
+               </div>
       </div>
 
       {error && (
@@ -246,7 +262,7 @@ function Technologies() {
             <div className="modal-dialog modal-sm modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header py-2 bg-light">
-                  <h6 className="modal-title text-primary">{isEditing ? 'Edit Technology' : 'New Technology'}</h6>
+                  <h6 className="modal-title text-info">{isEditing ? 'Edit Technology' : 'New Technology'}</h6>
                   <button type="button" className="close" onClick={() => {
                     setShowModal(false);
                     resetForm();
@@ -287,7 +303,7 @@ function Technologies() {
                     </button>
                     <button 
                       type="submit" 
-                      className="btn btn-primary btn-sm shadow-sm"
+                      className="btn btn-info btn-sm shadow-sm"
                       disabled={loading}
                     >
                       {loading ? (

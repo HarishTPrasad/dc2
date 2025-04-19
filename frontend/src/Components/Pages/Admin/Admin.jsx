@@ -4,8 +4,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import api from "../../API/api";
 import { 
   FaUsers, 
-  FaUserCircle, 
-  FaChartLine, 
   FaBriefcase, 
   FaLaptopCode, 
   FaBuilding,
@@ -72,9 +70,9 @@ const AdminLayout = () => {
   // Summary card data
   const summaryCards = [
     { title: 'Users', count: counts.users, icon: FaUsers, color: 'info', id: 'users' },
-    { title: 'Clients', count: counts.clients, icon: FaBuilding, color: 'success', id: 'clients' },
+    { title: 'Clients', count: counts.clients, icon: FaBuilding, color: 'info', id: 'clients' },
     { title: 'Projects', count: counts.projects, icon: FaBriefcase, color: 'info', id: 'projects' },
-    { title: 'Technologies', count: counts.technologies, icon: FaLaptopCode, color: 'warning', id: 'technologies' }
+    { title: 'Technologies', count: counts.technologies, icon: FaLaptopCode, color: 'info', id: 'technologies' }
   ];
 
   const handleCardClick = (id) => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../API/api';
 import { FiUserPlus, FiEdit2, FiTrash2, FiSearch } from 'react-icons/fi';
+import { useNavigate } from "react-router-dom";
 
 function Clients() {
   const [clientList, setClientList] = useState([]);
@@ -9,6 +10,7 @@ function Clients() {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const navigate = useNavigate();
   const [currentClient, setCurrentClient] = useState(null);
   const [formData, setFormData] = useState({
     clientname: '',
@@ -29,10 +31,12 @@ function Clients() {
     try {
       setLoading(true);
       const response = await api.get('/clientdata');
-      setClientList(response.data.data);
-      console.log(response.data);
+      // Ensure we're working with the correct data structure
+      const data = response.data?.data || response.data || [];
+      setClientList(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to fetch clients');
+      setClientList([]); // Reset to empty array on error
     } finally {
       setLoading(false);
     }
@@ -55,6 +59,7 @@ function Clients() {
   const validateForm = () => {
     const errors = {};
     if (!formData.clientname) errors.clientname = 'Client name is required';
+    if (!formData.requestor) errors.requestor = 'Requester name is required';
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -68,6 +73,20 @@ function Clients() {
       let response;
       
       if (isEditing && currentClient?._id) {
+        // Optimistic update
+        setClientList(prev => prev.map(client => 
+          client._id === currentClient._id ? {
+            ...client,
+            client: {
+              clientname: formData.clientname,
+              department: formData.department,
+              requestor: formData.requestor,
+              approver: formData.approver,
+              phoneno: formData.phoneno
+            }
+          } : client
+        ));
+
         response = await api.put(`/clientdata/${currentClient._id}`, {
           client: {
             clientname: formData.clientname,
@@ -75,10 +94,27 @@ function Clients() {
             requestor: formData.requestor,
             approver: formData.approver,
             phoneno: formData.phoneno
-          },
+          }
         });
-        setClientList(clientList.map(client => client._id === currentClient._id ? response.data : client));
+
+        // Final update with server response
+        setClientList(prev => prev.map(client => 
+          client._id === currentClient._id ? response.data.data || response.data : client
+        ));
       } else {
+        // Optimistic create with temporary ID
+        const tempId = `temp-${Date.now()}`;
+        setClientList(prev => [{
+          _id: tempId,
+          client: {
+            clientname: formData.clientname,
+            department: formData.department,
+            requestor: formData.requestor,
+            approver: formData.approver,
+            phoneno: formData.phoneno
+          }
+        }, ...prev]);
+
         response = await api.post('/clientdata', {
           client: {
             clientname: formData.clientname,
@@ -86,17 +122,22 @@ function Clients() {
             requestor: formData.requestor,
             approver: formData.approver,
             phoneno: formData.phoneno
-          },
-      
+          }
         });
-        setClientList([...clientList, response.data]);
-       console.log(response.data)
+
+        // Replace temporary client with server response
+        setClientList(prev => [
+          response.data.data || response.data,
+          ...prev.filter(client => client._id !== tempId)
+        ]);
       }
 
       setShowModal(false);
       resetForm();
     } catch (err) {
       setError(err.response?.data?.error || `Failed to ${isEditing ? 'update' : 'create'} client`);
+      // Revert optimistic update on error
+      fetchClients();
     } finally {
       setLoading(false);
     }
@@ -124,15 +165,20 @@ function Clients() {
 
     try {
       setDeleteLoading(true);
-      await api.delete(`/clientdata/${currentClient._id}`);
-      setClientList(clientList.filter(client => client._id !== currentClient._id));
+      // Optimistic delete
+      const deletedClient = currentClient;
+      setClientList(prev => prev.filter(client => client._id !== deletedClient._id));
 
-    } catch (err) {
-      setError(err.response?.data?.error || 'Failed to delete client');
-    } finally {
-      setDeleteLoading(false);
+      await api.delete(`/clientdata/${deletedClient._id}`);
+      
       setShowDeleteModal(false);
       setCurrentClient(null);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to delete client');
+      // Revert optimistic delete on error
+      fetchClients();
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -173,12 +219,17 @@ function Clients() {
     };
   }, [showModal, showDeleteModal]);
 
+  const handleBackToDashboard = () => {
+    navigate("/dashboard/admin");
+  };
+
   return (
     <div className="p-4 bg-white rounded shadow-sm">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h5 className="mb-0 font-weight-bold text-primary">Client Management</h5>
+        <h5 className="mb-0 font-weight-bold text-info">Client Management</h5>
+        <div className="d-flex justify-content-between align-items-center mb-4 " style={{ gap: '1rem' }}>
         <button 
-          className="btn btn-primary btn-sm d-flex align-items-center shadow-sm"
+          className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
           onClick={() => {
             resetForm();
             setShowModal(true);
@@ -186,6 +237,13 @@ function Clients() {
         >
           <FiUserPlus className="mr-1" /> Add Client
         </button>
+        <button 
+          className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
+          onClick={handleBackToDashboard}
+        >
+         back
+        </button>
+        </div>
       </div>
 
       {error && (
@@ -281,7 +339,7 @@ function Clients() {
             <div className="modal-dialog modal-sm modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header py-2 bg-light">
-                  <h6 className="modal-title text-primary">{isEditing ? 'Edit Client' : 'New Client'}</h6>
+                  <h6 className="modal-title text-info">{isEditing ? 'Edit Client' : 'New Client'}</h6>
                   <button type="button" className="close" onClick={() => {
                     setShowModal(false);
                     resetForm();
@@ -324,7 +382,7 @@ function Clients() {
                     <div className="form-group mb-3">
                       <label className="small font-weight-bold">Requester Name *</label>
                       <input
-                        className="form-control form-control-sm shadow-sm"
+                        className={`form-control form-control-sm shadow-sm ${validationErrors.requestor ? 'is-invalid' : ''}`}
                         type="text"
                         name="requestor"
                         placeholder="Enter requester name"
@@ -332,6 +390,11 @@ function Clients() {
                         onChange={handleInputChange}
                         required
                       />
+                      {validationErrors.requestor && (
+                        <small className="text-danger">
+                          {validationErrors.requestor}
+                        </small>
+                      )}
                     </div>
 
                     <div className="form-group mb-3">
@@ -371,7 +434,7 @@ function Clients() {
                     </button>
                     <button 
                       type="submit" 
-                      className="btn btn-primary btn-sm shadow-sm"
+                      className="btn btn-info btn-sm shadow-sm"
                       disabled={loading}
                     >
                       {loading ? (
