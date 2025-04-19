@@ -423,6 +423,27 @@ router.delete("/api/techdata/:id", async (req, res) => {
   }
 });
 
+router.get('/api/counts', async (req, res) => {
+  try {
+    const [users, clients, projects, technologies] = await Promise.all([
+      User.countDocuments(),
+      ClientData.countDocuments(),
+      ProjectData.countDocuments(),
+      TechData.countDocuments()
+    ]);
+
+    res.json({
+      success: true,
+      data: { users, clients, projects, technologies }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 
 
 
