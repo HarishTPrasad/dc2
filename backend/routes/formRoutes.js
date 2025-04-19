@@ -17,21 +17,37 @@ router.use(express.urlencoded({ extended: true }));
 // ----------------------- USER ROUTES -----------------------
 
 // CREATE User
+// CREATE User - Fixed version
 router.post("/api/users", async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const newUser = await User.create({ username, password, role, fullname, userid });
+    const { username, password, role, fullname, userid } = req.body;
+    
+    // Validate required fields
+    if (!username || !password) {
+      return res.status(400).json({
+        success: false,
+        error: "Username and password are required"
+      });
+    }
+
+    const newUser = await User.create({ 
+      username, 
+      password, 
+      role: role || 'user', // default role
+      fullname: fullname || '',
+      userid: userid || ''
+    });
+    
     res.status(201).json({
       success: true,
       data: newUser,
       message: "User created successfully"
     });
   } catch (error) {
-    console.error("❌ Error creating user:", error);
+    console.error("Error creating user:", error);
     res.status(500).json({
       success: false,
-      error: "Failed to create user",
-      details: error.message
+      error: error.message || "Failed to create user"
     });
   }
 });
