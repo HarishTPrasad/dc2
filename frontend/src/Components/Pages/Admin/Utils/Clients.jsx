@@ -29,7 +29,7 @@ function Clients() {
     try {
       setLoading(true);
       const response = await api.get('/clientdata');
-      setClientList(response.data);
+      setClientList(response.data.data);
       console.log(response.data);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to fetch clients');

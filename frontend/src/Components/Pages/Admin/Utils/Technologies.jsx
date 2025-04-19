@@ -25,7 +25,7 @@ function Technologies() {
     try {
       setLoading(true);
       const response = await api.get('/techdata');
-      setTechList(response.data);
+      setTechList(response.data.data);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to fetch technologies');
     } finally {
