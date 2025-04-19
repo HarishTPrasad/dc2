@@ -76,8 +76,6 @@ function Clients() {
             approver: formData.approver,
             phoneno: formData.phoneno
           },
-          technology: currentClient.technology || '',
-          project: currentClient.project || ''
         });
         setClientList(clientList.map(client => client._id === currentClient._id ? response.data : client));
       } else {
@@ -89,8 +87,7 @@ function Clients() {
             approver: formData.approver,
             phoneno: formData.phoneno
           },
-          technology: '',
-          project: ''
+      
         });
         setClientList([...clientList, response.data]);
        console.log(response.data)

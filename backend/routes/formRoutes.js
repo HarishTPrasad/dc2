@@ -4,6 +4,9 @@ const router = express.Router();
 // Models
 const User = require("../models/User");
 const formSchema = require("../models/FormDataModel");
+const ClientData = require("../models/ClientData");
+const ProjectData = require("../models/ProjectData");
+const TechData = require("../models/TechData");
 
 
 
@@ -222,243 +225,201 @@ router.delete("/api/documents/:id", async (req, res) => {
 });
 
 
-const ClientData = require('../models/ClientData'); // Adjust the path as needed
-
-// Middleware to get a single client by ID
-async function getClient(req, res, next) {
-  let client;
+// ------------------- CLIENT DATA ROUTES -------------------
+router.post("/api/clientdata", async (req, res) => {
   try {
-    client = await ClientData.findById(req.params.id);
-    if (client == null) {
-      return res.status(404).json({ message: 'Cannot find client' });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-
-  res.client = client;
-  next();
-}
-
-// CREATE - Add a new client
-router.post('/api/clientdata', async (req, res) => {
-  const clientData = new ClientData({
-    client: {
-      clientname: req.body.client?.clientname,
-      requestor: req.body.client?.requestor,
-      approver: req.body.client?.approver,
-      department: req.body.client?.department,
-      phoneno: req.body.client?.phoneno
-    }
-  });
-
-  try {
-    const newClient = await clientData.save();
-    res.status(201).json(newClient);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    const newClient = await ClientData.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: newClient,
+      message: "Client created successfully"
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
-// READ - Get all clients
-router.get('/api/clientdata', async (req, res) => {
+router.get("/api/clientdata", async (req, res) => {
   try {
     const clients = await ClientData.find();
-    res.json(clients);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.json({
+      success: true,
+      data: clients
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
-// READ - Get one client by ID
-router.get('/api/clientdata/:id', getClient, (req, res) => {
-  res.json(res.client);
-});
-
-// UPDATE - Update a client
-router.patch('/api/clientdata/:id', getClient, async (req, res) => {
-  if (req.body.client?.clientname != null) {
-    res.client.client.clientname = req.body.client.clientname;
-  }
-  if (req.body.client?.requestor != null) {
-    res.client.client.requestor = req.body.client.requestor;
-  }
-  if (req.body.client?.approver != null) {
-    res.client.client.approver = req.body.client.approver;
-  }
-  if (req.body.client?.department != null) {
-    res.client.client.department = req.body.client.department;
-  }
-  if (req.body.client?.phoneno != null) {
-    res.client.client.phoneno = req.body.client.phoneno;
-  }
-
+router.put("/api/clientdata/:id", async (req, res) => {
   try {
-    const updatedClient = await res.client.save();
-    res.json(updatedClient);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    const updatedClient = await ClientData.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.json({
+      success: true,
+      data: updatedClient
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
-// DELETE - Remove a client
-router.delete('/api/clientdata/:id', getClient, async (req, res) => {
+router.delete("/api/clientdata/:id", async (req, res) => {
   try {
-    await res.client.remove();
-    res.json({ message: 'Deleted client' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    await ClientData.findByIdAndDelete(req.params.id);
+    res.json({
+      success: true,
+      message: "Client deleted successfully"
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
-
-
-
-
-
-const ProjectData = require('../models/ProjectData'); // Adjust the path as needed
-
-// Middleware to get a single project by ID
-async function getProject(req, res, next) {
-  let project;
+// ------------------- PROJECT DATA ROUTES -------------------
+router.post("/api/projectdata", async (req, res) => {
   try {
-    project = await ProjectData.findById(req.params.id);
-    if (project == null) {
-      return res.status(404).json({ message: 'Cannot find project' });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-
-  res.project = project;
-  next();
-}
-
-// CREATE - Add a new project
-router.post('/api/projectdata', async (req, res) => {
-  const projectData = new ProjectData({
-    project: req.body.project
-  });
-
-  try {
-    const newProject = await projectData.save();
-    res.status(201).json(newProject);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    const newProject = await ProjectData.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: newProject,
+      message: "Project created successfully"
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
-// READ - Get all projects
-router.get('/api/projectdata', async (req, res) => {
+router.get("/api/projectdata", async (req, res) => {
   try {
     const projects = await ProjectData.find();
-    res.json(projects);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.json({
+      success: true,
+      data: projects
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
-// READ - Get one project by ID
-router.get('/api/projectdata/:id', getProject, (req, res) => {
-  res.json(res.project);
-});
-
-// UPDATE - Update a project
-router.patch('/api/projectdata/:id', getProject, async (req, res) => {
-  if (req.body.project != null) {
-    res.project.project = req.body.project;
-  }
-
+router.put("/api/projectdata/:id", async (req, res) => {
   try {
-    const updatedProject = await res.project.save();
-    res.json(updatedProject);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    const updatedProject = await ProjectData.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.json({
+      success: true,
+      data: updatedProject
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
-// DELETE - Remove a project
-router.delete('/api/projectdata/:id', getProject, async (req, res) => {
+router.delete("/api/projectdata/:id", async (req, res) => {
   try {
-    await res.project.remove();
-    res.json({ message: 'Deleted project' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    await ProjectData.findByIdAndDelete(req.params.id);
+    res.json({
+      success: true,
+      message: "Project deleted successfully"
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
-
-
-
-
-const TechData = require('../models/TechData'); // Adjust path as needed
-
-// Middleware to get technology by ID
-async function getTechnology(req, res, next) {
-  let technology;
+// ------------------- TECHNOLOGY DATA ROUTES -------------------
+router.post("/api/techdata", async (req, res) => {
   try {
-    technology = await TechData.findById(req.params.id);
-    if (!technology) {
-      return res.status(404).json({ message: 'Technology not found' });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-
-  res.technology = technology;
-  next();
-}
-
-// CREATE - Add new technology
-router.post('/api/techdata', async (req, res) => {
-  const techData = new TechData({
-    technology: req.body.technology
-  });
-
-  try {
-    const newTech = await techData.save();
-    res.status(201).json(newTech);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    const newTech = await TechData.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: newTech,
+      message: "Technology created successfully"
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
-// READ - Get all technologies
-router.get('/api/techdata', async (req, res) => {
+router.get("/api/techdata", async (req, res) => {
   try {
-    const technologies = await TechData.find();
-    res.json(technologies);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const techs = await TechData.find();
+    res.json({
+      success: true,
+      data: techs
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
-// READ - Get single technology
-router.get('/api/techdata/:id', getTechnology, (req, res) => {
-  res.json(res.technology);
+router.put("/api/techdata/:id", async (req, res) => {
+  try {
+    const updatedTech = await TechData.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.json({
+      success: true,
+      data: updatedTech
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
 });
 
-// UPDATE - Update technology
-router.patch('/api/techdata/:id', getTechnology, async (req, res) => {
-  if (req.body.technology != null) {
-    res.technology.technology = req.body.technology;
-  }
-
+router.delete("/api/techdata/:id", async (req, res) => {
   try {
-    const updatedTech = await res.technology.save();
-    res.json(updatedTech);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-// DELETE - Remove technology
-router.delete('/api/techdata/:id', getTechnology, async (req, res) => {
-  try {
-    await res.technology.deleteOne();
-    res.json({ message: 'Technology deleted' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    await TechData.findByIdAndDelete(req.params.id);
+    res.json({
+      success: true,
+      message: "Technology deleted successfully"
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
   }
 });
 
