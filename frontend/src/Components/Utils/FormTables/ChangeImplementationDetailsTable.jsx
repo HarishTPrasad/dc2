@@ -1,7 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import api from "../../API/api";
 
 const ChangeImplementationDetailsTable = ({ formData, handleInputChange }) => {
   const [showOtherInput, setShowOtherInput] = useState(false);
+  const [techList, setTechList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchTechnologies = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get('/techdata');
+      setTechList(response.data.data);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to fetch technologies');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTechnologies();
+  }, []);
 
   const handleTechnologyChange = (e) => {
     const { name, value } = e.target;
@@ -26,36 +46,41 @@ const ChangeImplementationDetailsTable = ({ formData, handleInputChange }) => {
 
       <div style={styles.formGroup}>
         <label style={styles.label}>Technology</label>
-        <div style={styles.selectContainer}>
-          <select
-            name="technology"
-            value={formData.technology}
-            onChange={handleTechnologyChange}
-            style={styles.select}
-          >
-            <option>Select</option>
-            <option>Firewall</option>
-            <option>Active Directory Server</option>
-            <option>Backup</option>
-            <option>SIEM</option>
-            <option>Log Server</option>
-            <option>User Access Management</option>
-            <option>Antivirus</option>
-            <option>Network Monitoring Server</option>
-            <option>Network Infrastructure</option>
-            <option>Others</option>
-          </select>
-          <div style={styles.selectArrow}></div>
-        </div>
-        {showOtherInput && (
-          <input
-            type="text"
-            placeholder="Specify other technology"
-            name="technology"
-            value={formData.technology}
-            onChange={handleOtherInputChange}
-            style={{...styles.input, marginTop: '8px'}}
-          />
+        {loading ? (
+          <div style={styles.loading}>Loading technologies...</div>
+        ) : error ? (
+          <div style={styles.error}>{error}</div>
+        ) : (
+          <>
+            <div style={styles.selectContainer}>
+              <select
+                name="technology"
+                value={formData.technology}
+                onChange={handleTechnologyChange}
+                style={styles.select}
+                disabled={loading}
+              >
+                <option value="">Select</option>
+                {techList.map((tech) => (
+                  <option key={tech._id} value={tech.technology}>
+                    {tech.technology}
+                  </option>
+                ))}
+                <option value="Others">Others</option>
+              </select>
+              <div style={styles.selectArrow}></div>
+            </div>
+            {showOtherInput && (
+              <input
+                type="text"
+                placeholder="Specify other technology"
+                name="technology"
+                value={formData.technology}
+                onChange={handleOtherInputChange}
+                style={{ ...styles.input, marginTop: '8px' }}
+              />
+            )}
+          </>
         )}
       </div>
 
@@ -84,94 +109,6 @@ const ChangeImplementationDetailsTable = ({ formData, handleInputChange }) => {
     </div>
   );
 };
-
-
-
-// const styles = {
-//   container: {
-//     display: "flex",
-//     flexDirection: "column",
-//     gap: "16px",
-//     padding: "20px",
-//     backgroundColor: "#ffffff",
-//     borderRadius: "8px",
-//     border: "1px solid #e0e0e0",
-//     boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
-//     maxWidth: "100%",
-//     margin: "16px auto",
-//   },
-//   header: {
-//     paddingBottom: "12px",
-//     borderBottom: "2px solid #7e57c2",
-//     marginBottom: "12px",
-//   },
-//   headerText: {
-//     color: "#5a3d8a",
-//     fontSize: "1.2rem",
-//     fontWeight: "600",
-//     margin: 0,
-//   },
-//   formGroup: {
-//     marginBottom: "16px", // Reduced marginBottom
-//   },
-//   label: {
-//     display: "block",
-//     fontSize: "0.85rem",
-//     color: "#5a3d8a",
-//     marginBottom: "6px",
-//     fontWeight: "500",
-//   },
-//   input: {
-//     width: "100%",
-//     padding: "10px 12px",
-//     borderRadius: "6px",
-//     border: "1px solid #d1c4e9",
-//     fontSize: "0.9rem",
-//     transition: "all 0.3s ease",
-//     backgroundColor: "#f5f5f5",
-//     boxSizing: "border-box",
-//     ":focus": {
-//       borderColor: "#7e57c2",
-//       boxShadow: "0 0 0 3px rgba(126, 87, 194, 0.2)",
-//       outline: "none",
-//       backgroundColor: "#fff",
-//     },
-//   },
-//   selectContainer: {
-//     position: "relative",
-//     width: "100%",
-//   },
-//   select: {
-//     width: "100%",
-//     padding: "10px 12px",
-//     borderRadius: "6px",
-//     border: "1px solid #d1c4e9",
-//     fontSize: "0.9rem",
-//     appearance: "none",
-//     backgroundColor: "#f5f5f5",
-//     cursor: "pointer",
-//     transition: "all 0.3s ease",
-//     ":focus": {
-//       borderColor: "#7e57c2",
-//       boxShadow: "0 0 0 3px rgba(126, 87, 194, 0.2)",
-//       outline: "none",
-//       backgroundColor: "#fff",
-//     },
-//   },
-//   selectArrow: {
-//     position: "absolute",
-//     right: "12px",
-//     top: "50%",
-//     transform: "translateY(-50%)",
-//     width: "0",
-//     height: "0",
-//     borderLeft: "5px solid transparent",
-//     borderRight: "5px solid transparent",
-//     borderTop: "5px solid #5a3d8a",
-//     pointerEvents: "none",
-//   },
-// };
-
 
 const styles = {
   container: {
@@ -241,6 +178,18 @@ const styles = {
     borderRight: "4px solid transparent",
     borderTop: "4px solid #5a3d8a",
     pointerEvents: "none",
+  },
+  loading: {
+    padding: "6px 8px",
+    fontSize: "0.8rem",
+    color: "#666",
+  },
+  error: {
+    padding: "6px 8px",
+    fontSize: "0.8rem",
+    color: "#d32f2f",
+    backgroundColor: "#fdecea",
+    borderRadius: "4px",
   },
 };
 

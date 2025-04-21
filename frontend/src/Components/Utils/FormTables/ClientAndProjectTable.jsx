@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import api from "../../API/api";
 
 const ClientAndProjectTable = ({ formData, handleInputChange }) => {
   const [showOtherInputs, setShowOtherInputs] = useState({
@@ -7,6 +8,23 @@ const ClientAndProjectTable = ({ formData, handleInputChange }) => {
     departmentLocation: false,
     approver: false,
   });
+
+  const [projectList, setProjectList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchProjects = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get('/projectdata');
+      setProjectList(response.data.data);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to fetch projects');
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const getCurrentDateAsNumber = () => {
     const today = new Date();
@@ -17,6 +35,7 @@ const ClientAndProjectTable = ({ formData, handleInputChange }) => {
   };
 
   useEffect(() => {
+    fetchProjects();
     if (!formData.changeRequestNo) {
       handleInputChange({
         target: {
@@ -74,14 +93,20 @@ const ClientAndProjectTable = ({ formData, handleInputChange }) => {
               value={formData.project}
               onChange={handleDropdownChange}
               style={styles.select}
+              disabled={loading}
             >
               <option>Select</option>
-              <option>USB Access</option>
-              <option>Firewall Access</option>
-              <option>User Creation/Modification/Deletion</option>
-              <option>Website</option>
-              <option>White list URL/IP/Port</option>
-              <option>Geo-Location</option>
+              {loading ? (
+                <option>Loading projects...</option>
+              ) : error ? (
+                <option>Error loading projects</option>
+              ) : (
+                projectList.map((project) => (
+                  <option key={project._id} value={project.project}>
+                    {project.project}
+                  </option>
+                ))
+              )}
               <option>Others</option>
             </select>
             <div style={styles.selectArrow}></div>

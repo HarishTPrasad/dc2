@@ -7,155 +7,39 @@ import ChangeImplementationDetailsTable from "../../Utils/FormTables/ChangeImple
 import ChangeImplementationTable from "../../Utils/FormTables/ChangeImplementationTable";
 import api from "../../API/api";
 
-const clientDataMap = {
-  "Jalore Nagrik Sahakari Bank Ltd.": {
-    requester: "Pramod Dave",
-    approver: "Abhishek Das",
-    departmentLocation: "IT/JNSB",
-  },
-  "Beawar Urban Co-operative Bank Ltd.": {
-    requester: "Sourabh Bhardwaj",
-    approver: "Anil Devnani",
-    departmentLocation: "IT/BWRUCB",
-  },
-  "Balotra Urban Co-operative Bank Ltd.": {
-    requester: "Nain Puri Ji",
-    approver: "Gautam Singh Jain",
-    departmentLocation: "IT/BUCB",
-  },
-  "Chittorgarh Urban Co-Operative Bank Ltd": {
-    requester: "Rakesh Dashora",
-    approver: "Vandana Vazirani",
-    departmentLocation: "IT/CUCB",
-  },
-  "Dhanera Mercantile Co-Operative Bank Ltd.": {
-    requester: "Mahadev Chaudhari",
-    approver: "Ajay Patel",
-    departmentLocation: "IT/DMCB",
-  },
-  "The Gozaria Nagarik Sahkari Bank Ltd.": {
-    requester: "Chirag Patel",
-    approver: "Jitu Patel",
-    departmentLocation: "IT/GNSB",
-  },
-  "Himatnagar Nagarik Sahakari Bank Ltd.": {
-    requester: "Vipul Joshi",
-    approver: "Manubhai M Patel",
-    departmentLocation: "IT/HNSB",
-  },
-  "Kota Nagarik Sahakari Bank Ltd.": {
-    requester: "Brijesh Gautam",
-    approver: "Nand Kishore Ji Chouhan",
-    departmentLocation: "IT/KNSB",
-  },
-  "The Kukarwada Nagrik Sahakari Bank Ltd.": {
-    requester: "Maulik Patel",
-    approver: "Chirag Patel",
-    departmentLocation: "IT/KKNSB",
-  },
-  "People's Co-operative Bank Ltd.": {
-    requester: "Dirgh Trivedi",
-    approver: "Mahesh Anerao",
-    departmentLocation: "IT/PCBD",
-  },
-  "Patan Nagarik Sahakari Bank Ltd.": {
-    requester: "Hemal Darji",
-    approver: "Mahesh Kumar P. Modi",
-    departmentLocation: "IT/PNSB",
-  },
-  "Ranuj Nagrik Sahakari Bank Ltd.": {
-    requester: "Jigar Patel",
-    approver: "P.G. Suthar",
-    departmentLocation: "IT/RNBX",
-  },
-  "Sumerpur Mercantile Urban Co-operative Bank Ltd.": {
-    requester: "Kailash Prajapat",
-    approver: "Ugam Raj Gaur",
-    departmentLocation: "IT/SMUCB",
-  },
-  "The Vijay Co-Operative Bank Ltd.": {
-    requester: "Bhavik Patel",
-    approver: "Rajnikant C Gajjar",
-    departmentLocation: "IT/VCOB",
-  },
-  "The Sardargunj Mercantile Co-operative Bank Ltd.": {
-    requester: "Ketan Patel",
-    approver: "Nitin Patel",
-    departmentLocation: "IT/SMCBL",
-  },
-  "The Kalol Nagrik Sahakari Bank Ltd.": {
-    requester: "",
-    approver: "",
-    departmentLocation: "IT/KNSBL",
-  },
-  "The Idar Nagarik Sahakari Bank Ltd.": {
-    requester: "",
-    approver: "",
-    departmentLocation: "IT/INSB",
-  },
-  "Malviya Urban Co-Operative Bank Ltd.": {
-    requester: "",
-    approver: "",
-    departmentLocation: "IT/MUCB",
-  },
-  "The Gandhinagar Nagarik Co-Operative Bank Ltd.": {
-    requester: "",
-    approver: "",
-    departmentLocation: "IT/GNCB",
-  },
-  "V K Engitech Pvt. Ltd.": {
-    requester: "",
-    approver: "",
-    departmentLocation: "IT/VK-ENG",
-  },
-  "Century Texofin Private Ltd.": {
-    requester: "",
-    approver: "",
-    departmentLocation: "IT/CTPL",
-  },
-};
-
-// Utility functions for date formatting
+// Utility functions for date formatting (keep these the same)
 const formatDateForInput = (dateString) => {
   if (!dateString) return '';
   
-  // If already in yyyy-mm-dd format, return as is
   if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
     return dateString;
   }
   
-  // Try to parse other formats (like dd/mm/yyyy)
   const parts = dateString.split(/[\/-]/);
   if (parts.length === 3) {
-    // If day comes first (dd/mm/yyyy)
     if (parts[0].length === 2 && parts[1].length === 2 && parts[2].length === 4) {
       return `${parts[2]}-${parts[1]}-${parts[0]}`;
     }
-    // If month comes first (mm/dd/yyyy)
     if (parts[0].length === 2 && parts[1].length === 2 && parts[2].length === 4) {
       return `${parts[2]}-${parts[0]}-${parts[1]}`;
     }
   }
   
-  // Fallback to current date if parsing fails
-  return getTodayDate();
+  return '';
 };
 
 const formatDateForDisplay = (dateString) => {
   if (!dateString) return '';
   
-  // Try to parse yyyy-mm-dd format
   if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
     const [year, month, day] = dateString.split('-');
     return `${day}/${month}/${year}`;
   }
   
-  // If already in dd/mm/yyyy format, return as is
   if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
     return dateString;
   }
   
-  // Fallback to returning the original string
   return dateString;
 };
 
@@ -167,12 +51,11 @@ const getTodayDate = () => {
   return `${year}-${month}-${day}`;
 };
 
-// Custom DateInput component
+// Custom DateInput component (keep this the same)
 const DateInput = ({ name, value, onChange, ...props }) => {
   const handleDateChange = (e) => {
     const inputValue = e.target.value;
     
-    // Convert from dd/mm/yyyy to yyyy-mm-dd for storage
     if (/^\d{2}\/\d{2}\/\d{4}$/.test(inputValue)) {
       const [day, month, year] = inputValue.split('/');
       onChange({
@@ -182,7 +65,6 @@ const DateInput = ({ name, value, onChange, ...props }) => {
         }
       });
     } else {
-      // Pass through other formats (like yyyy-mm-dd)
       onChange(e);
     }
   };
@@ -193,7 +75,7 @@ const DateInput = ({ name, value, onChange, ...props }) => {
       name={name}
       value={formatDateForDisplay(value)}
       onChange={handleDateChange}
-      placeholder="DD/MM/YYYY"
+      placeholder=""
       {...props}
     />
   );
@@ -204,17 +86,22 @@ function FormA() {
   const location = useLocation();
   const [isEditMode, setIsEditMode] = useState(false);
   const [ticketId, setTicketId] = useState(null);
-  
+  const [originalCreationDate, setOriginalCreationDate] = useState('');
+  const [clientList, setClientList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Initialize with default values for new tickets
   const [formData, setFormData] = useState({
     client: "",
     changeRequestNo: "",
     project: "",
     requester: "",
-    date: getTodayDate(),
+    date: "",
     departmentLocation: "",
     phoneNo: "",
     changeDescription: "",
-    changeNeededBy: getTodayDate(),
+    changeNeededBy: "",
     reasonForChange: "",
     approver: "",
     changeType: {
@@ -246,7 +133,7 @@ function FormA() {
       rejected: false,
     },
     comments: "Change request has been approved by ",
-    changeScheduled: getTodayDate(),
+    changeScheduled: "",
     implementationAssigned: "",
     technology: "",
     policy: "N/A",
@@ -254,29 +141,78 @@ function FormA() {
     rollBack: "Will remove the newly created policy if required",
     stagingTestResults: "",
     implementationTestResults: "",
-    dateOfImplementation: getTodayDate(),
+    dateOfImplementation: "",
     implementationStatus: "",
-    cabSignOffDate: getTodayDate(),
+    cabSignOffDate: "",
   });
 
+  // Fetch client data from API
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get('/clientdata');
+        // Transform the data to match the expected format
+        const clients = response.data?.data || response.data || [];
+        const formattedClients = Array.isArray(clients) ? clients.map(client => ({
+          clientname: client.client?.clientname || '',
+          requestor: client.client?.requestor || '',
+          approver: client.client?.approver || '',
+          department: client.client?.department || '',
+          phoneno: client.client?.phoneno || ''
+        })) : [];
+        
+        setClientList(formattedClients);
+      } catch (err) {
+        setError(err.response?.data?.error || 'Failed to fetch clients');
+        setClientList([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClients();
+  }, []);
+
+  // Initialize dates for new tickets
+  useEffect(() => {
+    if (!isEditMode) {
+      const today = getTodayDate();
+      setFormData(prevData => ({
+        ...prevData,
+        date: today,
+        changeNeededBy: today,
+        changeScheduled: today,
+        dateOfImplementation: today,
+        cabSignOffDate: today
+      }));
+    }
+  }, [isEditMode]);
+
+  // Load ticket data when editing
   useEffect(() => {
     if (location.state?.ticket) {
       const ticket = location.state.ticket;
       setIsEditMode(true);
       setTicketId(ticket._id || ticket.id);
       
-      // Format dates before setting form data
+      if (ticket.date) {
+        setOriginalCreationDate(ticket.date);
+      }
+      
+      const ticketCopy = JSON.parse(JSON.stringify(ticket));
+      
       const formattedData = {
-        ...ticket,
-        date: formatDateForInput(ticket.date),
-        changeNeededBy: formatDateForInput(ticket.changeNeededBy),
-        changeScheduled: formatDateForInput(ticket.changeScheduled),
-        dateOfImplementation: formatDateForInput(ticket.dateOfImplementation),
-        cabSignOffDate: formatDateForInput(ticket.cabSignOffDate),
-        changeType: ticket.changeType || formData.changeType,
-        changePriority: ticket.changePriority || formData.changePriority,
-        changeImpact: ticket.changeImpact || formData.changeImpact,
-        changeRequestStatus: ticket.changeRequestStatus || formData.changeRequestStatus
+        ...ticketCopy,
+        date: formatDateForInput(ticket.date || ''),
+        changeNeededBy: formatDateForInput(ticket.changeNeededBy || ''),
+        changeScheduled: formatDateForInput(ticket.changeScheduled || ''),
+        dateOfImplementation: formatDateForInput(ticket.dateOfImplementation || ''),
+        cabSignOffDate: formatDateForInput(ticket.cabSignOffDate || ''),
+        changeType: ticket.changeType || { ...formData.changeType },
+        changePriority: ticket.changePriority || { ...formData.changePriority },
+        changeImpact: ticket.changeImpact || { ...formData.changeImpact },
+        changeRequestStatus: ticket.changeRequestStatus || { ...formData.changeRequestStatus }
       };
       
       setFormData(formattedData);
@@ -285,6 +221,10 @@ function FormA() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    if (isEditMode && name === "date") {
+      return;
+    }
 
     if (type === "checkbox") {
       const [parent, child] = name.split(".");
@@ -297,15 +237,17 @@ function FormA() {
       }));
     } else {
       if (name === "client") {
-        const clientData = clientDataMap[value] || {};
-
+        // Find the selected client from clientList
+        const selectedClient = clientList.find(c => c.clientname === value);
+        
         setFormData((prevData) => ({
           ...prevData,
           [name]: value,
-          requester: clientData.requester || "",
-          approver: clientData.approver || "",
-          departmentLocation: clientData.departmentLocation || "",
-          comments: `Change request has been approved by ${clientData.approver || ""}`,
+          requester: selectedClient?.requestor || "",
+          approver: selectedClient?.approver || "",
+          departmentLocation: selectedClient?.department || "",
+          phoneNo: selectedClient?.phoneno || "",
+          comments: `Change request has been approved by ${selectedClient?.approver || ""}`,
         }));
       } else if (name === "approver") {
         setFormData((prevData) => ({
@@ -329,7 +271,13 @@ function FormA() {
       let endpoint = isEditMode ? `/documents/${ticketId}` : "/submit";
       let method = isEditMode ? "put" : "post";
 
-      const { data } = await api[method](endpoint, formData, {
+      const dataToSubmit = { ...formData };
+      
+      if (isEditMode && originalCreationDate) {
+        dataToSubmit.date = originalCreationDate;
+      }
+
+      const { data } = await api[method](endpoint, dataToSubmit, {
         headers: { "Content-Type": "application/json" },
       });
 
@@ -345,6 +293,14 @@ function FormA() {
       alert(`Error: ${error.response?.data?.message || error.message}`);
     }
   };
+
+  if (loading) {
+    return <div>Loading client data...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div style={styles.formWrapper}>
@@ -362,9 +318,9 @@ function FormA() {
               disabled={isEditMode}
             >
               <option>Select Client</option>
-              {Object.keys(clientDataMap).map((client) => (
-                <option key={client} value={client}>
-                  {client}
+              {clientList.map((client) => (
+                <option key={client.clientname} value={client.clientname}>
+                  {client.clientname}
                 </option>
               ))}
             </select>
@@ -378,6 +334,7 @@ function FormA() {
                 formData={formData} 
                 handleInputChange={handleInputChange} 
                 DateInput={DateInput} 
+                isEditMode={isEditMode}
               />
             </div>
             <div style={styles.tile}>
@@ -422,6 +379,7 @@ function FormA() {
   );
 }
 
+// Keep the styles object the same
 const styles = {
   formWrapper: {
     width: "100%",
@@ -443,7 +401,6 @@ const styles = {
   formHeader: {
     textAlign: "center",
     marginBottom: "20px",
-    // paddingBottom: "20px",
     borderBottom: "1px solid #eee",
     fontFamily: "Verdana, Geneva, sans-serif",
   },
