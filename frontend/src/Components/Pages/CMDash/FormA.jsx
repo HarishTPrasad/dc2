@@ -7,10 +7,16 @@ import ChangeImplementationDetailsTable from "../../Utils/FormTables/ChangeImple
 import ChangeImplementationTable from "../../Utils/FormTables/ChangeImplementationTable";
 import api from "../../API/api";
 
-// Utility functions for date formatting (keep these the same)
+// Utility functions for date formatting
 const formatDateForInput = (dateString) => {
   if (!dateString) return '';
   
+  // Handle ISO format (e.g., "2025-04-05T00:00:00.000Z")
+  if (dateString.includes('T')) {
+    return dateString.split('T')[0];
+  }
+  
+  // Handle other formats
   if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
     return dateString;
   }
@@ -20,8 +26,8 @@ const formatDateForInput = (dateString) => {
     if (parts[0].length === 2 && parts[1].length === 2 && parts[2].length === 4) {
       return `${parts[2]}-${parts[1]}-${parts[0]}`;
     }
-    if (parts[0].length === 2 && parts[1].length === 2 && parts[2].length === 4) {
-      return `${parts[2]}-${parts[0]}-${parts[1]}`;
+    if (parts[0].length === 4 && parts[1].length === 2 && parts[2].length === 2) {
+      return `${parts[0]}-${parts[1]}-${parts[2]}`;
     }
   }
   
@@ -31,11 +37,20 @@ const formatDateForInput = (dateString) => {
 const formatDateForDisplay = (dateString) => {
   if (!dateString) return '';
   
+  // Handle ISO format
+  if (dateString.includes('T')) {
+    const [datePart] = dateString.split('T');
+    const [year, month, day] = datePart.split('-');
+    return `${day}/${month}/${year}`;
+  }
+  
+  // Handle YYYY-MM-DD format
   if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
     const [year, month, day] = dateString.split('-');
     return `${day}/${month}/${year}`;
   }
   
+  // Handle DD/MM/YYYY format
   if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
     return dateString;
   }
@@ -51,7 +66,7 @@ const getTodayDate = () => {
   return `${year}-${month}-${day}`;
 };
 
-// Custom DateInput component (keep this the same)
+// Custom DateInput component
 const DateInput = ({ name, value, onChange, ...props }) => {
   const handleDateChange = (e) => {
     const inputValue = e.target.value;
@@ -65,7 +80,12 @@ const DateInput = ({ name, value, onChange, ...props }) => {
         }
       });
     } else {
-      onChange(e);
+      onChange({
+        target: {
+          name,
+          value: inputValue
+        }
+      });
     }
   };
 
@@ -75,7 +95,7 @@ const DateInput = ({ name, value, onChange, ...props }) => {
       name={name}
       value={formatDateForDisplay(value)}
       onChange={handleDateChange}
-      placeholder=""
+      placeholder="DD/MM/YYYY"
       {...props}
     />
   );
@@ -152,7 +172,6 @@ function FormA() {
       try {
         setLoading(true);
         const response = await api.get('/clientdata');
-        // Transform the data to match the expected format
         const clients = response.data?.data || response.data || [];
         const formattedClients = Array.isArray(clients) ? clients.map(client => ({
           clientname: client.client?.clientname || '',
@@ -237,7 +256,6 @@ function FormA() {
       }));
     } else {
       if (name === "client") {
-        // Find the selected client from clientList
         const selectedClient = clientList.find(c => c.clientname === value);
         
         setFormData((prevData) => ({
@@ -379,7 +397,6 @@ function FormA() {
   );
 }
 
-// Keep the styles object the same
 const styles = {
   formWrapper: {
     width: "100%",
