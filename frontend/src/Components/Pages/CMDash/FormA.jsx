@@ -241,9 +241,9 @@ function FormA() {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    if (isEditMode && name === "date") {
-      return;
-    }
+    // if (isEditMode && name === "date") {
+    //   return;
+    // }
 
     if (type === "checkbox") {
       const [parent, child] = name.split(".");
@@ -291,9 +291,9 @@ function FormA() {
 
       const dataToSubmit = { ...formData };
       
-      if (isEditMode && originalCreationDate) {
-        dataToSubmit.date = originalCreationDate;
-      }
+      // if (isEditMode && originalCreationDate) {
+      //   dataToSubmit.date = originalCreationDate;
+      // }
 
       const { data } = await api[method](endpoint, dataToSubmit, {
         headers: { "Content-Type": "application/json" },
