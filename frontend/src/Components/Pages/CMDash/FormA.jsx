@@ -295,7 +295,9 @@ function FormA() {
       //   dataToSubmit.date = originalCreationDate;
       // }
 
-      const { data } = await api[method](endpoint, dataToSubmit, {
+      const { data } = await api[method](endpoint, dataToSubmit, {                                  
+
+        
         headers: { "Content-Type": "application/json" },
       });
 

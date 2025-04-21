@@ -3,7 +3,6 @@ import api from '../../../API/api';
 import { FiPlus, FiEdit2, FiTrash2, FiSearch } from 'react-icons/fi';
 import { useNavigate } from "react-router-dom";
 
-
 function Technologies() {
   const [techList, setTechList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,12 +17,11 @@ function Technologies() {
   const [validationErrors, setValidationErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
-   const handleBackToDashboard = () => {
+  const handleBackToDashboard = () => {
     navigate("/dashboard/admin");
   };
-
 
   useEffect(() => {
     fetchTechnologies();
@@ -68,24 +66,24 @@ function Technologies() {
 
     try {
       setLoading(true);
-      let response;
       
       if (isEditing && currentTech?._id) {
-        response = await api.put(`/techdata/${currentTech._id}`, {
+        await api.put(`/techdata/${currentTech._id}`, {
           client: currentTech.client || {},
           technology: formData.technology,
           project: currentTech.project || ''
         });
-        setTechList(techList.map(tech => tech._id === currentTech._id ? response.data : tech));
       } else {
-        response = await api.post('/techdata', {
+        await api.post('/techdata', {
           client: {},
           technology: formData.technology,
           project: ''
         });
-        setTechList([...techList, response.data]);
       }
 
+      // Fetch the updated list after successful operation
+      await fetchTechnologies();
+      
       setShowModal(false);
       resetForm();
     } catch (err) {
@@ -114,7 +112,8 @@ function Technologies() {
     try {
       setDeleteLoading(true);
       await api.delete(`/techdata/${currentTech._id}`);
-      setTechList(techList.filter(tech => tech._id !== currentTech._id));
+      // Fetch the updated list after deletion
+      await fetchTechnologies();
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to delete technology');
     } finally {
@@ -156,23 +155,23 @@ function Technologies() {
     <div className="p-4 bg-white rounded shadow-sm">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h5 className="mb-0 font-weight-bold text-info">Technology Management</h5>
-       <div className="d-flex justify-content-between align-items-center mb-4 " style={{ gap: '1rem' }}>
-               <button 
-                 className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
-                 onClick={() => {
-                   resetForm();
-                   setShowModal(true);
-                 }}
-               >
-                 <FiPlus className="mr-1" /> Add Client
-               </button>
-               <button 
-                 className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
-                 onClick={handleBackToDashboard}
-               >
-                  back
-               </button>
-               </div>
+        <div className="d-flex justify-content-between align-items-center mb-4 " style={{ gap: '1rem' }}>
+          <button 
+            className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
+            onClick={() => {
+              resetForm();
+              setShowModal(true);
+            }}
+          >
+            <FiPlus className="mr-1" /> Add Technology
+          </button>
+          <button 
+            className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
+            onClick={handleBackToDashboard}
+          >
+            back
+          </button>
+        </div>
       </div>
 
       {error && (
