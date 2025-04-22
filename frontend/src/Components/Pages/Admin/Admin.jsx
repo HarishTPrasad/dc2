@@ -67,7 +67,7 @@ const AdminLayout = () => {
     fetchCounts();
   }, []);
 
-  // Summary card data
+
   const summaryCards = [
     { title: 'Users', count: counts.users, icon: FaUsers, color: 'info', id: 'users' },
     { title: 'Clients', count: counts.clients, icon: FaBuilding, color: 'info', id: 'clients' },
@@ -88,7 +88,7 @@ const AdminLayout = () => {
       </div>
     );
   }
-
+   
   return (
     <div className="container-fluid py-4" style={{ fontFamily: 'Verdana, Geneva, sans-serif', minHeight: '100vh' }}>
       {/* Page Heading */}
