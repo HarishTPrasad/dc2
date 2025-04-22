@@ -218,19 +218,19 @@ function Dashboard() {
 }
 
 const colors = {
-  primary: "#1a365d",       // Deep blue
-  secondary: "#2a4365",     // Slightly lighter blue
-  accent: "#3182ce",        // Bright blue for accents
-  background: "#f7fafc",    // Very light gray background
-  sidebar: "#ffffff",       // White sidebar
-  text: "#2d3748",         // Dark text
-  textLight: "#718096",    // Light text
-  danger: "#e53e3e",       // Red for logout
-  success: "#38a169",      // Green
-  warning: "#dd6b20",      // Orange
-  menuActive: "#ebf8ff",   // Light blue for active menu
-  menuHover: "#bee3f8",    // Medium blue for hover
-  notification: "#e53e3e", // Red for notifications
+  primary: "#1a365d",       
+  secondary: "#2a4365",    
+  accent: "#3182ce",       
+  background: "#f7fafc",    
+  sidebar: "#ffffff",      
+  text: "#2d3748",         
+  textLight: "#718096",   
+  danger: "#e53e3e",      
+  success: "#38a169",     
+  warning: "#dd6b20",     
+  menuActive: "#ebf8ff",   
+  menuHover: "#bee3f8",
+  notification: "#e53e3e", 
 };
 
 const styles = {
