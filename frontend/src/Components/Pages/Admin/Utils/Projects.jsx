@@ -60,39 +60,6 @@ function Projects() {
     return Object.keys(errors).length === 0;
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!validateForm()) return;
-
-  //   try {
-  //     setLoading(true);
-  //     let response;
-      
-  //     if (isEditing && currentProject?._id) {
-  //       response = await api.put(`/projectdata/${currentProject._id}`, {
-  //         client: currentProject.client || {},
-  //         technology: currentProject.technology || '',
-  //         project: formData.project
-  //       });
-  //       setProjectList(projectList.map(project => project._id === currentProject._id ? response.data : project));
-  //     } else {
-  //       response = await api.post('/projectdata', {
-  //         client: {},
-  //         technology: '',
-  //         project: formData.project
-  //       });
-  //       setProjectList([...projectList, response.data]);
-  //     }
-
-  //     setShowModal(false);
-  //     resetForm();
-  //   } catch (err) {
-  //     setError(err.response?.data?.error || `Failed to ${isEditing ? 'update' : 'create'} project`);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -114,7 +81,7 @@ function Projects() {
         });
       }
   
-      // Fetch the updated list of projects after successful operation
+    
       await fetchProjects();
       
       setShowModal(false);
@@ -135,25 +102,6 @@ function Projects() {
     setShowModal(true);
   };
 
-  // const handleDelete = async () => {
-  //   if (!currentProject?._id) {
-  //     setError("Cannot delete project: Missing project ID");
-  //     setShowDeleteModal(false);
-  //     return;
-  //   }
-
-  //   try {
-  //     setDeleteLoading(true);
-  //     await api.delete(`/projectdata/${currentProject._id}`);
-  //     setProjectList(projectList.filter(project => project._id !== currentProject._id));
-  //   } catch (err) {
-  //     setError(err.response?.data?.error || 'Failed to delete project');
-  //   } finally {
-  //     setDeleteLoading(false);
-  //     setShowDeleteModal(false);
-  //     setCurrentProject(null);
-  //   }
-  // };
 
   const handleDelete = async () => {
     if (!currentProject?._id) {
@@ -165,7 +113,7 @@ function Projects() {
     try {
       setDeleteLoading(true);
       await api.delete(`/projectdata/${currentProject._id}`);
-      // Fetch the updated list after deletion
+   
       await fetchProjects();
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to delete project');
