@@ -113,30 +113,30 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     height: "100vh",
-    background: "linear-gradient(135deg, #f0f2f0 0%, #e0e0e0 100%)", // A softer gradient
+    background: "linear-gradient(135deg, #f0f2f0 0%, #e0e0e0 100%)", 
     fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   },
   loginContainer: {
-    width: "400px", // Reduced width
-    padding: "30px", // Slightly reduced padding
-    borderRadius: "12px", // More rounded corners
+    width: "400px", 
+    padding: "30px", 
+    borderRadius: "12px", 
     backgroundColor: "white",
-    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)", // More pronounced shadow
+    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)", 
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
   logoContainer: {
-    marginBottom: "25px", // Slightly reduced margin
+    marginBottom: "25px", 
   },
   logo: {
-    width: "180px", // Slightly smaller logo
+    width: "180px", 
     height: "36px",
   },
   loginTitle: {
-    fontSize: "1.3rem", // Slightly smaller title
+    fontSize: "1.3rem", 
     color: "#333",
-    marginBottom: "20px", // Reduced margin
+    marginBottom: "20px", 
     textAlign: "center",
   },
   form: {
@@ -145,20 +145,20 @@ const styles = {
     width: "100%",
   },
   inputGroup: {
-    marginBottom: "18px", // Reduced margin
+    marginBottom: "18px", 
   },
   label: {
     display: "block",
-    marginBottom: "6px", // Reduced margin
+    marginBottom: "6px", 
     fontWeight: "500",
     color: "#555",
-    fontSize: "0.8rem", // Slightly smaller label
+    fontSize: "0.8rem", 
   },
   input: {
     width: "100%",
-    padding: "8px", // Reduced padding
-    borderRadius: "8px", // More rounded corners
-    border: "1px solid #ccc", // Lighter border
+    padding: "8px", 
+    borderRadius: "8px", 
+    border: "1px solid #ccc", 
     fontSize: "15px",
     transition: "border 0.3s",
     "&:focus": {
