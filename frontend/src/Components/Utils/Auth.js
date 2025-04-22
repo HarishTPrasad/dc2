@@ -7,7 +7,6 @@ export const isAdmin = () => {
   return getCurrentUser().role === "admin";
 };
 
-// Bonus: Add more role helpers if needed
 export const hasRole = (role) => {
   return getCurrentUser().role === role;
 };
