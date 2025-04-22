@@ -70,50 +70,7 @@ function Dashboard() {
         
         <div style={styles.navRight}>
           <div style={styles.welcomeText}>Welcome back, {getFullName()}</div>
-          
-          {/* Notification Bell with Dropdown */}
-          {/* <div style={styles.notificationWrapper} ref={notificationRef}>
-            <div 
-              style={styles.notificationIcon} 
-              onClick={() => {
-                setShowNotifications(!showNotifications);
-                setShowProfileMenu(false);
-              }}
-            >
-              <FaBell size={20} />
-              {notifications.some(n => !n.read) && (
-                <span style={styles.notificationBadge}></span>
-              )}
-            </div>
-            
-            {showNotifications && (
-              <div style={styles.notificationDropdown}>
-                <div style={styles.dropdownHeader}>
-                  <h4>Notifications</h4>
-                  <button style={styles.markAllRead}>Mark all as read</button>
-                </div>
-                <div style={styles.notificationList}>
-                  {notifications.map(notification => (
-                    <div 
-                      key={notification.id} 
-                      style={{
-                        ...styles.notificationItem,
-                        backgroundColor: notification.read ? 'transparent' : '#f8f9fa'
-                      }}
-                    >
-                      <div style={styles.notificationDot}></div>
-                      <div>
-                        <p style={styles.notificationText}>{notification.text}</p>
-                        <small style={styles.notificationTime}>{notification.time}</small>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div style={styles.viewAll}>View all notifications</div>
-              </div>
-            )}
-          </div> */}
-          
+       
           {/* User Profile with Dropdown */}
           <div style={styles.profileWrapper} ref={profileRef}>
             <div 
@@ -130,15 +87,6 @@ function Dashboard() {
               <div style={styles.profileDropdown}>
                 <div style={styles.profileHeader}>
                   <FaUserCircle size={40} />
-                  {/* <div>
-                    <h4>{username}</h4>
-                    <small>{
-                              ['harish', 'kksuthar', 'lakshman'].includes(username.toLowerCase())
-                                ? 'Administrator'
-                                : 'User'
-                            }</small>
-                  </div> */}
-
                       <div>
                         <h4>{getFullName()}</h4>
                         <small>{isAdmin() ? 'Administrator' : 'User'}</small>
@@ -207,39 +155,6 @@ function Dashboard() {
                   </button>
                 )}
               </div>
-
-          {/* <div style={styles.menuSection}>
-           
-            {(username === "Harish" || username === "kksuthar" || username === "Lakshman") && (
-                
-                <button 
-                  style={getMenuButtonStyles("/dashboard/admin")}
-                  onClick={() => navigate("/dashboard/admin")}
-                  onMouseEnter={(e) => {
-                    if (!isActive("/dashboard/admin")) {
-                      e.currentTarget.style.backgroundColor = colors.menuHover;
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isActive("/dashboard/admin")) {
-                      e.currentTarget.style.backgroundColor = colors.menuActive;
-                    }
-                  }}
-                >   
-                  <div style={styles.buttonContent}>
-                    <FaCogs style={{
-                      ...styles.buttonIcon,
-                      color: isActive("/dashboard/admin") ? colors.primary : colors.textLight
-                    }} />
-                    <span>Admin Dashboard</span>
-                  </div>
-                  <FaChevronRight style={{
-                    ...styles.arrowIcon,
-                    color: isActive("/dashboard/admin") ? colors.primary : colors.textLight
-                  }} />
-                </button>
-              )}
-          </div> */}
 
           <div style={styles.menuSection}>
             <h3 style={styles.menuSectionTitle}>Management</h3>
