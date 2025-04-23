@@ -1,7 +1,268 @@
 import React, { useState, useEffect } from 'react';
 import api from "../../../API/api";
-import { FiUserPlus, FiEdit2, FiTrash2, FiSearch } from 'react-icons/fi';
+import { FiUserPlus, FiEdit2, FiTrash2, FiSearch, FiX, FiUser, } from 'react-icons/fi';
 import { useNavigate } from "react-router-dom";
+import styled, { keyframes } from 'styled-components';
+
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
+
+const slideIn = keyframes`
+  from { transform: translateY(-20px); }
+  to { transform: translateY(0); }
+`;
+
+const rotate = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+const UsersGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+`;
+
+const UserCard = styled.div`
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  animation: ${fadeIn} 0.3s ease forwards;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
+`;
+
+const UserAvatar = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  
+  svg {
+    color: #6c757d;
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+const UserInfo = styled.div`
+  flex: 1;
+`;
+
+const UserName = styled.h3`
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3436;
+`;
+
+const UserId = styled.p`
+  margin: 0;
+  font-size: 0.85rem;
+  color: #6c757d;
+`;
+
+const RoleBadge = styled.span`
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: ${props => props.role === 'admin' ? '#4bc0d9' : '#adb5bd'};
+  color: white;
+`;
+
+const CardActions = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid #f1f3f5;
+  padding-top: 1.2rem;
+`;
+
+const ActionButton = styled.button`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 8px;
+  background: ${props => props.variant === 'danger' ? '#ffe3e3' : '#f8f9fa'};
+  color: ${props => props.variant === 'danger' ? '#fa5252' : '#343a40'};
+  transition: all 0.2s ease;
+  cursor: pointer;
+  
+  &:hover {
+    background: ${props => props.variant === 'danger' ? '#ffc9c9' : '#e9ecef'};
+    transform: translateY(-2px);
+  }
+  
+  svg {
+    margin-right: 0.5rem;
+  }
+`;
+
+const SearchContainer = styled.div`
+  position: relative;
+  margin-bottom: 2rem;
+  max-width: 400px;
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: #4bc0d9;
+      box-shadow: 0 0 0 3px rgba(75, 192, 217, 0.1);
+    }
+  }
+
+  svg {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+  }
+`;
+
+const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  // animation: ${fadeIn} 0.3s ease;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 400px;
+  // animation: ${slideIn} 0.3s ease;
+  position: relative;
+`;
+
+const Loader = styled.div`
+  width: 24px;
+  height: 24px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #4bc0d9;
+  border-radius: 50%;
+  animation: ${rotate} 1s linear infinite;
+`;
+
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6c757d;
+  
+  svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+  }
+`;
+const ModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f1f3f5;
+  
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #2d3436;
+  }
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #6c757d;
+  
+  &:hover {
+    color: #2d3436;
+  }
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 1.2rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #495057;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 0.625rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #4bc0d9;
+      box-shadow: 0 0 0 3px rgba(75, 192, 217, 0.1);
+    }
+  }
+
+  .error {
+    color: #fa5252;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+`;
+
+const ModalFooter = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f1f3f5;
+`;
+
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -171,119 +432,140 @@ function Users() {
   }, [showModal, showDeleteModal]);
 
   return (
-    <div className="p-4 bg-white rounded shadow-sm">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h5 className="mb-0 font-weight-bold text-info">User Management</h5>
-        <div className="d-flex justify-content-between align-items-center mb-4 " style={{ gap: '1rem' }}>
-                      <button 
-                        className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
-                        onClick={() => {
-                          resetForm();
-                          setShowModal(true);
-                        }}
-                      >
-                        <FiUserPlus className="mr-1" /> Add Client
-                      </button>
-                      <button 
-                        className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
-                        onClick={handleBackToDashboard}
-                      >
-                     back
-                      </button>
-                      </div>
+    <>
+
+<div style={{ padding: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#2d3436' }}>User Management</h1>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <button
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              padding: '0.5rem 1rem',
+              background: '#4bc0d9',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+            onClick={() => {
+              resetForm();
+              setShowModal(true);
+            }}
+          >
+            <FiUserPlus style={{ marginRight: '0.5rem' }} />
+            Add Client
+          </button>
+          <button
+            style={{
+              padding: '0.5rem 1rem',
+              background: '#e9ecef',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+            onClick={handleBackToDashboard}
+          >
+            Back
+          </button>
+        </div>
       </div>
 
       {error && (
-        <div className="alert alert-danger py-2 mb-3 shadow-sm alert-dismissible fade show" role="alert">
-          {error}
-          <button type="button" className="close" onClick={() => setError(null)}>
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      )}
-
-      <div className="mb-3 position-relative">
-        <div className="input-group input-group-sm shadow-sm">
-          <div className="input-group-prepend">
-            <span className="input-group-text bg-white border-right-0">
-              <FiSearch className="text-muted" />
-            </span>
-          </div>
-          <input
-            type="text"
-            placeholder="Search users..."
-            className="form-control border-left-0"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+        <div style={{
+          background: '#fff5f5',
+          color: '#fa5252',
+          padding: '1rem',
+          borderRadius: '8px',
+          marginBottom: '1.5rem',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <span>{error}</span>
+          <FiX 
+            style={{ cursor: 'pointer' }}
+            onClick={() => setError(null)}
           />
         </div>
-      </div>
-
-      {loading && users.length === 0 ? (
-        <div className="text-center py-5">
-          <div className="spinner-border spinner-border-sm text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-          <p className="text-muted mt-2 small">Loading users...</p>
-        </div>
-      ) : (
-        <div className="border rounded shadow-sm">
-          <table className="table table-hover table-sm mb-0 user-table">
-            <thead className="bg-light">
-              <tr>
-                <th className="py-2 pl-3 border-0">ID</th>
-                <th className="py-2 border-0">Username</th>
-                <th className="py-2 border-0">Full Name</th>
-                <th className="py-2 border-0">Role</th>
-                <th className="py-2 pr-3 border-0 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.length > 0 ? (
-                filteredUsers.map(user => (
-                  <tr key={user._id}>
-                    <td className="py-2 pl-3 text-muted small">{user.userid || '-'}</td>
-                    <td className="py-2 font-weight-medium">{user.username || '-'}</td>
-                    <td className="py-2">{user.fullname || '-'}</td>
-                    <td className="py-2">
-                      <span className={`badge badge-pill ${user.role === 'admin' ? 'badge-info' : 'badge-secondary'} px-2 py-1 font-weight-normal`}>
-                        {user.role || 'user'}
-                      </span>
-                    </td>
-                    <td className="py-2 pr-3 text-right">
-                      <button 
-                        className="btn btn-outline-secondary btn-sm mr-1 btn-sm-icon"
-                        onClick={() => handleEdit(user)}
-                      >
-                        <FiEdit2 size={14} />
-                      </button>
-                      <button 
-                        className="btn btn-outline-danger btn-sm btn-sm-icon"
-                        onClick={() => {
-                          setCurrentUser(user);
-                          setShowDeleteModal(true);
-                        }}
-                      >
-                        <FiTrash2 size={14} />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="text-center py-4 text-muted">
-                    {searchTerm ? 'No users match your search' : 'No users found'}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
       )}
 
-      {/* User Modal */}
+      <SearchContainer>
+        <FiSearch />
+        <input
+          type="text"
+          placeholder="Search users..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </SearchContainer>
+
+      {loading && users.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '4rem' }}>
+          <Loader />
+        </div>
+      ) : (
+        <UsersGrid>
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map(user => (
+              <UserCard key={user._id}>
+                <CardHeader>
+                  <UserAvatar>
+                    <FiUser />
+                  </UserAvatar>
+                  <UserInfo>
+                    <UserName>{user.username || 'Unnamed User'}</UserName>
+                    <UserId>{user.userid || 'No ID'}</UserId>
+                  </UserInfo>
+                </CardHeader>
+                
+                <div style={{ marginBottom: '1rem' }}>
+                  <p style={{ margin: '0.25rem 0', color: '#6c757d' }}>
+                    <strong>Full Name:</strong> {user.fullname || '-'}
+                  </p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ color: '#6c757d' }}>Role:</span>
+                    <RoleBadge role={user.role}>{user.role || 'user'}</RoleBadge>
+                  </div>
+                </div>
+
+                <CardActions>
+                  <ActionButton
+                    onClick={() => handleEdit(user)}
+                    title="Edit user"
+                  >
+                    <FiEdit2 />
+                  </ActionButton>
+                  <ActionButton
+                    variant="danger"
+                    onClick={() => {
+                      setCurrentUser(user);
+                      setShowDeleteModal(true);
+                    }}
+                    title="Delete user"
+                  >
+                    <FiTrash2 />
+                  </ActionButton>
+                </CardActions>
+              </UserCard>
+            ))
+          ) : (
+            <EmptyState>
+              <FiUser style={{ width: '64px', height: '64px' }} />
+              <p>{searchTerm ? 'No users found' : 'No users available'}</p>
+            </EmptyState>
+          )}
+        </UsersGrid>
+      )}
+
+      {/* Modals remain similar with styled components */}
       {showModal && (
-        <>
+        <ModalBackdrop>
+          <ModalContent>
+          <>
           <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
             <div className="modal-dialog modal-sm modal-dialog-centered">
               <div className="modal-content">
@@ -397,11 +679,15 @@ function Users() {
           </div>
           <div className="modal-backdrop fade show"></div>
         </>
+            
+          </ModalContent>
+        </ModalBackdrop>
       )}
 
-      {/* Delete Modal */}
       {showDeleteModal && (
-        <>
+        <ModalBackdrop>
+          <ModalContent>
+          <>
           <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
             <div className="modal-dialog modal-sm modal-dialog-centered">
               <div className="modal-content">
@@ -450,36 +736,14 @@ function Users() {
           </div>
           <div className="modal-backdrop fade show"></div>
         </>
+            
+          </ModalContent>
+        </ModalBackdrop>
+      )}
+    </div>
+      
+        </>
       )}
 
-      <style jsx>{`
-        .user-table th {
-          font-size: 0.8rem;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          color: #6c757d;
-        }
-        .user-table td {
-          vertical-align: middle;
-          font-size: 0.9rem;
-        }
-        .btn-sm-icon {
-          width: 32px;
-          height: 32px;
-          padding: 0;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .font-weight-medium {
-          font-weight: 500;
-        }
-        .modal {
-          background-color: rgba(0, 0, 0, 0.5);
-        }
-      `}</style>
-    </div>
-  );
-}
-
+ 
 export default Users;
