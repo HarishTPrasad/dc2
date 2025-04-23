@@ -177,11 +177,41 @@ function Dashboard() {
                   ...styles.buttonIcon,
                   color: isActive("/dashboard/changem") ? colors.primary : colors.textLight
                 }} />
-                <span>Change Management</span>
+                <span>Change Dashboard</span>
               </div>
               <FaChevronRight style={{
                 ...styles.arrowIcon,
                 color: isActive("/dashboard/changem") ? colors.primary : colors.textLight
+              }} />
+            </button>
+          </div>
+
+          <div style={styles.menuSection}>
+          
+            <button 
+              style={getMenuButtonStyles("/dashboard/GRC")}
+              onClick={() => navigate("/dashboard/GRC")}
+              onMouseEnter={(e) => {
+                if (!isActive("/dashboard/GRC")) {
+                  e.currentTarget.style.backgroundColor = colors.menuHover;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive("/dashboard/GRC")) {
+                  e.currentTarget.style.backgroundColor = colors.menuActive;
+                }
+              }}
+            >
+              <div style={styles.buttonContent}>
+                <FaCogs style={{
+                  ...styles.buttonIcon,
+                  color: isActive("/dashboard/GRC") ? colors.primary : colors.textLight
+                }} />
+                <span>GRC Dashboard</span>
+              </div>
+              <FaChevronRight style={{
+                ...styles.arrowIcon,
+                color: isActive("/dashboard/GRC") ? colors.primary : colors.textLight
               }} />
             </button>
           </div>
@@ -470,7 +500,7 @@ const styles = {
     color: colors.accent,
   },
   menuSection: {
-    marginBottom: "25px",
+    // marginBottom: "25px",
   },
   menuSectionTitle: {
     fontSize: "12px",

@@ -6,6 +6,7 @@ import ChangeApprovalTable from "../../Utils/FormTables/ChangeApprovalTable";
 import ChangeImplementationDetailsTable from "../../Utils/FormTables/ChangeImplementationDetailsTable";
 import ChangeImplementationTable from "../../Utils/FormTables/ChangeImplementationTable";
 import api from "../../API/api";
+import { getFullName } from '../../Utils/Auth';
 
 // Utility functions for date formatting
 const formatDateForInput = (dateString) => {
@@ -266,6 +267,7 @@ function FormA() {
           departmentLocation: selectedClient?.department || "",
           phoneNo: selectedClient?.phoneno || "",
           comments: `Change request has been approved by ${selectedClient?.approver || ""}`,
+          assignedTo: getFullName() || "",
         }));
       } else if (name === "approver") {
         setFormData((prevData) => ({

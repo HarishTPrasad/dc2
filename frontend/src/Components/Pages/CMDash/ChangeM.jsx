@@ -3,6 +3,226 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../API/api';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import styled, { keyframes } from 'styled-components';
+
+// Animations
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
+
+// Styled Components
+const Container = styled.div`
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+  border-bottom: 2px solid #f0f0f0;
+`;
+
+const Title = styled.h1`
+  font-size: 2rem;
+  color: #2c3e50;
+  margin: 0;
+  font-weight: 600;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const ActionButton = styled.button`
+  background: ${props => props.primary ? '#1679AB' : 'white'};
+  color: ${props => props.primary ? 'white' : '#1679AB'};
+  border: 2px solid #1679AB;
+  border-radius: 8px;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 15px rgba(22, 121, 171, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  ${props => props.small && `
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+  `}
+
+  ${props => props.danger && `
+    border-color: #dc3545;
+    color: #dc3545;
+    background: ${props.primary ? '#dc3545' : 'white'};
+
+    &:hover {
+      box-shadow: 0 3px 15px rgba(220, 53, 69, 0.2);
+    }
+  `}
+`;
+
+const FilterBar = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+`;
+
+const FilterButton = styled.button`
+  background: ${props => props.active ? '#1679AB' : 'white'};
+  color: ${props => props.active ? 'white' : '#1679AB'};
+  border: 2px solid #1679AB;
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: #1679AB;
+    color: white;
+  }
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 1px 15px rgba(0, 0, 0, 0.05);
+  animation: ${fadeIn} 0.5s ease;
+`;
+
+const TableHeader = styled.thead`
+  background: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+`;
+
+const TableRow = styled.tr`
+  &:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+  
+  &:hover {
+    background-color: #f1f5f9;
+    cursor: pointer;
+  }
+`;
+
+const TableCell = styled.td`
+  // padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  font-size: 0.9rem;
+  color: #495057;
+`;
+
+const TableHeaderCell = styled.th`
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: #f1f5f9;
+  }
+`;
+
+const StatusBadge = styled.span`
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  background: ${props => {
+    switch(props.status) {
+      case 'pending approval': return '#fef3c7';
+      case 'in progress': return '#bfdbfe';
+      case 'completed': return '#bbf7d0';
+      case 'rejected': return '#fecaca';
+      default: return '#e5e7eb';
+    }
+  }};
+  color: ${props => {
+    switch(props.status) {
+      case 'pending approval': return '#92400e';
+      case 'in progress': return '#1e40af';
+      case 'completed': return '#065f46';
+      case 'rejected': return '#991b1b';
+      default: return '#374151';
+    }
+  }};
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  background: white;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  min-width: 200px;
+  z-index: 100;
+  animation: ${fadeIn} 0.2s ease;
+`;
+
+const DropdownItem = styled.button`
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  
+  &:hover {
+    background: #f8f9fa;
+  }
+`;
+
+const Loader = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  font-size: 1.5rem;
+  
+  &::after {
+    content: "⚙️";
+    animation: ${spin} 2s linear infinite;
+  }
+`;
+
+const ErrorMessage = styled.div`
+  padding: 2rem;
+  color: #dc3545;
+  background: #fff5f5;
+  border-radius: 8px;
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 600px;
+`;
 
 function ChangeM() {
   const username = sessionStorage.getItem("username") || "User";
@@ -15,7 +235,6 @@ function ChangeM() {
   const [assignedFilter, setAssignedFilter] = useState(null);
   const [showAssignedDropdown, setShowAssignedDropdown] = useState(false);
 
-  
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
@@ -24,16 +243,10 @@ function ChangeM() {
     return `${day}-${month}-${year}`;
   };
 
-  // Function to truncate text to show only 5-7 words
   const truncateText = (text) => {
     if (!text) return '';
     const words = text.split(' ');
-    if (words.length <= 7) return text;
-    return words.slice(0, 6).join(' ') + '...';
-  };
-
-  const verdanaStyle = {
-    fontFamily: 'Verdana, Geneva, sans-serif'
+    return words.length <= 7 ? text : words.slice(0, 6).join(' ') + '...';
   };
 
   useEffect(() => {
@@ -45,10 +258,8 @@ function ChangeM() {
       } catch (err) {
         setError(err.message);
         setLoading(false);
-        console.error('Error fetching tickets:', err);
       }
     };
-
     fetchTickets();
   }, []);
 
@@ -56,29 +267,22 @@ function ChangeM() {
 
   const handleFilter = (status) => {
     setFilter(status);
-    setAssignedFilter(null); 
+    setAssignedFilter(null);
   };
 
   const handleAssignedFilter = (assignee) => {
-    if (assignee === 'Assigned to Me') {
-      setAssignedFilter(username);
-    } else {
-      setAssignedFilter(assignee);
-    }
-    setFilter('all'); 
+    setAssignedFilter(assignee === 'Assigned to Me' ? username : assignee);
+    setFilter('all');
     setShowAssignedDropdown(false);
   };
 
-  const handleCreateNew = () => {
-    navigate('/dashboard/form-a');
-  };
-
+  const handleCreateNew = () => navigate('/dashboard/form-a');
+  
   const handleRefresh = async () => {
     setLoading(true);
     try {
       const response = await api.get('/documents');
       setTickets(response.data.data || response.data);
-      console.log('Fetched data:', response.data);
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -86,18 +290,14 @@ function ChangeM() {
     }
   };
 
-  const handleRowClick = (ticket) => {
-    navigate('/dashboard/oldview', { state: { ticket } });
-  };
-  const handleUpdateClick = (ticket) => {
-    navigate("/Dashboard/form-a", { state: { ticket } });
-  };
+  const handleRowClick = (ticket) => navigate('/dashboard/oldview', { state: { ticket } });
+  
+  const handleUpdateClick = (ticket) => navigate("/Dashboard/form-a", { state: { ticket } });
 
   const handleDelete = (id, e) => {
     e.stopPropagation();
-    
     confirmAlert({
-      title: 'Confirm to delete',
+      title: 'Confirm Delete',
       message: 'Are you sure you want to permanently delete this document?',
       buttons: [
         {
@@ -107,34 +307,26 @@ function ChangeM() {
               await api.delete(`/documents/${id}`);
               setTickets(tickets.filter(ticket => ticket._id !== id));
             } catch (err) {
-              console.error('Error deleting document:', err);
-              alert('Failed to delete document');
+              console.error('Delete error:', err);
+              alert('Delete failed');
             }
           }
         },
-        {
-          label: 'No',
-          onClick: () => {}
-        }
+        { label: 'No' }
       ]
     });
   };
 
   const requestSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    setSortConfig({ key, direction });
+    setSortConfig(prev => ({
+      key,
+      direction: prev.key === key && prev.direction === 'ascending' ? 'descending' : 'ascending'
+    }));
   };
 
   const sortedTickets = [...tickets].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'ascending' ? -1 : 1;
-    }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'ascending' ? 1 : -1;
-    }
+    if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.direction === 'ascending' ? -1 : 1;
+    if (a[sortConfig.key] > b[sortConfig.key]) return sortConfig.direction === 'ascending' ? 1 : -1;
     return 0;
   });
 
@@ -151,242 +343,170 @@ function ChangeM() {
     ? filteredTickets.filter(ticket => ticket.implementationAssigned === assignedFilter)
     : filteredTickets;
 
-  const getStatusClass = (status) => {
-    if (!status) return 'secondary';
-    switch(status.toLowerCase()) {
-      case 'pending approval': return 'warning';
-      case 'in progress': return 'info';
-      case 'completed': return 'success';
-      case 'rejected': return 'danger';
-      default: return 'secondary';
-    }
-  };
-
   const getStatusText = (ticket) => {
     return ticket.implementationStatus || 
            (ticket.changeRequestStatus?.accepted ? 'Pending Approval' : 
             ticket.changeRequestStatus?.rejected ? 'Rejected' : 'In Progress');
   };
 
-  const buttonStyle = {
-    borderRadius: '8px',
-    border: '2px solid #1679AB',
-    backgroundColor: 'white',
-    color: '#1679AB',
-    padding: '8px 16px',
-    margin: '0 8px 8px 0',
-    transition: 'all 0.3s ease',
-  };
-
-  const smallTextStyle = {
-    fontSize: '0.8rem', // Or any other smaller unit like '12px', '0.7em'
-  };
-  
-  const activeButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: '#1679AB',
-    color: 'white',
-    boxShadow: '0 0 0 0.2rem rgba(22, 121, 171, 0.25)'
-  };
-
-  const hoverButtonStyle = {
-    boxShadow: '0 0 10px rgba(22, 121, 171, 0.5)',
-    transform: 'translateY(-1px)'
-  };
-
-  if (loading) return <div className="container mt-4">Loading...</div>;
-  if (error) return <div className="container mt-4">Error: {error}</div>;
+  if (loading) return <Loader />;
+  if (error) return <ErrorMessage>Error: {error}</ErrorMessage>;
 
   return (
-    <div className="container-fluid mt-1" style={verdanaStyle}>
-      <div className="d-flex justify-content-between align-items-center mb-1" style={{ marginTop: "20px"}}>
-        <h3 className="mb-1" style={{  fontSize: "2rem", fontWeight: "600",}}>Change Management</h3>
-        <div>
-          <button 
-            className="btn btn-primary mr-2" 
-            style={{ backgroundColor: "#1679AB",fontSize: '0.8rem' }}
-            onClick={handleCreateNew}
-           
-          >
-            <i className="fas fa-plus mr-2"></i>Create New CMR
-          </button>
-        
-          <button className="btn btn-light" onClick={handleRefresh} style={smallTextStyle}>
-            <i className="fas fa-sync-alt mr-2"></i>Refresh
-          </button>
-        </div>
-      </div>
+    <Container>
+      <Header>
+        <Title>Change Management</Title>
+        <ButtonGroup>
+          <ActionButton primary onClick={handleCreateNew}>
+            <i className="fas fa-plus"></i>
+            Create New CMR
+          </ActionButton>
+          <ActionButton onClick={handleRefresh}>
+            <i className="fas fa-sync-alt"></i>
+            Refresh
+          </ActionButton>
+        </ButtonGroup>
+      </Header>
 
-      <div className="d-flex flex-wrap mb-4 align-items-center" style={smallTextStyle}>
-        <button
-          style={filter === 'all' && !assignedFilter ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
+      <FilterBar>
+        <FilterButton 
+          active={filter === 'all' && !assignedFilter}
           onClick={() => handleFilter('all')}
         >
           All CMRs
-        </button>
-        <button
-          style={filter === 'Pending Approval' ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
+        </FilterButton>
+        <FilterButton
+          active={filter === 'Pending Approval'}
           onClick={() => handleFilter('Pending Approval')}
         >
           Pending Approval
-        </button>
-        <button
-          style={filter === 'In Progress' ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
+        </FilterButton>
+        <FilterButton
+          active={filter === 'In Progress'}
           onClick={() => handleFilter('In Progress')}
         >
           In Progress
-        </button>
-        <button
-          style={filter === 'Completed' ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
+        </FilterButton>
+        <FilterButton
+          active={filter === 'Completed'}
           onClick={() => handleFilter('Completed')}
         >
           Completed
-        </button>
-        <button
-          style={filter === 'Rejected' ? activeButtonStyle : buttonStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
+        </FilterButton>
+        <FilterButton
+          active={filter === 'Rejected'}
           onClick={() => handleFilter('Rejected')}
         >
           Rejected
-        </button>
+        </FilterButton>
 
-        <div className="position-relative">
-          <button
-            style={assignedFilter ? activeButtonStyle : buttonStyle}
-            onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverButtonStyle.boxShadow}
-            onMouseOut={(e) => e.currentTarget.style.boxShadow = ''}
+        <div style={{ position: 'relative' }}>
+          <FilterButton
+            active={!!assignedFilter}
             onClick={() => setShowAssignedDropdown(!showAssignedDropdown)}
           >
-            {assignedFilter ? `Assigned: ${assignedFilter}` : 'Filter by Assignee'}
+            {assignedFilter || 'Filter by Assignee'}
             <i className={`fas fa-chevron-${showAssignedDropdown ? 'up' : 'down'} ml-2`}></i>
-          </button>
+          </FilterButton>
           
           {showAssignedDropdown && (
-            <div 
-              className="position-absolute bg-white shadow rounded mt-1"
-              style={{ zIndex: 1000, minWidth: '200px' }}
-              onMouseLeave={() => setShowAssignedDropdown(false)}
-            >
-              <button
-                className="dropdown-item"
-                onClick={() => handleAssignedFilter('Assigned to Me')}
-              >
+            <DropdownMenu onMouseLeave={() => setShowAssignedDropdown(false)}>
+              <DropdownItem onClick={() => handleAssignedFilter('Assigned to Me')}>
                 Assigned to Me ({username})
-              </button>
-              <div className="dropdown-divider"></div>
+              </DropdownItem>
               {assignees.map((assignee, index) => (
-                <button
+                <DropdownItem 
                   key={index}
-                  className="dropdown-item"
                   onClick={() => handleAssignedFilter(assignee)}
                 >
                   {assignee || 'Unassigned'}
-                </button>
+                </DropdownItem>
               ))}
-            </div>
+            </DropdownMenu>
           )}
         </div>
-      </div>
+      </FilterBar>
 
-      <div className="table-responsive table-sm" style={smallTextStyle}>
-        <table className="table table-striped table-hover table-bordered">
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col" onClick={() => requestSort('changeRequestNo')}>
-                CMR No {sortConfig.key === 'changeRequestNo' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
-              <th scope="col" onClick={() => requestSort('client')}>
-                Client {sortConfig.key === 'client' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
-              <th scope="col" onClick={() => requestSort('technology')}>
-                Technology {sortConfig.key === 'technology' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
-              <th scope="col" onClick={() => requestSort('changeDescription')}>
-                Subject {sortConfig.key === 'changeDescription' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
-              <th scope="col" onClick={() => requestSort('date')}>
-                Date {sortConfig.key === 'date' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
-              <th scope="col" onClick={() => requestSort('implementationAssigned')}>
-                Assigned To {sortConfig.key === 'implementationAssigned' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
-              <th scope="col" onClick={() => requestSort('implementationStatus')}>
-                Status {sortConfig.key === 'implementationStatus' && (
-                  <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'} ml-1`}></i>
-                )}
-              </th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {finalTickets.map((ticket) => (
-              <tr 
-                key={ticket._id}
-                onClick={() => handleRowClick(ticket)}
-                style={{ cursor: 'pointer' }}
-              >
-                <th scope="row">{ticket.changeRequestNo}</th>
-                <td>{ticket.client}</td>
-                <td>{ticket.technology}</td>
-                <td title={ticket.changeDescription}>{truncateText(ticket.changeDescription)}</td>
-                <td>{formatDate(ticket.date)}</td>
-                <td>{ticket.implementationAssigned || 'Unassigned'}</td>
-                <td>
-                  <span className={`badge badge-${getStatusClass(getStatusText(ticket))}`}>
-                    {getStatusText(ticket)}
-                  </span>
-                </td>
-                <td>
-                  <div style={{ display: 'flex', gap: '10px' }}> 
-                  <button
-                      className="btn btn-sm btn-info"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleUpdateClick(ticket);
-                      }}
-                      style={{ padding: '1px 1px' }}
-                    >
-                    <i className="fas fa-trash">
-                      <span class="badge badge-info">Update</span>
-                    </i> 
-                    </button>
-                    <button 
-                      className="btn btn-sm btn-danger"
-                      onClick={(e) => handleDelete(ticket._id, e)}
-                      style={{ padding: '1px 1px' }}
-                    >
-                      <i className="fas fa-trash"><span class="badge badge-danger">Delete</span></i> 
-                    </button>
-                    
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <StyledTable>
+        <TableHeader>
+          <tr>
+            <TableHeaderCell onClick={() => requestSort('changeRequestNo')}>
+              CMR No {sortConfig.key === 'changeRequestNo' && (
+                <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'}`}></i>
+              )}
+            </TableHeaderCell>
+            <TableHeaderCell onClick={() => requestSort('client')}>
+              Client {sortConfig.key === 'client' && (
+                <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'}`}></i>
+              )}
+            </TableHeaderCell>
+            <TableHeaderCell onClick={() => requestSort('technology')}>
+              Technology {sortConfig.key === 'technology' && (
+                <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'}`}></i>
+              )}
+            </TableHeaderCell>
+            <TableHeaderCell onClick={() => requestSort('changeDescription')}>
+              Subject {sortConfig.key === 'changeDescription' && (
+                <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'}`}></i>
+              )}
+            </TableHeaderCell>
+            <TableHeaderCell onClick={() => requestSort('date')}>
+              Date {sortConfig.key === 'date' && (
+                <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'}`}></i>
+              )}
+            </TableHeaderCell>
+            <TableHeaderCell onClick={() => requestSort('implementationAssigned')}>
+              Assigned To {sortConfig.key === 'implementationAssigned' && (
+                <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'}`}></i>
+              )}
+            </TableHeaderCell>
+            <TableHeaderCell onClick={() => requestSort('implementationStatus')}>
+              Status {sortConfig.key === 'implementationStatus' && (
+                <i className={`fas fa-sort-${sortConfig.direction === 'ascending' ? 'up' : 'down'}`}></i>
+              )}
+            </TableHeaderCell>
+            <TableHeaderCell>Actions</TableHeaderCell>
+          </tr>
+        </TableHeader>
+        <tbody>
+          {finalTickets.map((ticket) => (
+            <TableRow key={ticket._id} onClick={() => handleRowClick(ticket)}>
+              <TableCell>{ticket.changeRequestNo}</TableCell>
+              <TableCell>{ticket.client}</TableCell>
+              <TableCell>{ticket.technology}</TableCell>
+              <TableCell title={ticket.changeDescription}>{truncateText(ticket.changeDescription)}</TableCell>
+              <TableCell>{formatDate(ticket.date)}</TableCell>
+              <TableCell>{ticket.implementationAssigned || 'Unassigned'}</TableCell>
+              <TableCell>
+                <StatusBadge status={getStatusText(ticket).toLowerCase()}>
+                  {getStatusText(ticket)}
+                </StatusBadge>
+              </TableCell>
+              <TableCell>
+                <ButtonGroup>
+                  <ActionButton 
+                    small
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUpdateClick(ticket);
+                    }}
+                  >
+                    <i className="fas fa-edit"></i>
+                  </ActionButton>
+                  <ActionButton 
+                    small 
+                    danger
+                    onClick={(e) => handleDelete(ticket._id, e)}
+                  >
+                    <i className="fas fa-trash"></i>
+                  </ActionButton>
+                </ButtonGroup>
+              </TableCell>
+            </TableRow>
+          ))}
+        </tbody>
+      </StyledTable>
+    </Container>
   );
 }
 

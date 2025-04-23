@@ -10,6 +10,7 @@ import Users from './Components/Pages/Admin/Utils/Users';
 import Technologies from './Components/Pages/Admin/Utils/Technologies';
 import Projects from './Components/Pages/Admin/Utils/Projects';
 import Clients from './Components/Pages/Admin/Utils/Clients';
+import GRC from './Components/Pages/GRCDash/GRC';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = sessionStorage.getItem('authToken');
@@ -40,6 +41,7 @@ function App() {
                     <Route path="projects" element={<Projects />} />
                     <Route path="technologies" element={<Technologies />} />
                     <Route path="Clients" element={<Clients />} />
+                    <Route path="GRC" element={<GRC />} />
 
 
 
