@@ -355,7 +355,7 @@ function ChangeM() {
   return (
     <Container>
       <Header>
-        <Title>Change Management</Title>
+        <Title>CRM Dashboard</Title>
         <ButtonGroup>
           <ActionButton primary onClick={handleCreateNew}>
             <i className="fas fa-plus"></i>

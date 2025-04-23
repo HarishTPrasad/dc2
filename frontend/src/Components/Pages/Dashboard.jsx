@@ -177,7 +177,7 @@ function Dashboard() {
                   ...styles.buttonIcon,
                   color: isActive("/dashboard/changem") ? colors.primary : colors.textLight
                 }} />
-                <span>Change Dashboard</span>
+                <span>CRM Dashboard</span>
               </div>
               <FaChevronRight style={{
                 ...styles.arrowIcon,
