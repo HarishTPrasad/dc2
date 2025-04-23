@@ -50,7 +50,7 @@ const UserAvatar = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #e9ecef;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -523,7 +523,7 @@ function Users() {
                 </CardHeader>
                 
                 <div style={{ marginBottom: '1rem' }}>
-                  <p style={{ margin: '0.25rem 0', color: '#6c757d' }}>
+                  <p style={{ margin: '0.25rem 0', color: '#2d3436' }}>
                     <strong>Full Name:</strong> {user.fullname || '-'}
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
