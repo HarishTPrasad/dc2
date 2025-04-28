@@ -75,10 +75,10 @@ export const generateFormPDF = async (formData, fileName = 'Change_Request_Form.
         verticalAlign: 'middle',
       },
       spacer: {
-        marginTop: '40%',
+        marginTop: '35%',
       },
       footer: {
-        marginTop: '80%',
+        marginTop: '75%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -106,7 +106,7 @@ export const generateFormPDF = async (formData, fileName = 'Change_Request_Form.
       <div style={styles.pdfContainer}>
         <div style={styles.content}>
           <div>
-            <h1 style={{...styles.headerCenter, fontSize: '28px'}}>{formData.client || ''}</h1>
+            <h1 style={{...styles.headerCenter, fontSize: '28px', marginTop: '50px'}}>{formData.client || ''}</h1>
             <h2 style={{...styles.headerCenter, fontSize: '20px'}}>Change Request Form</h2>
           </div>
         </div>
