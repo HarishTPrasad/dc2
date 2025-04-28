@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../API/api';
-import { FiUserPlus, FiEdit2, FiTrash2, FiSearch } from 'react-icons/fi';
+import { FiUserPlus, FiEdit2, FiTrash2, FiSearch, FiPhone, FiBriefcase, FiUser, FiCheckSquare } from 'react-icons/fi';
 import { useNavigate } from "react-router-dom";
 
 function Clients() {
@@ -31,12 +31,11 @@ function Clients() {
     try {
       setLoading(true);
       const response = await api.get('/clientdata');
-      // Ensure we're working with the correct data structure
       const data = response.data?.data || response.data || [];
       setClientList(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to fetch clients');
-      setClientList([]); // Reset to empty array on error
+      setClientList([]);
     } finally {
       setLoading(false);
     }
@@ -73,7 +72,6 @@ function Clients() {
       let response;
       
       if (isEditing && currentClient?._id) {
-        // Optimistic update
         setClientList(prev => prev.map(client => 
           client._id === currentClient._id ? {
             ...client,
@@ -97,12 +95,10 @@ function Clients() {
           }
         });
 
-        // Final update with server response
         setClientList(prev => prev.map(client => 
           client._id === currentClient._id ? response.data.data || response.data : client
         ));
       } else {
-        // Optimistic create with temporary ID
         const tempId = `temp-${Date.now()}`;
         setClientList(prev => [{
           _id: tempId,
@@ -125,7 +121,6 @@ function Clients() {
           }
         });
 
-        // Replace temporary client with server response
         setClientList(prev => [
           response.data.data || response.data,
           ...prev.filter(client => client._id !== tempId)
@@ -136,7 +131,6 @@ function Clients() {
       resetForm();
     } catch (err) {
       setError(err.response?.data?.error || `Failed to ${isEditing ? 'update' : 'create'} client`);
-      // Revert optimistic update on error
       fetchClients();
     } finally {
       setLoading(false);
@@ -165,7 +159,6 @@ function Clients() {
 
     try {
       setDeleteLoading(true);
-      // Optimistic delete
       const deletedClient = currentClient;
       setClientList(prev => prev.filter(client => client._id !== deletedClient._id));
 
@@ -175,7 +168,6 @@ function Clients() {
       setCurrentClient(null);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to delete client');
-      // Revert optimistic delete on error
       fetchClients();
     } finally {
       setDeleteLoading(false);
@@ -194,7 +186,6 @@ function Clients() {
     setIsEditing(false);
   };
 
-  // Filtering logic with null checks
   const filteredClients = clientList.filter(client => {
     if (!searchTerm) return true;
     const searchTermLower = searchTerm.toLowerCase();
@@ -206,7 +197,6 @@ function Clients() {
     );
   });
 
-  // For controlling body scroll when modal is open
   useEffect(() => {
     if (showModal || showDeleteModal) {
       document.body.style.overflow = 'hidden';
@@ -227,22 +217,22 @@ function Clients() {
     <div className="p-4 bg-white rounded shadow-sm">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h5 className="mb-0 font-weight-bold text-info">Client Management</h5>
-        <div className="d-flex justify-content-between align-items-center mb-4 " style={{ gap: '1rem' }}>
-        <button 
-          className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
-          onClick={() => {
-            resetForm();
-            setShowModal(true);
-          }}
-        >
-          <FiUserPlus className="mr-1" /> Add Client
-        </button>
-        <button 
-          className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
-          onClick={handleBackToDashboard}
-        >
-         back
-        </button>
+        <div className="d-flex" style={{ gap: '1rem' }}>
+          <button 
+            className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
+            onClick={() => {
+              resetForm();
+              setShowModal(true);
+            }}
+          >
+            <FiUserPlus className="mr-1" /> Add Client
+          </button>
+          <button 
+            className="btn btn-info btn-sm d-flex align-items-center shadow-sm"
+            onClick={handleBackToDashboard}
+          >
+            Back to Dashboard
+          </button>
         </div>
       </div>
 
@@ -255,8 +245,8 @@ function Clients() {
         </div>
       )}
 
-      <div className="mb-3 position-relative">
-        <div className="input-group input-group-sm shadow-sm">
+      <div className="mb-4 position-relative">
+        <div className="input-group input-group-lg shadow-sm">
           <div className="input-group-prepend">
             <span className="input-group-text bg-white border-right-0">
               <FiSearch className="text-muted" />
@@ -280,55 +270,78 @@ function Clients() {
           <p className="text-muted mt-2 small">Loading clients...</p>
         </div>
       ) : (
-        <div className="border rounded shadow-sm">
-          <table className="table table-hover table-sm mb-0 client-table">
-            <thead className="bg-light">
-              <tr>
-                <th className="py-2 pl-3 border-0">Client Name</th>
-                <th className="py-2 border-0">Department</th>
-                <th className="py-2 border-0">Requester</th>
-                <th className="py-2 border-0">Approver</th>
-                <th className="py-2 border-0">Phone</th>
-                <th className="py-2 pr-3 border-0 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredClients.length > 0 ? (
-                filteredClients.map(client => (
-                  <tr key={client._id}>
-                    <td className="py-2 pl-3 font-weight-medium">{client.client?.clientname || '-'}</td>
-                    <td className="py-2">{client.client?.department || '-'}</td>
-                    <td className="py-2">{client.client?.requestor || '-'}</td>
-                    <td className="py-2">{client.client?.approver || '-'}</td>
-                    <td className="py-2 text-muted small">{client.client?.phoneno || '-'}</td>
-                    <td className="py-2 pr-3 text-right">
+        <div className="row">
+          {filteredClients.length > 0 ? (
+            filteredClients.map(client => (
+              <div key={client._id} className="col-12 col-md-6 col-lg-4 mb-4">
+                <div className="card shadow-sm h-100 hover-scale">
+                  <div className="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h6 className="mb-0 font-weight-bold text-dark">
+                      {client.client?.clientname || 'Unnamed Client'}
+                    </h6>
+                    <div className="d-flex gap-2">
                       <button 
-                        className="btn btn-outline-secondary btn-sm mr-1 btn-sm-icon"
+                        className="btn btn-link text-info p-0"
                         onClick={() => handleEdit(client)}
                       >
-                        <FiEdit2 size={14} />
+                        <FiEdit2 size={16} />
                       </button>
                       <button 
-                        className="btn btn-outline-danger btn-sm btn-sm-icon"
+                        className="btn btn-link text-danger p-0"
                         onClick={() => {
                           setCurrentClient(client);
                           setShowDeleteModal(true);
                         }}
                       >
-                        <FiTrash2 size={14} />
+                        <FiTrash2 size={16} />
                       </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="text-center py-4 text-muted">
-                    {searchTerm ? 'No clients match your search' : 'No clients found'}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                    </div>
+                  </div>
+                  <div className="card-body">
+                    <div className="mb-3 d-flex align-items-center">
+                      <FiBriefcase className="mr-2 text-primary" />
+                      <span className="text-muted small">
+                        {client.client?.department || 'No department specified'}
+                      </span>
+                    </div>
+                    
+                    <div className="mb-3 d-flex align-items-center">
+                      <FiUser className="mr-2 text-success" />
+                      <div>
+                        <div className="small text-muted">Requester</div>
+                        <div>{client.client?.requestor || 'Not specified'}</div>
+                      </div>
+                    </div>
+
+                    <div className="mb-3 d-flex align-items-center">
+                      <FiCheckSquare className="mr-2 text-warning" />
+                      <div>
+                        <div className="small text-muted">Approver</div>
+                        <div>{client.client?.approver || 'Not specified'}</div>
+                      </div>
+                    </div>
+
+                    <div className="d-flex align-items-center">
+                      <FiPhone className="mr-2 text-danger" />
+                      <div>
+                        <div className="small text-muted">Contact</div>
+                        <div>{client.client?.phoneno || 'No phone number'}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-footer bg-light">
+                    <small className="text-muted">
+                      Last updated: {new Date(client.updatedAt || Date.now()).toLocaleDateString()}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-12 text-center py-4 text-muted">
+              {searchTerm ? 'No clients match your search' : 'No clients found'}
+            </div>
+          )}
         </div>
       )}
 
@@ -506,29 +519,27 @@ function Clients() {
       )}
 
       <style jsx>{`
-        .client-table th {
-          font-size: 0.8rem;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          color: #6c757d;
+        .hover-scale {
+          transition: transform 0.2s ease-in-out;
         }
-        .client-table td {
-          vertical-align: middle;
-          font-size: 0.9rem;
+        .hover-scale:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        .btn-sm-icon {
-          width: 32px;
-          height: 32px;
-          padding: 0;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
+        .card-header {
+          border-bottom: 2px solid rgba(0, 0, 0, 0.05);
         }
-        .font-weight-medium {
-          font-weight: 500;
+        .card-footer {
+          border-top: 2px solid rgba(0, 0, 0, 0.05);
+          background-color: #f8f9fa;
         }
-        .modal {
-          background-color: rgba(0, 0, 0, 0.5);
+        .btn-link {
+          opacity: 0.7;
+          transition: opacity 0.2s;
+        }
+        .btn-link:hover {
+          opacity: 1;
+          text-decoration: none;
         }
       `}</style>
     </div>

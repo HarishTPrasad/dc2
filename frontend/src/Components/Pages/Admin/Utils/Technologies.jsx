@@ -303,7 +303,7 @@ function Technologies() {
                     <button 
                       type="submit" 
                       className="btn btn-info btn-sm shadow-sm"
-                      disabled={loading}
+                      disabled={loading} 
                     >
                       {loading ? (
                         <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
