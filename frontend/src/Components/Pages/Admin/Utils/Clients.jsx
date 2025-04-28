@@ -329,11 +329,11 @@ function Clients() {
                       </div>
                     </div>
                   </div>
-                  <div className="card-footer bg-light">
+                  {/* <div className="card-footer bg-light">
                     <small className="text-muted">
                       Last updated: {new Date(client.updatedAt || Date.now()).toLocaleDateString()}
                     </small>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))
